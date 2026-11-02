@@ -9,4 +9,4 @@ GESTOR DE CARRERAS - versión web para iPhone / iPad (y cualquier navegador)
    Requiere iOS 15.4 o superior.
 
 La carpeta no contiene ninguna clave privada: solo la clave pública de verificación.
-La app no tiene servidor, ni cuentas, ni analítica: los datos se quedan en el propio dispositivo.
+La app no tiene servidor, ni cuentas, ni analítica: los datos y los resguardos de pago se quedan en el propio dispositivo.

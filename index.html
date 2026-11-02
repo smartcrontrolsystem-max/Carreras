@@ -165,6 +165,13 @@ select.year,.filters select,.filters input{width:auto}
 }
 header{padding-top:calc(14px + env(safe-area-inset-top,0px))}
 @media (max-width:720px){header{padding-top:calc(10px + env(safe-area-inset-top,0px))}#add{bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
+.att{display:flex;gap:8px;align-items:center;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);margin-bottom:6px;font-size:14px}
+.att span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#vdlg{width:min(920px,96vw)}
+#vbar{padding:12px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+#vbody{padding:12px;max-height:78vh;overflow:auto;text-align:center}
+#vbody img{max-width:100%;height:auto}
+.vchip.on{background:var(--ok-bg);border-color:var(--accent);color:var(--accent)}
 </style>
 </head>
 <body>
@@ -218,6 +225,9 @@ header{padding-top:calc(14px + env(safe-area-inset-top,0px))}
     <div><label>Inscripción</label><label class="chk"><input type="checkbox" id="pagado"> Pagada</label></div>
     <div><label>Compañía</label><label class="chk"><input type="checkbox" id="acomp"> Voy con alguien</label></div>
     <div class="full hidden" id="conWrap"><label>¿Con quién?</label><input type="text" id="con" placeholder="Nombre(s)"></div>
+    <div class="full"><label>Resguardo de pago (PDF o imagen)</label>
+      <div id="rlist"></div>
+      <label class="btn sm" style="display:inline-block;cursor:pointer;margin-top:4px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">+ Añadir archivo<input type="file" id="rfile" accept="image/*,application/pdf" multiple style="display:none"></label></div>
     <div class="full"><label>Web / enlace</label><input type="url" id="url" placeholder="https://"></div>
     <div class="full"><label>Notas</label><textarea id="notas"></textarea></div>
   </div>
@@ -249,6 +259,7 @@ header{padding-top:calc(14px + env(safe-area-inset-top,0px))}
   <label>Clave de acceso</label><textarea id="lkey" placeholder="GC1.…" style="min-height:90px;font-family:Consolas,monospace;font-size:12px"></textarea>
   <div class="foot"><button type="button" class="btn hidden" id="lclose">Cerrar</button><button type="button" class="btn pri" id="lgo">Activar</button></div>
 </div></div>
+<dialog id="vdlg"><div id="vbar"><b id="vtitle" style="flex:1;min-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></b><span id="vchips"></span><button type="button" class="btn sm" id="vdl">Descargar</button><button type="button" class="btn sm" id="vclose">Cerrar</button></div><div id="vbody"></div></dialog>
 <dialog id="mdlg"><form method="dialog" style="padding:20px 22px">
   <p id="mmsg" style="margin:0 0 16px;font-size:15px;white-space:pre-line"></p>
   <div class="foot" style="margin-top:0"><button type="button" class="btn hidden" id="mno">Cancelar</button><button type="button" class="btn pri" id="myes">Aceptar</button></div>
@@ -364,6 +375,7 @@ function card(r, opts = {}){
       ${r.prov ? '<span class="tag bad">📅 Fecha provisional</span>' : ''}
       ${det.length ? `<span class="tag">${esc(det.join(' · '))}</span>` : ''}
       ${r.voy === 'si' ? (r.pagado ? '<span class="tag ok">✔ Pagada</span>' : '<span class="tag bad">⚠ Sin pagar</span>') : ''}
+      ${r.recibos && r.recibos.length ? `<span class="tag ok" data-rec="${esc(r.id)}" style="cursor:pointer">📎 Resguardo${r.recibos.length > 1 ? ' (' + r.recibos.length + ')' : ''}</span>` : ''}
       ${r.acomp && r.con ? `<span class="tag">👥 ${esc(r.con)}</span>` : (r.acomp ? '<span class="tag">👥 Acompañado</span>' : '<span class="tag">Voy solo</span>')}
       ${r.voy === 'pendiente' ? '<span class="tag">Indeciso</span>' : ''}
       ${r.voy === 'no' ? '<span class="tag">No voy</span>' : ''}
@@ -441,7 +453,7 @@ function renderMeses(){
       const status = r.voy === 'si' ? (r.pagado ? '✔ pagada' : '⚠ sin pagar') : r.voy === 'no' ? 'no voy' : 'indeciso';
       h += `<div class="mi ${isPast(r) ? 'past' : ''} ${r.voy === 'no' ? 'no' : ''}" data-edit="${r.id}" style="--c:var(--${r.tipo})">
         <div class="d">${r.prov ? '~' : ''}${dd}<small>${TIPOS[r.tipo].slice(0,5)}</small></div><span class="dot"></span>
-        <div class="n"><b>${esc(r.nombre)}</b><span>${status}${r.prov ? ' · fecha prov.' : ''}${r.acomp && r.con ? ' · con ' + esc(r.con) : ''}${r.voy === 'si' && dl >= 0 && !isPast(r) ? ' · faltan ' + dl + ' d' : ''}</span></div></div>`;
+        <div class="n"><b>${esc(r.nombre)}</b><span>${status}${r.recibos && r.recibos.length ? ' · 📎' : ''}${r.prov ? ' · fecha prov.' : ''}${r.acomp && r.con ? ' · con ' + esc(r.con) : ''}${r.voy === 'si' && dl >= 0 && !isPast(r) ? ' · faltan ' + dl + ' d' : ''}</span></div></div>`;
     }
     h += `</div>`;
   }
@@ -468,7 +480,7 @@ function renderTodas(){
       <td><span class="tag t" style="--c:var(--${r.tipo})">${TIPOS[r.tipo]}</span></td>
       <td>${r.km ? esc(r.km) + ' km' : '—'}</td>
       <td>${r.voy === 'si' ? '<span class="tag ok">Sí</span>' : r.voy === 'no' ? '<span class="tag">No</span>' : '<span class="tag">Indeciso</span>'}</td>
-      <td>${r.voy === 'si' ? (r.pagado ? '<span class="tag ok">Pagada</span>' : '<span class="tag bad">Pendiente</span>') : '—'}</td>
+      <td>${r.voy === 'si' ? (r.pagado ? '<span class="tag ok">Pagada</span>' : '<span class="tag bad">Pendiente</span>') : '—'}${r.recibos && r.recibos.length ? ` <span class="tag" data-rec="${esc(r.id)}" style="cursor:pointer">📎 ${r.recibos.length}</span>` : ''}</td>
       <td>${r.acomp ? '👥 ' + esc(r.con || 'Sí') : '—'}</td>
       <td>${isPast(r) ? 'Pasada' : dl === 0 ? '<b>HOY</b>' : dl + ' d'}</td>
       <td><button class="btn sm" data-edit="${r.id}">Editar</button></td></tr>`;
@@ -495,6 +507,7 @@ function render(){
 $('#nav').onclick = e => { const b = e.target.closest('button'); if (b){ view = b.dataset.v; render(); } };
 $('#year').onchange = e => { yearSel = e.target.value; render(); };
 document.addEventListener('click', e => {
+  const rc = e.target.closest('[data-rec]'); if (rc) { e.stopPropagation(); return openRec(rc.dataset.rec); }
   const ed = e.target.closest('[data-edit]'); if (ed) return openForm(ed.dataset.edit);
   const u = e.target.closest('[data-url]'); if (u) openUrl(u.dataset.url);
 });
@@ -522,6 +535,7 @@ function openForm(id){
   $('#conWrap').classList.toggle('hidden', !r?.acomp);
   $('#url').value = r?.url || '';
   $('#notas').value = r?.notas || '';
+  curRec = (r?.recibos || []).map(x => ({...x})); pend = []; removed = []; drawRlist();
   $('#dlg').showModal();
 }
 $('#f').onsubmit = async e => {
@@ -544,6 +558,17 @@ $('#f').onsubmit = async e => {
     notas: $('#notas').value.trim()
   };
   if (!rec.nombre || !rec.fecha) return;
+  try {
+    const recs = curRec.slice();
+    for (const pf of pend) {
+      const blob = await prepFile(pf.file);
+      const fid = uid();
+      await Files.put(fid, blob);
+      recs.push({id: fid, name: pf.name, type: blob.type || pf.type, size: blob.size});
+    }
+    for (const id of removed) await Files.del(id);
+    rec.recibos = recs;
+  } catch(err) { await info('No se pudo guardar el resguardo en este dispositivo. La carrera no se ha guardado.'); return; }
   const i = races.findIndex(x => x.id === rec.id);
   if (i >= 0) races[i] = rec; else races.push(rec);
   await save();
@@ -552,10 +577,120 @@ $('#f').onsubmit = async e => {
 };
 $('#del').onclick = async () => {
   if (!await ask('¿Eliminar esta carrera?')) return;
+  const old = races.find(x => x.id === editingId);
+  if (old) for (const f of (old.recibos || [])) await Files.del(f.id);
   races = races.filter(x => x.id !== editingId);
   await save();
   $('#dlg').close();
   buildYears(); render();
+};
+
+/* ---------- Resguardos de pago ---------- */
+const IDB = {
+  db: null,
+  open(){ return this.db || (this.db = new Promise((res, rej) => { const q = indexedDB.open('carreras-files', 1); q.onupgradeneeded = () => q.result.createObjectStore('f'); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); })); },
+  async tx(mode, fn){ const db = await this.open(); return new Promise((res, rej) => { const t = db.transaction('f', mode); const r = fn(t.objectStore('f')); t.oncomplete = () => res(r && r.result); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); }); }
+};
+const Files = {
+  async put(id, blob){
+    if (HAS_SERVER) { const r = await fetch('/api/files/' + id, {method:'PUT', body: blob}); if (!r.ok) throw new Error('server'); }
+    else await IDB.tx('readwrite', st => st.put({buf: blob.__buf || await0(blob), type: blob.type}, id));
+  },
+  async get(id, type){
+    if (HAS_SERVER) { const r = await fetch('/api/files/' + id); if (!r.ok) return null; return new Blob([await r.arrayBuffer()], {type}); }
+    const o = await IDB.tx('readonly', st => st.get(id));
+    return o ? new Blob([o.buf], {type: o.type || type}) : null;
+  },
+  async del(id){ try { if (HAS_SERVER) await fetch('/api/files/' + id, {method:'DELETE'}); else await IDB.tx('readwrite', st => st.delete(id)); } catch(e){} }
+};
+let pend = [], curRec = [], removed = [];
+const readBuf = b => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(fr.error); fr.readAsArrayBuffer(b); });
+function await0(){ throw new Error('buf'); }
+/* prepFile: reduce fotos grandes y deja el resto tal cual; devuelve Blob con .__buf listo */
+async function prepFile(file){
+  let blob = file;
+  if (/^image\//.test(file.type) && file.size > 1500000) {
+    try {
+      const bmp = await new Promise((res, rej) => { const u = URL.createObjectURL(file); const im = new Image(); im.onload = () => { URL.revokeObjectURL(u); res(im); }; im.onerror = () => rej(); im.src = u; });
+      const k = Math.min(1, 1800 / Math.max(bmp.naturalWidth, bmp.naturalHeight));
+      const c = document.createElement('canvas'); c.width = Math.round(bmp.naturalWidth * k); c.height = Math.round(bmp.naturalHeight * k);
+      c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+      const out = await new Promise(res => c.toBlob(res, 'image/jpeg', 0.85));
+      if (out && out.size < file.size) blob = out;
+    } catch(e){}
+  }
+  if (!HAS_SERVER) blob.__buf = await readBuf(blob);
+  return blob;
+}
+function drawRlist(){
+  const rows = curRec.map((r, i) => `<div class="att"><span>📎 ${esc(r.name)}</span><button type="button" class="btn sm" data-vrec="${i}">Ver</button><button type="button" class="btn sm danger" data-xrec="${i}">Quitar</button></div>`)
+    .concat(pend.map((x, i) => `<div class="att"><span>📎 ${esc(x.name)} <small style="color:var(--muted)">(sin guardar)</small></span><button type="button" class="btn sm" data-vpend="${i}">Ver</button><button type="button" class="btn sm danger" data-xpend="${i}">Quitar</button></div>`));
+  $('#rlist').innerHTML = rows.join('') || '<div style="color:var(--muted);font-size:13px;margin-bottom:4px">Sin archivos adjuntos</div>';
+}
+$('#rfile').onchange = async e => {
+  for (const f of e.target.files) {
+    const ok = /^image\//.test(f.type) || f.type === 'application/pdf' || /\.(pdf|jpe?g|png|webp|heic)$/i.test(f.name);
+    if (!ok) { await info('“' + f.name + '” no es un PDF ni una imagen.'); continue; }
+    if (f.size > 30 * 1024 * 1024) { await info('“' + f.name + '” pesa demasiado (máximo 30 MB).'); continue; }
+    pend.push({file: f, name: f.name, type: f.type || (/\.pdf$/i.test(f.name) ? 'application/pdf' : 'image/jpeg')});
+  }
+  e.target.value = ''; drawRlist();
+};
+$('#rlist').onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.vrec !== undefined) viewFiles(curRec.map(r => ({name: r.name, type: r.type, id: r.id})), +b.dataset.vrec);
+  else if (b.dataset.vpend !== undefined) viewFiles(pend.map(x => ({name: x.name, type: x.type, blob: x.file})), +b.dataset.vpend);
+  else if (b.dataset.xrec !== undefined) { removed.push(curRec[+b.dataset.xrec].id); curRec.splice(+b.dataset.xrec, 1); drawRlist(); }
+  else if (b.dataset.xpend !== undefined) { pend.splice(+b.dataset.xpend, 1); drawRlist(); }
+};
+function openRec(id){ const r = races.find(x => x.id === id); if (r && r.recibos && r.recibos.length) viewFiles(r.recibos.map(x => ({name: x.name, type: x.type, id: x.id})), 0); }
+
+let vList = [], vIdx = 0, vUrl = null, vBlob = null;
+function loadScript(src){ return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error(src)); document.head.appendChild(s); }); }
+async function pdfLib(){
+  if (window.pdfjsLib) return window.pdfjsLib;
+  await loadScript('pdf.worker.min.js'); await loadScript('pdf.min.js');
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
+  return window.pdfjsLib;
+}
+async function renderPdf(blob, body){
+  const lib = await pdfLib();
+  const pdf = await lib.getDocument({data: new Uint8Array(await readBuf(blob))}).promise;
+  const w = Math.max(280, body.clientWidth - 24), dpr = Math.min(window.devicePixelRatio || 1, 2);
+  for (let n = 1; n <= Math.min(pdf.numPages, 20); n++) {
+    const pg = await pdf.getPage(n), v0 = pg.getViewport({scale: 1}), v = pg.getViewport({scale: (w / v0.width) * dpr});
+    const c = document.createElement('canvas'); c.width = v.width; c.height = v.height;
+    c.style.cssText = 'max-width:100%;height:auto;display:block;margin:0 auto 10px;border:1px solid var(--line);background:#fff';
+    body.appendChild(c);
+    await pg.render({canvasContext: c.getContext('2d'), viewport: v}).promise;
+  }
+}
+async function showFile(i){
+  vIdx = i; const it = vList[i]; const body = $('#vbody');
+  if (vUrl) { URL.revokeObjectURL(vUrl); vUrl = null; }
+  $('#vtitle').textContent = it.name;
+  $('#vchips').innerHTML = vList.length > 1 ? vList.map((x, k) => `<button type="button" class="btn sm vchip ${k === i ? 'on' : ''}" data-vk="${k}">${k + 1}</button>`).join(' ') : '';
+  body.innerHTML = '<div style="color:var(--muted);padding:30px">Cargando…</div>';
+  vBlob = null;
+  try {
+    const blob = it.blob || await Files.get(it.id, it.type);
+    if (!blob) { body.innerHTML = '<div class="empty">Este archivo no está en este dispositivo.<br><small>Las copias de seguridad no incluyen los resguardos.</small></div>'; return; }
+    vBlob = blob; body.innerHTML = '';
+    const isPdf = (blob.type || it.type) === 'application/pdf' || /\.pdf$/i.test(it.name);
+    if (isPdf) await renderPdf(blob, body);
+    else { vUrl = URL.createObjectURL(blob); const im = document.createElement('img'); im.src = vUrl; im.alt = it.name; body.appendChild(im); }
+  } catch(err) { body.innerHTML = '<div class="empty">No se pudo mostrar el archivo.</div>'; }
+}
+function viewFiles(list, idx){ vList = list; $('#vdl').classList.toggle('hidden', IS_ANDROID); if (!$('#vdlg').open) $('#vdlg').showModal(); showFile(idx || 0); }
+$('#vchips').onclick = e => { const b = e.target.closest('[data-vk]'); if (b) showFile(+b.dataset.vk); };
+$('#vclose').onclick = () => { $('#vdlg').close(); $('#vbody').innerHTML = ''; if (vUrl) { URL.revokeObjectURL(vUrl); vUrl = null; } };
+$('#vdl').onclick = async () => {
+  if (!vBlob) return; const it = vList[vIdx];
+  try {
+    const f = new File([vBlob], it.name, {type: vBlob.type});
+    if (USE_PASTE && navigator.canShare && navigator.canShare({files: [f]})) { await navigator.share({files: [f]}); return; }
+  } catch(e){ return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(vBlob); a.download = it.name; a.click();
 };
 
 /* Exportar PDF */
