@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Gestor de Carreras</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f6f4a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Carreras">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+:root{
+  --bg:#f5f6f4; --card:#ffffff; --ink:#1c2420; --muted:#66716b; --line:#e2e6e3;
+  --accent:#1f6f4a; --accent-ink:#ffffff; --warn:#b4540a; --warn-bg:#fdf0e3; --ok-bg:#e6f4ec;
+  --trail:#2e8b57; --ultra:#7b4fc4; --carretera:#2f6fd0; --otros:#b9822a;
+  --shadow:0 1px 2px rgba(20,30,25,.06),0 4px 14px rgba(20,30,25,.05);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#121715; --card:#1b221f; --ink:#e8efeb; --muted:#9aa7a0; --line:#2b3531;
+    --accent:#4cc38a; --accent-ink:#0e1a14; --warn:#f0a35e; --warn-bg:#33261a; --ok-bg:#183024;
+    --trail:#52c58a; --ultra:#a98aec; --carretera:#6aa3f2; --otros:#e0b05a;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:15px/1.45 "Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit;color:inherit}
+header{display:flex;align-items:center;gap:16px;padding:14px 24px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+h1{font-size:19px;margin:0;font-weight:650;letter-spacing:-.2px}
+nav{display:flex;gap:4px;margin-left:12px}
+nav button{background:none;border:0;padding:8px 14px;border-radius:8px;cursor:pointer;color:var(--muted);font-weight:550}
+nav button.on{background:var(--ok-bg);color:var(--accent)}
+.sp{flex:1}
+select.year{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.btn{border:1px solid var(--line);background:var(--card);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:550}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.danger{color:#c0392b}
+.btn.sm{padding:4px 10px;font-size:13px}
+main{max-width:1280px;margin:0 auto;padding:22px 24px 60px}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 28px;box-shadow:var(--shadow);display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.hero .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600}
+.hero h2{margin:4px 0 2px;font-size:26px;letter-spacing:-.3px}
+.hero .meta{color:var(--muted)}
+.count{display:flex;gap:10px;margin-left:auto}
+.count div{background:var(--bg);border-radius:12px;padding:10px 14px;min-width:78px;text-align:center}
+.count b{display:block;font-size:30px;font-variant-numeric:tabular-nums;line-height:1.1}
+.count span{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:16px 0 8px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+.kpi b{font-size:28px;display:block;line-height:1.1}
+.kpi span{color:var(--muted);font-size:13px}
+.kpi.warn b{color:var(--warn)}
+h3.sec{margin:26px 0 12px;font-size:16px;font-weight:650;display:flex;align-items:center;gap:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.rc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);border-top:4px solid var(--c,var(--line));display:flex;flex-direction:column;gap:8px}
+.rc .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.rc h4{margin:0;font-size:16px;font-weight:650}
+.rc .when{color:var(--muted);font-size:13px}
+.rc .big{font-size:30px;font-weight:700;letter-spacing:-.5px;line-height:1}
+.rc .big small{font-size:13px;font-weight:550;color:var(--muted);margin-left:4px}
+.rc .row{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.rc .act{display:flex;gap:6px;margin-top:auto;padding-top:6px}
+.tag{font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.t{color:var(--c);border-color:var(--c);font-weight:600}
+.tag.ok{background:var(--ok-bg);color:var(--accent);border-color:transparent}
+.tag.bad{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+.empty{color:var(--muted);padding:26px;text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:14px}
+.months{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.month{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);min-height:110px}
+.month.cur{outline:2px solid var(--accent)}
+.month h4{margin:0 0 8px;font-size:15px;display:flex;justify-content:space-between}
+.month h4 span{color:var(--muted);font-weight:500;font-size:13px}
+.mi{display:flex;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line);cursor:pointer}
+.mi:first-of-type{border-top:0}
+.mi .d{width:34px;text-align:center;font-weight:700;font-size:17px;line-height:1}
+.mi .d small{display:block;font-weight:500;font-size:10px;color:var(--muted);text-transform:uppercase}
+.mi .n{flex:1;min-width:0}
+.mi .n b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.mi .n span{font-size:12px;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.mi.past{opacity:.55}
+.mi.no .n b{text-decoration:line-through}
+.filters{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.filters select,.filters input{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-size:14px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+tr.past td{opacity:.6}
+dialog{border:0;border-radius:16px;padding:0;width:min(640px,94vw);background:var(--card);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,15,12,.5)}
+form{padding:22px 24px}
+form h2{margin:0 0 14px;font-size:19px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg .full{grid-column:1/-1}
+label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+input[type=text],input[type=date],input[type=time],input[type=number],input[type=url],select,textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+textarea{min-height:60px;resize:vertical}
+select.year,.filters select,.filters input{width:auto}
+.filters input{min-width:220px}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg label{flex:1;margin:0;text-align:center;padding:8px 6px;cursor:pointer;text-transform:none;font-size:14px;color:var(--ink);letter-spacing:0;font-weight:550;background:var(--bg)}
+.seg input{display:none}
+.seg input:checked+span{display:block;background:var(--accent);color:var(--accent-ink);margin:-8px -6px;padding:8px 6px}
+.chk{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);cursor:pointer;text-transform:none;font-size:14px;color:var(--ink);letter-spacing:0;margin:0}
+.chk input{width:18px;height:18px;accent-color:var(--accent)}
+.foot{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.foot .l{margin-right:auto}
+.hidden{display:none!important}
+#lock{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
+.lockbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;max-width:480px;width:100%;box-shadow:var(--shadow)}
+.lockbox h2{margin:0 0 8px;font-size:20px}
+.lockbox p{margin:0 0 14px;color:var(--muted)}
+.lockbox p.err{color:var(--warn);font-weight:600}
+.code{font:600 20px/1.2 Consolas,monospace;letter-spacing:2px;padding:10px 12px;background:var(--bg);border-radius:8px;margin-bottom:14px;user-select:all}
+#licinfo{max-width:1280px;margin:0 auto;padding:0 24px 30px;color:var(--muted);font-size:13px}
+#licinfo a{color:var(--accent);cursor:pointer;font-weight:600}
+#licinfo.soon{color:var(--warn);font-weight:600}
+@media (max-width:720px){
+  header{padding:10px 12px;gap:8px}
+  h1{font-size:17px}
+  nav{margin-left:0;order:3;width:100%;overflow-x:auto}
+  nav button{white-space:nowrap;padding:8px 10px}
+  .sp{display:none}
+  header .btn,select.year{padding:7px 10px;font-size:13px}
+  header .btn{padding:6px 9px;font-size:12px}
+  #add{position:fixed;right:16px;bottom:18px;z-index:20;border-radius:99px;padding:14px 20px;font-size:15px!important;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+  main{padding:14px 12px 80px}
+  .hero{padding:16px;gap:14px}.hero h2{font-size:22px}
+  .count{margin-left:0;width:100%;gap:6px}.count div{min-width:0;flex:1;padding:8px 4px}.count b{font-size:24px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .grid,.months{grid-template-columns:1fr}
+  .fg{grid-template-columns:1fr}
+  #v-todas{overflow-x:auto} #v-todas table{min-width:780px}
+  dialog{width:96vw;max-height:94vh;overflow:auto}
+  form{padding:16px}
+}
+.picks{display:flex;flex-wrap:wrap;gap:6px}
+.picks label.chk{padding:5px 10px;font-size:13px;font-weight:550}
+.lnk{color:var(--accent);text-transform:none;letter-spacing:0;font-weight:550;margin-left:6px}
+#printArea{display:none}
+@page{size:A4 landscape;margin:12mm}
+@media print{
+  html,body{background:#fff!important}
+  body>*:not(#printArea){display:none!important}
+  #printArea{display:block!important;color:#111;font:12px/1.4 "Segoe UI",Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printArea h1{font-size:22px;margin:0 0 2px}
+  #printArea .sub{color:#555;margin-bottom:14px}
+  #printArea h2{font-size:15px;margin:16px 0 6px;padding-bottom:3px;border-bottom:2px solid #1f6f4a;break-after:avoid}
+  #printArea h2 small{font-weight:400;color:#666;font-size:12px}
+  #printArea table{width:100%;border-collapse:collapse;border:0;box-shadow:none;background:#fff;border-radius:0}
+  #printArea th{background:#eef2ef;color:#333;font-size:10px;padding:5px 7px;border-bottom:1px solid #ccc}
+  #printArea td{padding:5px 7px;border-bottom:1px solid #e3e3e3;font-size:12px;vertical-align:top;color:#111}
+  #printArea tr{break-inside:avoid}
+  #printArea .ty{display:inline-block;padding:0 7px;border-radius:99px;border:1px solid;font-size:11px;font-weight:600}
+  #printArea .t-trail{color:#2e8b57}#printArea .t-ultra{color:#7b4fc4}#printArea .t-carretera{color:#2f6fd0}#printArea .t-otros{color:#b9822a}
+  #printArea .warn{color:#b4540a;font-weight:600}#printArea .okc{color:#1f6f4a}
+  #printArea .foot2{margin-top:18px;padding-top:8px;border-top:1px solid #ccc;color:#444}
+}
+header{padding-top:calc(14px + env(safe-area-inset-top,0px))}
+@media (max-width:720px){header{padding-top:calc(10px + env(safe-area-inset-top,0px))}#add{bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏃 Gestor de Carreras</h1>
+  <nav id="nav">
+    <button data-v="dash" class="on">Dashboard</button>
+    <button data-v="meses">Calendario por meses</button>
+    <button data-v="todas">Todas las carreras</button>
+  </nav>
+  <div class="sp"></div>
+  <select class="year" id="year" title="Año"></select>
+  <button class="btn" id="pdf">Exportar PDF</button>
+  <button class="btn" id="exp" title="Guardar copia de seguridad de los datos">Guardar copia</button>
+  <button class="btn" id="imp" title="Cargar una copia de seguridad">Restaurar</button>
+  <input type="file" id="file" accept=".json" class="hidden">
+  <button class="btn pri" id="add">+ Añadir carrera</button>
+</header>
+
+<main>
+  <section id="v-dash"></section>
+  <section id="v-meses" class="hidden"></section>
+  <section id="v-todas" class="hidden"></section>
+</main>
+<div id="licinfo" class="hidden"></div>
+
+<dialog id="dlg">
+<form id="f" method="dialog">
+  <h2 id="ftitle">Nueva carrera</h2>
+  <div class="fg">
+    <div class="full"><label>Nombre *</label><input type="text" id="nombre" required placeholder="Ej: MoralTrail"></div>
+    <div><label>Tipo</label>
+      <select id="tipo">
+        <option value="trail">Trail</option>
+        <option value="ultra">Ultra</option>
+        <option value="carretera">Carretera</option>
+        <option value="otros">Otros</option>
+      </select></div>
+    <div><label>Lugar</label><input type="text" id="lugar" placeholder="Ej: Guadarrama"></div>
+    <div><label>Fecha *</label><input type="date" id="fecha" required></div>
+    <div><label>Hora de salida (opcional)</label><input type="time" id="hora"></div>
+    <div><label>Distancia (km)</label><input type="number" id="km" min="0" step="0.1"></div>
+    <div><label>Desnivel + (m)</label><input type="number" id="dplus" min="0" step="10"></div>
+    <div class="full"><label class="chk"><input type="checkbox" id="prov"> Fecha provisional (aún sin confirmar por la organización)</label></div>
+    <div class="full"><label>¿Voy a ir?</label>
+      <div class="seg">
+        <label><input type="radio" name="voy" value="si"><span>Sí, voy</span></label>
+        <label><input type="radio" name="voy" value="pendiente" checked><span>Indeciso</span></label>
+        <label><input type="radio" name="voy" value="no"><span>No voy</span></label>
+      </div></div>
+    <div><label>Inscripción</label><label class="chk"><input type="checkbox" id="pagado"> Pagada</label></div>
+    <div><label>Compañía</label><label class="chk"><input type="checkbox" id="acomp"> Voy con alguien</label></div>
+    <div class="full hidden" id="conWrap"><label>¿Con quién?</label><input type="text" id="con" placeholder="Nombre(s)"></div>
+    <div class="full"><label>Web / enlace</label><input type="url" id="url" placeholder="https://"></div>
+    <div class="full"><label>Notas</label><textarea id="notas"></textarea></div>
+  </div>
+  <div class="foot">
+    <button type="button" class="btn danger l hidden" id="del">Eliminar</button>
+    <button type="button" class="btn" id="cancel">Cancelar</button>
+    <button type="submit" class="btn pri">Guardar</button>
+  </div>
+</form>
+</dialog>
+
+<dialog id="pdlg">
+<form id="pf" method="dialog">
+  <h2>Exportar a PDF</h2>
+  <div class="fg">
+    <div class="full"><label>Años</label><div id="pyears" class="picks"></div></div>
+    <div class="full"><label>Meses <a href="#" id="pm-all" class="lnk">todos</a> · <a href="#" id="pm-none" class="lnk">ninguno</a></label><div id="pmonths" class="picks"></div></div>
+    <div class="full"><label>Qué carreras incluir</label>
+      <select id="pestado"><option value="all">Todas las carreras</option><option value="si">Solo a las que voy</option></select></div>
+  </div>
+  <p style="color:var(--muted);font-size:13px;margin:12px 0 0">Se abrirá la ventana de impresión: elige como impresora <b>“Guardar como PDF”</b> (o “Microsoft Print to PDF”) y pulsa Guardar.</p>
+  <div class="foot"><button type="button" class="btn" id="pcancel">Cancelar</button><button type="submit" class="btn pri">Generar PDF</button></div>
+</form>
+</dialog>
+<div id="lock" class="hidden"><div class="lockbox">
+  <h2>🔒 Gestor de Carreras</h2>
+  <p id="lmsg"></p>
+  <label>Código de este dispositivo</label><div class="code" id="ldev"></div>
+  <label>Clave de acceso</label><textarea id="lkey" placeholder="GC1.…" style="min-height:90px;font-family:Consolas,monospace;font-size:12px"></textarea>
+  <div class="foot"><button type="button" class="btn hidden" id="lclose">Cerrar</button><button type="button" class="btn pri" id="lgo">Activar</button></div>
+</div></div>
+<dialog id="mdlg"><form method="dialog" style="padding:20px 22px">
+  <p id="mmsg" style="margin:0 0 16px;font-size:15px;white-space:pre-line"></p>
+  <div class="foot" style="margin-top:0"><button type="button" class="btn hidden" id="mno">Cancelar</button><button type="button" class="btn pri" id="myes">Aceptar</button></div>
+</form></dialog>
+<dialog id="rdlg"><form id="rf" method="dialog">
+  <h2>Restaurar copia</h2>
+  <p style="color:var(--muted);font-size:13px;margin:0 0 10px">Pega aquí el contenido de la copia de seguridad (el texto que guardaste con “Guardar copia”).</p>
+  <textarea id="rtext" style="min-height:160px" placeholder='[ { "nombre": ... } ]'></textarea>
+  <div class="foot"><button type="button" class="btn" id="rcancel">Cancelar</button><button type="submit" class="btn pri">Restaurar</button></div>
+</form></dialog>
+<div id="printArea"></div>
+
+<script src="license.js"></script>
+<script>
+const TIPOS = {trail:'Trail', ultra:'Ultra', carretera:'Carretera', otros:'Otros'};
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+let races = [];
+let view = 'dash';
+let yearSel = 'all';
+let editingId = null;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const IS_ANDROID = typeof Android !== 'undefined';
+const USE_PASTE = IS_ANDROID || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const HAS_SERVER = location.protocol === 'http:' && location.hostname === '127.0.0.1' && +location.port >= 47821 && +location.port < 47831; // solo el .exe de Windows
+function ask(msg, yesOnly){
+  return new Promise(res => {
+    const d = $('#mdlg'); $('#mmsg').textContent = msg;
+    $('#mno').classList.toggle('hidden', !!yesOnly);
+    const done = v => { d.close(); res(v); };
+    $('#myes').onclick = () => done(true); $('#mno').onclick = () => done(false);
+    d.oncancel = () => res(false);
+    d.showModal();
+  });
+}
+const info = msg => ask(msg, true);
+function openUrl(u){ if (!/^https?:\/\//i.test(u)) return; if (IS_ANDROID) Android.open(u); else window.open(u, '_blank'); }
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+function when(r){ return new Date(r.fecha + 'T' + (r.hora || '00:00') + ':00'); }
+function fmtDate(r){
+  const d = when(r);
+  const s = d.toLocaleDateString('es-ES', {weekday:'short', day:'numeric', month:'short', year:'numeric'});
+  return s + (r.hora ? ' · ' + r.hora : '');
+}
+function isPast(r){
+  // pasada cuando termina el día de la carrera
+  const end = new Date(r.fecha + 'T23:59:59');
+  return end < new Date();
+}
+function daysLeft(r){
+  const t = new Date(); t.setHours(0,0,0,0);
+  const d = new Date(r.fecha + 'T00:00:00');
+  return Math.round((d - t) / 86400000);
+}
+function countText(r){
+  const c = countText0(r);
+  if (r.prov && !isPast(r)) c.small = (c.small ? c.small + ' · ' : '') + 'aprox.';
+  return c;
+}
+function countText0(r){
+  const n = daysLeft(r);
+  if (n === 0) return {big:'¡HOY!', small:''};
+  if (n === 1) return {big:'1', small:'día (mañana)'};
+  if (n < 0) return {big:String(-n), small:n === -1 ? 'día desde la carrera' : 'días desde la carrera'};
+  if (n >= 14) {
+    const w = Math.floor(n / 7);
+    return {big:String(n), small:`días · ${w} semanas`};
+  }
+  return {big:String(n), small:'días'};
+}
+const inscrita = r => r.voy === 'si';
+
+async function load(){
+  try {
+    if (HAS_SERVER) races = await (await fetch('/api/races')).json();
+    else races = JSON.parse(localStorage.getItem('carreras') || '[]');
+  } catch(e){ races = []; }
+  if (!Array.isArray(races)) races = [];
+  buildYears();
+  render();
+}
+async function save(){
+  if (HAS_SERVER) await fetch('/api/races', {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(races)});
+  else { try { localStorage.setItem('carreras', JSON.stringify(races)); } catch(e){ await info('No se pudo guardar en el móvil.'); } }
+}
+function buildYears(){
+  const ys = new Set(races.map(r => r.fecha.slice(0,4)));
+  ys.add(String(new Date().getFullYear()));
+  const sorted = [...ys].sort();
+  const sel = $('#year');
+  sel.innerHTML = '<option value="all">Todos los años</option>' + sorted.map(y => `<option value="${y}">${y}</option>`).join('');
+  if (yearSel !== 'all' && !ys.has(yearSel)) yearSel = 'all';
+  sel.value = yearSel;
+}
+function filtered(){
+  return races.filter(r => yearSel === 'all' || r.fecha.startsWith(yearSel))
+              .sort((a,b) => when(a) - when(b));
+}
+
+/* ---------- Render ---------- */
+function card(r, opts = {}){
+  const c = countText(r);
+  const past = isPast(r);
+  const det = [];
+  if (r.km) det.push(r.km + ' km');
+  if (r.dplus) det.push(r.dplus + ' m D+');
+  return `<div class="rc" style="--c:var(--${r.tipo})">
+    <div class="top"><div><h4>${esc(r.nombre)}</h4><div class="when">${r.prov ? '~ ' : ''}${esc(fmtDate(r))}${r.lugar ? ' · ' + esc(r.lugar) : ''}</div></div>
+      <span class="tag t" style="--c:var(--${r.tipo})">${TIPOS[r.tipo]}</span></div>
+    <div class="big" ${past ? 'style="color:var(--muted)"' : ''}>${esc(c.big)}<small>${esc(c.small)}</small></div>
+    <div class="row">
+      ${r.prov ? '<span class="tag bad">📅 Fecha provisional</span>' : ''}
+      ${det.length ? `<span class="tag">${esc(det.join(' · '))}</span>` : ''}
+      ${r.voy === 'si' ? (r.pagado ? '<span class="tag ok">✔ Pagada</span>' : '<span class="tag bad">⚠ Sin pagar</span>') : ''}
+      ${r.acomp && r.con ? `<span class="tag">👥 ${esc(r.con)}</span>` : (r.acomp ? '<span class="tag">👥 Acompañado</span>' : '<span class="tag">Voy solo</span>')}
+      ${r.voy === 'pendiente' ? '<span class="tag">Indeciso</span>' : ''}
+      ${r.voy === 'no' ? '<span class="tag">No voy</span>' : ''}
+    </div>
+    <div class="act">
+      <button class="btn sm" data-edit="${r.id}">Editar</button>
+      ${r.url ? `<button class="btn sm" data-url="${esc(r.url)}">Web</button>` : ''}
+    </div></div>`;
+}
+
+function renderDash(){
+  const list = filtered();
+  const upcomingGo = races.filter(r => inscrita(r) && !isPast(r)).sort((a,b) => when(a) - when(b));
+  const next = upcomingGo[0];
+  const inYear = list;
+  const goYear = inYear.filter(inscrita);
+  const unpaid = goYear.filter(r => !r.pagado && !isPast(r));
+  const withSomeone = goYear.filter(r => r.acomp);
+  const provN = goYear.filter(r => r.prov && !isPast(r));
+  const pend = inYear.filter(r => r.voy === 'pendiente' && !isPast(r));
+
+  let h = '';
+  if (next) {
+    h += `<div class="hero"><div><div class="lbl">Próxima carrera</div><h2>${esc(next.nombre)}</h2>
+      <div class="meta">${next.prov ? '<b style="color:var(--warn)">Fecha provisional</b> · ' : ''}${esc(fmtDate(next))}${next.lugar ? ' · ' + esc(next.lugar) : ''} · ${TIPOS[next.tipo]}${next.km ? ' · ' + next.km + ' km' : ''}</div></div>
+      <div class="count" id="live"></div></div>`;
+  } else {
+    h += `<div class="hero"><div><div class="lbl">Próxima carrera</div><h2>Ninguna inscrita todavía</h2><div class="meta">Marca “Sí, voy” en una carrera para ver aquí su cuenta atrás.</div></div></div>`;
+  }
+  h += `<div class="kpis">
+    <div class="kpi"><b>${goYear.length}</b><span>Carreras a las que voy${yearSel==='all'?'':' en '+yearSel}</span></div>
+    <div class="kpi"><b>${goYear.filter(r=>!isPast(r)).length}</b><span>Por correr</span></div>
+    <div class="kpi ${unpaid.length ? 'warn' : ''}"><b>${unpaid.length}</b><span>Inscripciones sin pagar</span></div>
+    <div class="kpi"><b>${withSomeone.length}</b><span>Con compañía</span></div>
+    <div class="kpi ${provN.length ? 'warn' : ''}"><b>${provN.length}</b><span>Fechas por confirmar</span></div>
+    <div class="kpi"><b>${pend.length}</b><span>Indecisas</span></div>
+  </div>`;
+
+  const up = goYear.filter(r => !isPast(r));
+  h += `<h3 class="sec">Mis carreras inscritas — cuenta atrás</h3>`;
+  h += up.length ? `<div class="grid">${up.map(card).join('')}</div>` : `<div class="empty">No tienes carreras inscritas por venir${yearSel==='all'?'':' en '+yearSel}. Pulsa “+ Añadir carrera”.</div>`;
+
+  if (pend.length) h += `<h3 class="sec">Pendientes de decidir</h3><div class="grid">${pend.map(card).join('')}</div>`;
+  const done = goYear.filter(isPast).reverse();
+  if (done.length) h += `<h3 class="sec">Ya corridas</h3><div class="grid">${done.map(card).join('')}</div>`;
+  $('#v-dash').innerHTML = h;
+  tick();
+}
+
+function tick(){
+  const el = $('#live'); if (!el) return;
+  const next = races.filter(r => inscrita(r) && !isPast(r)).sort((a,b) => when(a) - when(b))[0];
+  if (!next) return;
+  let ms = when(next) - new Date();
+  if (ms < 0) ms = 0;
+  const d = Math.floor(ms / 86400000), hh = Math.floor(ms % 86400000 / 3600000),
+        m = Math.floor(ms % 3600000 / 60000), s = Math.floor(ms % 60000 / 1000);
+  const p = n => String(n).padStart(2,'0');
+  el.innerHTML = `<div><b>${d}</b><span>días</span></div><div><b>${p(hh)}</b><span>horas</span></div><div><b>${p(m)}</b><span>min</span></div><div><b>${p(s)}</b><span>seg</span></div>`;
+}
+
+function renderMeses(){
+  const y = yearSel === 'all' ? new Date().getFullYear() : +yearSel;
+  const now = new Date();
+  let h = `<h3 class="sec" style="margin-top:0">Calendario ${y}${yearSel==='all' ? ' <span class="tag">elige un año arriba para cambiarlo</span>' : ''}</h3><div class="months">`;
+  for (let m = 0; m < 12; m++){
+    const rs = races.filter(r => +r.fecha.slice(0,4) === y && +r.fecha.slice(5,7) === m + 1).sort((a,b) => when(a) - when(b));
+    const goN = rs.filter(inscrita).length;
+    const cur = now.getFullYear() === y && now.getMonth() === m;
+    h += `<div class="month ${cur ? 'cur' : ''}"><h4>${MESES[m]}<span>${rs.length ? rs.length + ' · voy a ' + goN : ''}</span></h4>`;
+    if (!rs.length) h += `<div style="color:var(--muted);font-size:13px">Sin carreras</div>`;
+    for (const r of rs){
+      const dd = r.fecha.slice(8,10);
+      const dl = daysLeft(r);
+      const status = r.voy === 'si' ? (r.pagado ? '✔ pagada' : '⚠ sin pagar') : r.voy === 'no' ? 'no voy' : 'indeciso';
+      h += `<div class="mi ${isPast(r) ? 'past' : ''} ${r.voy === 'no' ? 'no' : ''}" data-edit="${r.id}" style="--c:var(--${r.tipo})">
+        <div class="d">${r.prov ? '~' : ''}${dd}<small>${TIPOS[r.tipo].slice(0,5)}</small></div><span class="dot"></span>
+        <div class="n"><b>${esc(r.nombre)}</b><span>${status}${r.prov ? ' · fecha prov.' : ''}${r.acomp && r.con ? ' · con ' + esc(r.con) : ''}${r.voy === 'si' && dl >= 0 && !isPast(r) ? ' · faltan ' + dl + ' d' : ''}</span></div></div>`;
+    }
+    h += `</div>`;
+  }
+  h += '</div>';
+  $('#v-meses').innerHTML = h;
+}
+
+let tFilter = {tipo:'', voy:'', q:''};
+function renderTodas(){
+  let list = filtered().filter(r => (!tFilter.tipo || r.tipo === tFilter.tipo) && (!tFilter.voy || r.voy === tFilter.voy)
+    && (!tFilter.q || (r.nombre + ' ' + (r.lugar||'')).toLowerCase().includes(tFilter.q.toLowerCase())));
+  let h = `<div class="filters">
+    <input id="fq" placeholder="Buscar…" value="${esc(tFilter.q)}">
+    <select id="ft"><option value="">Todos los tipos</option>${Object.entries(TIPOS).map(([k,v]) => `<option value="${k}" ${tFilter.tipo===k?'selected':''}>${v}</option>`).join('')}</select>
+    <select id="fv"><option value="">Todos los estados</option><option value="si" ${tFilter.voy==='si'?'selected':''}>Voy</option><option value="pendiente" ${tFilter.voy==='pendiente'?'selected':''}>Indeciso</option><option value="no" ${tFilter.voy==='no'?'selected':''}>No voy</option></select>
+  </div>`;
+  if (!list.length) { $('#v-todas').innerHTML = h + '<div class="empty">No hay carreras con estos filtros.</div>'; bindFilters(); return; }
+  h += `<table><thead><tr><th>Fecha</th><th>Carrera</th><th>Tipo</th><th>Dist.</th><th>Voy</th><th>Pago</th><th>Compañía</th><th>Faltan</th><th></th></tr></thead><tbody>`;
+  for (const r of list){
+    const dl = daysLeft(r);
+    h += `<tr class="${isPast(r) ? 'past' : ''}">
+      <td>${esc(r.fecha.split('-').reverse().join('/'))}${r.hora ? '<br><small>'+esc(r.hora)+'</small>' : ''}${r.prov ? '<br><span class="tag bad">Provisional</span>' : '<br><span class="tag ok">Confirmada</span>'}</td>
+      <td><b>${esc(r.nombre)}</b>${r.lugar ? '<br><small style="color:var(--muted)">'+esc(r.lugar)+'</small>' : ''}</td>
+      <td><span class="tag t" style="--c:var(--${r.tipo})">${TIPOS[r.tipo]}</span></td>
+      <td>${r.km ? esc(r.km) + ' km' : '—'}</td>
+      <td>${r.voy === 'si' ? '<span class="tag ok">Sí</span>' : r.voy === 'no' ? '<span class="tag">No</span>' : '<span class="tag">Indeciso</span>'}</td>
+      <td>${r.voy === 'si' ? (r.pagado ? '<span class="tag ok">Pagada</span>' : '<span class="tag bad">Pendiente</span>') : '—'}</td>
+      <td>${r.acomp ? '👥 ' + esc(r.con || 'Sí') : '—'}</td>
+      <td>${isPast(r) ? 'Pasada' : dl === 0 ? '<b>HOY</b>' : dl + ' d'}</td>
+      <td><button class="btn sm" data-edit="${r.id}">Editar</button></td></tr>`;
+  }
+  $('#v-todas').innerHTML = h + '</tbody></table>';
+  bindFilters();
+}
+function bindFilters(){
+  const q = $('#fq'); if (!q) return;
+  q.oninput = () => { tFilter.q = q.value; const pos = q.selectionStart; renderTodas(); const n = $('#fq'); n.focus(); n.setSelectionRange(pos,pos); };
+  $('#ft').onchange = e => { tFilter.tipo = e.target.value; renderTodas(); };
+  $('#fv').onchange = e => { tFilter.voy = e.target.value; renderTodas(); };
+}
+
+function render(){
+  for (const v of ['dash','meses','todas']) $('#v-' + v).classList.toggle('hidden', v !== view);
+  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.v === view));
+  if (view === 'dash') renderDash();
+  if (view === 'meses') renderMeses();
+  if (view === 'todas') renderTodas();
+}
+
+/* ---------- Eventos ---------- */
+$('#nav').onclick = e => { const b = e.target.closest('button'); if (b){ view = b.dataset.v; render(); } };
+$('#year').onchange = e => { yearSel = e.target.value; render(); };
+document.addEventListener('click', e => {
+  const ed = e.target.closest('[data-edit]'); if (ed) return openForm(ed.dataset.edit);
+  const u = e.target.closest('[data-url]'); if (u) openUrl(u.dataset.url);
+});
+$('#add').onclick = () => openForm(null);
+$('#cancel').onclick = () => $('#dlg').close();
+$('#acomp').onchange = () => $('#conWrap').classList.toggle('hidden', !$('#acomp').checked);
+
+function openForm(id){
+  editingId = id;
+  const r = id ? races.find(x => x.id === id) : null;
+  $('#ftitle').textContent = r ? 'Editar carrera' : 'Nueva carrera';
+  $('#del').classList.toggle('hidden', !r);
+  $('#nombre').value = r?.nombre || '';
+  $('#tipo').value = r?.tipo || 'trail';
+  $('#lugar').value = r?.lugar || '';
+  $('#fecha').value = r?.fecha || '';
+  $('#prov').checked = !!r?.prov;
+  $('#hora').value = r?.hora || '';
+  $('#km').value = r?.km ?? '';
+  $('#dplus').value = r?.dplus ?? '';
+  document.querySelector(`input[name=voy][value=${r?.voy || 'pendiente'}]`).checked = true;
+  $('#pagado').checked = !!r?.pagado;
+  $('#acomp').checked = !!r?.acomp;
+  $('#con').value = r?.con || '';
+  $('#conWrap').classList.toggle('hidden', !r?.acomp);
+  $('#url').value = r?.url || '';
+  $('#notas').value = r?.notas || '';
+  $('#dlg').showModal();
+}
+$('#f').onsubmit = async e => {
+  e.preventDefault();
+  const rec = {
+    id: editingId || uid(),
+    nombre: $('#nombre').value.trim(),
+    tipo: $('#tipo').value,
+    lugar: $('#lugar').value.trim(),
+    fecha: $('#fecha').value,
+    prov: $('#prov').checked,
+    hora: $('#hora').value,
+    km: $('#km').value === '' ? '' : +$('#km').value,
+    dplus: $('#dplus').value === '' ? '' : +$('#dplus').value,
+    voy: document.querySelector('input[name=voy]:checked').value,
+    pagado: $('#pagado').checked,
+    acomp: $('#acomp').checked,
+    con: $('#acomp').checked ? $('#con').value.trim() : '',
+    url: $('#url').value.trim(),
+    notas: $('#notas').value.trim()
+  };
+  if (!rec.nombre || !rec.fecha) return;
+  const i = races.findIndex(x => x.id === rec.id);
+  if (i >= 0) races[i] = rec; else races.push(rec);
+  await save();
+  $('#dlg').close();
+  buildYears(); render();
+};
+$('#del').onclick = async () => {
+  if (!await ask('¿Eliminar esta carrera?')) return;
+  races = races.filter(x => x.id !== editingId);
+  await save();
+  $('#dlg').close();
+  buildYears(); render();
+};
+
+/* Exportar PDF */
+function openPdf(){
+  const ys = [...new Set(races.map(r => r.fecha.slice(0,4)))].sort();
+  if (!ys.length) { info('Aún no hay carreras que exportar.'); return; }
+  const preY = yearSel === 'all' ? ys : [yearSel];
+  $('#pyears').innerHTML = ys.map(y => `<label class="chk"><input type="checkbox" name="py" value="${y}" ${preY.includes(y)?'checked':''}> ${y}</label>`).join('');
+  $('#pmonths').innerHTML = MESES.map((m,i) => `<label class="chk"><input type="checkbox" name="pm" value="${i+1}" checked> ${m}</label>`).join('');
+  $('#pdlg').showModal();
+}
+$('#pdf').onclick = openPdf;
+$('#pcancel').onclick = () => $('#pdlg').close();
+$('#pm-all').onclick = e => { e.preventDefault(); document.querySelectorAll('[name=pm]').forEach(c => c.checked = true); };
+$('#pm-none').onclick = e => { e.preventDefault(); document.querySelectorAll('[name=pm]').forEach(c => c.checked = false); };
+$('#pf').onsubmit = e => {
+  e.preventDefault();
+  const ys = [...document.querySelectorAll('[name=py]:checked')].map(c => c.value);
+  const ms = [...document.querySelectorAll('[name=pm]:checked')].map(c => +c.value);
+  const soloVoy = $('#pestado').value === 'si';
+  const list = races.filter(r => ys.includes(r.fecha.slice(0,4)) && ms.includes(+r.fecha.slice(5,7)) && (!soloVoy || r.voy === 'si'))
+                    .sort((a,b) => when(a) - when(b));
+  if (!ys.length || !ms.length) { info('Elige al menos un año y un mes.'); return; }
+  if (!list.length) { info('No hay carreras con esa selección.'); return; }
+  const mesTxt = ms.length === 12 ? 'Todo el año' : ms.slice().sort((a,b)=>a-b).map(m => MESES[m-1]).join(', ');
+  let h = `<h1>Calendario de carreras</h1><div class="sub">${esc(ys.join(', '))} · ${esc(mesTxt)} · ${soloVoy ? 'Solo carreras a las que voy' : 'Todas las carreras'} · Generado el ${new Date().toLocaleDateString('es-ES')}</div>`;
+  const groups = {};
+  list.forEach(r => { const k = r.fecha.slice(0,7); (groups[k] = groups[k] || []).push(r); });
+  for (const k of Object.keys(groups).sort()){
+    const [y, m] = k.split('-');
+    h += `<h2>${MESES[+m-1]} ${y} <small>· ${groups[k].length} carrera${groups[k].length>1?'s':''}</small></h2>
+    <table><thead><tr><th style="width:15%">Fecha</th><th>Carrera</th><th style="width:9%">Tipo</th><th style="width:10%">Distancia</th><th style="width:9%">¿Voy?</th><th style="width:9%">Pago</th><th style="width:15%">Compañía</th></tr></thead><tbody>`;
+    for (const r of groups[k]){
+      const d = r.fecha.split('-').reverse().join('/');
+      const det = [r.km ? r.km + ' km' : '', r.dplus ? r.dplus + ' m D+' : ''].filter(Boolean).join(' · ') || '—';
+      h += `<tr><td>${d}${r.hora ? ' · ' + esc(r.hora) : ''}<br>${r.prov ? '<span class="warn">Fecha provisional</span>' : '<span class="okc">Confirmada</span>'}</td>
+        <td><b>${esc(r.nombre)}</b>${r.lugar ? '<br>' + esc(r.lugar) : ''}</td>
+        <td><span class="ty t-${r.tipo}">${TIPOS[r.tipo]}</span></td>
+        <td>${esc(det)}</td>
+        <td>${r.voy === 'si' ? '<b>Sí</b>' : r.voy === 'no' ? 'No' : 'Indeciso'}</td>
+        <td>${r.voy === 'si' ? (r.pagado ? '<span class="okc">Pagada</span>' : '<span class="warn">Sin pagar</span>') : '—'}</td>
+        <td>${r.acomp ? esc(r.con || 'Sí') : '—'}</td></tr>`;
+    }
+    h += '</tbody></table>';
+  }
+  const go = list.filter(r => r.voy === 'si');
+  h += `<div class="foot2">Total: <b>${list.length}</b> · Voy a <b>${go.length}</b> · Sin pagar: <b>${go.filter(r=>!r.pagado).length}</b> · Fechas provisionales: <b>${list.filter(r=>r.prov).length}</b></div>`;
+  $('#printArea').innerHTML = h;
+  $('#pdlg').close();
+  setTimeout(() => (IS_ANDROID ? Android.print() : window.print()), 150);
+};
+
+/* Exportar / importar */
+$('#exp').onclick = () => {
+  const json = JSON.stringify(races, null, 2);
+  if (IS_ANDROID) { Android.share(json); return; }
+  if (USE_PASTE && navigator.share) { navigator.share({title:'Copia de carreras', text: json}).catch(()=>{}); return; }
+  const blob = new Blob([json], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'carreras-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+};
+async function applyImport(text){
+  try {
+    const data = JSON.parse(text);
+    if (!Array.isArray(data)) throw 0;
+    if (!await ask(`Se reemplazarán tus ${races.length} carreras por las ${data.length} de la copia. ¿Continuar?`)) return false;
+    races = data.map(r => ({...r, id: r.id || uid()}));
+    await save(); buildYears(); render();
+    return true;
+  } catch { await info('La copia no es válida.'); return false; }
+}
+$('#imp').onclick = () => { if (USE_PASTE) { $('#rtext').value = ''; $('#rdlg').showModal(); } else $('#file').click(); };
+$('#rcancel').onclick = () => $('#rdlg').close();
+$('#rf').onsubmit = async e => { e.preventDefault(); const t = $('#rtext').value; $('#rdlg').close(); await applyImport(t); };
+$('#file').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  await applyImport(await f.text());
+  e.target.value = '';
+};
+
+/* Latido para que el programa se cierre al cerrar la ventana */
+if (HAS_SERVER) {
+  const ping = () => fetch('/api/ping').catch(() => {});
+  ping(); setInterval(ping, 5000);
+  window.addEventListener('pagehide', () => navigator.sendBeacon('/api/bye'));
+}
+setInterval(() => { tick(); }, 1000);
+setInterval(() => { if (view === 'dash' && !$('#dlg').open) renderDash(); }, 60000 * 30);
+
+/* ---------- Licencia (solo si el paquete incluye license.js) ---------- */
+function b64d(s){ s = s.replace(/-/g,'+').replace(/_/g,'/'); while (s.length % 4) s += '='; const b = atob(s); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+function devCode(){
+  let id = '';
+  try { if (IS_ANDROID && Android.deviceId) id = String(Android.deviceId() || ''); } catch(e){}
+  if (!id) {
+    try { id = localStorage.getItem('gc_dev') || ''; } catch(e){}
+    if (!id) { id = Array.from({length:8}, () => Math.floor(Math.random()*16).toString(16)).join(''); try { localStorage.setItem('gc_dev', id); } catch(e){} }
+  }
+  id = id.toUpperCase().replace(/[^0-9A-Z]/g,'').slice(0,8).padEnd(8,'0');
+  return id.slice(0,4) + '-' + id.slice(4);
+}
+function checkKey(k){
+  const m = (k || '').replace(/\s+/g,'').match(/^GC1\.([\w-]+)\.([\w-]+)$/);
+  if (!m) return {ok:false, msg:'La clave no tiene un formato válido.'};
+  let pl, sg;
+  try { pl = b64d(m[1]); sg = b64d(m[2]); } catch(e){ return {ok:false, msg:'La clave está dañada.'}; }
+  let good = false;
+  try { good = nacl.sign.detached.verify(pl, sg, b64d(window.LICENSE_PK)); } catch(e){}
+  if (!good) return {ok:false, msg:'Clave no válida.'};
+  const parts = new TextDecoder().decode(pl).split('|');
+  const exp = +parts[0], dev = parts[1] || '*', label = parts[2] || '';
+  if (dev !== '*' && dev.replace('-','') !== devCode().replace('-','')) return {ok:false, msg:'Esta clave pertenece a otro dispositivo.'};
+  return {ok:true, exp: exp * 1000, label};
+}
+function licState(){
+  const now = Date.now();
+  let last = 0, k = '';
+  try { last = +(localStorage.getItem('gc_last') || 0); k = localStorage.getItem('gc_key') || ''; } catch(e){}
+  if (now < last - 600000) return {ok:false, msg:'La fecha y hora del dispositivo parecen incorrectas (atrasadas). Corrígelas para continuar.'};
+  if (now > last) { try { localStorage.setItem('gc_last', String(now)); } catch(e){} }
+  if (!k) return {ok:false, msg:'Introduce la clave de acceso que te han facilitado.'};
+  const r = checkKey(k);
+  if (!r.ok) return r;
+  if (now >= r.exp) return {ok:false, msg:'Tu clave caducó el ' + new Date(r.exp).toLocaleDateString('es-ES') + '. Solicita una nueva.'};
+  return {ok:true, exp:r.exp, label:r.label};
+}
+function showLock(msg, closable, isErr){
+  $('#lmsg').textContent = msg; $('#lmsg').className = isErr ? 'err' : '';
+  $('#ldev').textContent = devCode();
+  $('#lclose').classList.toggle('hidden', !closable);
+  $('#lock').classList.remove('hidden');
+}
+let started = false;
+function enforce(){
+  if (!window.LICENSE_PK) { if (!started) { started = true; load(); } return true; }
+  const s = licState();
+  if (!s.ok) { if (!$('#lock').classList.contains('hidden') && $('#lmsg').className === 'err') return false; showLock(s.msg, false, false); return false; }
+  $('#lock').classList.add('hidden');
+  const days = Math.ceil((s.exp - Date.now()) / 86400000);
+  const li = $('#licinfo');
+  li.classList.remove('hidden'); li.classList.toggle('soon', days <= 3);
+  li.innerHTML = (days <= 3 ? '⚠ Tu licencia caduca ' + (days <= 1 ? 'hoy o mañana' : 'en ' + days + ' días') : 'Licencia válida hasta el ' + new Date(s.exp).toLocaleDateString('es-ES')) + (s.label ? ' · ' + esc(s.label) : '') + ' · <a id="lchg">Cambiar clave</a>';
+  $('#lchg').onclick = () => { $('#lkey').value = ''; showLock('Introduce la nueva clave de acceso.', true, false); };
+  if (!started) { started = true; load(); }
+  return true;
+}
+$('#lgo').onclick = () => {
+  const v = $('#lkey').value;
+  const r = checkKey(v);
+  if (!r.ok) { showLock(r.msg, !$('#lclose').classList.contains('hidden'), true); return; }
+  if (Date.now() >= r.exp) { showLock('Esa clave ya está caducada (' + new Date(r.exp).toLocaleDateString('es-ES') + ').', !$('#lclose').classList.contains('hidden'), true); return; }
+  try { localStorage.setItem('gc_key', v.replace(/\s+/g,'')); } catch(e){}
+  $('#lkey').value = '';
+  $('#lmsg').className = '';
+  enforce();
+};
+$('#lclose').onclick = () => $('#lock').classList.add('hidden');
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
+enforce();
+setInterval(() => { const wasOpen = !$('#lock').classList.contains('hidden'); if (!wasOpen || !window.LICENSE_PK) enforce(); }, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && $('#lock').classList.contains('hidden')) enforce(); });
+</script>
+</body>
+</html>

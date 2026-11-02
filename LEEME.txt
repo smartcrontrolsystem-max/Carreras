@@ -1,0 +1,12 @@
+GESTOR DE CARRERAS - versión web para iPhone / iPad (y cualquier navegador)
+
+1) Sube TODO el contenido de esta carpeta a un alojamiento web estático gratuito
+   (Cloudflare Pages, Netlify, GitHub Pages...). Debe quedar en una dirección https://.
+2) Pasa esa dirección a quien quiera usarla, junto con su clave de acceso
+   (la generas con GeneradorClaves.html).
+3) En el iPhone: abrir la dirección en SAFARI -> botón Compartir -> "Añadir a pantalla de inicio".
+   Hay que usarla desde el icono de inicio (así los datos no se borran).
+   Requiere iOS 15.4 o superior.
+
+La carpeta no contiene ninguna clave privada: solo la clave pública de verificación.
+La app no tiene servidor, ni cuentas, ni analítica: los datos se quedan en el propio dispositivo.
