@@ -1,4 +1,4 @@
-RACINGTRACK - versión web para iPhone / iPad (y cualquier navegador)
+GESTOR DE CARRERAS - versión web para iPhone / iPad (y cualquier navegador)
 
 1) Sube TODO el contenido de esta carpeta a un alojamiento web estático gratuito
    (Cloudflare Pages, Netlify, GitHub Pages...). Debe quedar en una dirección https://.

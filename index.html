@@ -2,44 +2,41 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>RacingTrack</title>
+<title>Gestor de Carreras</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0e0b0b">
+<meta name="theme-color" content="#1f6f4a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="RacingTrack">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Carreras">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
 :root{
-  --bg:#f8f4f4; --card:#ffffff; --ink:#241c1c; --muted:#7a6c6c; --line:#eadfdf;
-  --accent:#c62828; --accent-ink:#ffffff; --accent-bg:#fdeaea; --good:#1f6f4a; --good-bg:#e6f4ec;
-  --warn:#b4540a; --warn-bg:#fdf0e3; --hbg1:#0e0b0b; --hbg2:#d32f2f;
+  --bg:#f5f6f4; --card:#ffffff; --ink:#1c2420; --muted:#66716b; --line:#e2e6e3;
+  --accent:#1f6f4a; --accent-ink:#ffffff; --warn:#b4540a; --warn-bg:#fdf0e3; --ok-bg:#e6f4ec;
   --trail:#2e8b57; --ultra:#7b4fc4; --carretera:#2f6fd0; --otros:#b9822a;
-  --shadow:0 1px 2px rgba(40,20,20,.06),0 4px 14px rgba(40,20,20,.05);
+  --shadow:0 1px 2px rgba(20,30,25,.06),0 4px 14px rgba(20,30,25,.05);
 }
-:root[data-theme=dark]{ --bg:#161212; --card:#211a1a; --ink:#f3eaea; --muted:#ab9d9d; --line:#352b2b; --accent:#ef5350; --accent-ink:#1a0b0b; --accent-bg:#3b1c1c; --good:#4cc38a; --good-bg:#183024; --warn:#f0a35e; --warn-bg:#33261a; --hbg1:#6d1414; --hbg2:#8e1b1b; --trail:#52c58a; --ultra:#a98aec; --carretera:#6aa3f2; --otros:#e0b05a; --shadow:none; }
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme=light]){ --bg:#161212; --card:#211a1a; --ink:#f3eaea; --muted:#ab9d9d; --line:#352b2b; --accent:#ef5350; --accent-ink:#1a0b0b; --accent-bg:#3b1c1c; --good:#4cc38a; --good-bg:#183024; --warn:#f0a35e; --warn-bg:#33261a; --hbg1:#6d1414; --hbg2:#8e1b1b; --trail:#52c58a; --ultra:#a98aec; --carretera:#6aa3f2; --otros:#e0b05a; --shadow:none; }
+  :root{
+    --bg:#121715; --card:#1b221f; --ink:#e8efeb; --muted:#9aa7a0; --line:#2b3531;
+    --accent:#4cc38a; --accent-ink:#0e1a14; --warn:#f0a35e; --warn-bg:#33261a; --ok-bg:#183024;
+    --trail:#52c58a; --ultra:#a98aec; --carretera:#6aa3f2; --otros:#e0b05a;
+    --shadow:none;
+  }
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{font:15px/1.45 "Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
 button,input,select,textarea{font:inherit;color:inherit}
-header{display:flex;align-items:center;gap:14px;padding:12px 24px;background:linear-gradient(135deg,var(--hbg1),var(--hbg2));color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25);position:sticky;top:0;z-index:5;flex-wrap:wrap}
-h1{font-size:19px;margin:0;font-weight:700;letter-spacing:-.2px;color:#fff}
-nav{display:flex;gap:6px;margin-left:12px}
-nav button{background:rgba(255,255,255,.12);border:0;padding:8px 16px;border-radius:99px;cursor:pointer;color:rgba(255,255,255,.88);font-weight:600;display:flex;align-items:center;gap:6px}
-nav button .ic{font-size:15px}
-nav button.on{background:#fff;color:#0e0b0b}
+header{display:flex;align-items:center;gap:16px;padding:14px 24px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+h1{font-size:19px;margin:0;font-weight:650;letter-spacing:-.2px}
+nav{display:flex;gap:4px;margin-left:12px}
+nav button{background:none;border:0;padding:8px 14px;border-radius:8px;cursor:pointer;color:var(--muted);font-weight:550}
+nav button.on{background:var(--ok-bg);color:var(--accent)}
 .sp{flex:1}
-select.year{padding:7px 10px;border:1px solid rgba(255,255,255,.4);border-radius:99px;background:rgba(255,255,255,.14);color:#fff}
-select.year option{color:#1c1c1c;background:#fff}
-header .btn.pri{background:#fff;color:#0e0b0b;border-color:#fff}
-.gear{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
-.gear:hover{background:rgba(255,255,255,.28)}
-.gear svg{width:24px;height:24px;fill:currentColor}
+select.year{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
 .btn{border:1px solid var(--line);background:var(--card);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:550}
 .btn:hover{border-color:var(--accent)}
 .btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
@@ -71,7 +68,7 @@ h3.sec{margin:26px 0 12px;font-size:16px;font-weight:650;display:flex;align-item
 .rc .act{display:flex;gap:6px;margin-top:auto;padding-top:6px}
 .tag{font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
 .tag.t{color:var(--c);border-color:var(--c);font-weight:600}
-.tag.ok{background:var(--good-bg);color:var(--good);border-color:transparent}
+.tag.ok{background:var(--ok-bg);color:var(--accent);border-color:transparent}
 .tag.bad{background:var(--warn-bg);color:var(--warn);border-color:transparent}
 .empty{color:var(--muted);padding:26px;text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:14px}
 .months{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
@@ -126,18 +123,15 @@ select.year,.filters select,.filters input{width:auto}
 #licinfo a{color:var(--accent);cursor:pointer;font-weight:600}
 #licinfo.soon{color:var(--warn);font-weight:600}
 @media (max-width:720px){
-  header{padding:10px 12px;gap:8px;flex-wrap:nowrap}
-  h1{font-size:16px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  select.year{max-width:118px;font-size:13px}
-  nav{position:fixed;left:0;right:0;bottom:0;margin:0;width:auto;background:var(--card);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));gap:4px;z-index:50;box-shadow:0 -2px 12px rgba(0,0,0,.12)}
-  nav button{flex:1;flex-direction:column;gap:1px;border-radius:14px;font-size:12px;padding:6px 4px;background:none;color:var(--muted)}
-  nav button .ic{font-size:21px}
-  nav button.on{background:var(--accent-bg);color:var(--accent)}
+  header{padding:10px 12px;gap:8px}
+  h1{font-size:17px}
+  nav{margin-left:0;order:3;width:100%;overflow-x:auto}
+  nav button{white-space:nowrap;padding:8px 10px}
   .sp{display:none}
   header .btn,select.year{padding:7px 10px;font-size:13px}
   header .btn{padding:6px 9px;font-size:12px}
-  #add{position:fixed;right:16px;bottom:84px;z-index:20;border-radius:99px;padding:14px 20px;font-size:15px!important;box-shadow:0 6px 18px rgba(0,0,0,.35);background:var(--accent)!important;color:var(--accent-ink)!important;border-color:var(--accent)!important}
-  main{padding:14px 12px 110px}
+  #add{position:fixed;right:16px;bottom:18px;z-index:20;border-radius:99px;padding:14px 20px;font-size:15px!important;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+  main{padding:14px 12px 80px}
   .hero{padding:16px;gap:14px}.hero h2{font-size:22px}
   .count{margin-left:0;width:100%;gap:6px}.count div{min-width:0;flex:1;padding:8px 4px}.count b{font-size:24px}
   .kpis{grid-template-columns:1fr 1fr}
@@ -158,7 +152,7 @@ select.year,.filters select,.filters input{width:auto}
   #printArea{display:block!important;color:#111;font:12px/1.4 "Segoe UI",Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   #printArea h1{font-size:22px;margin:0 0 2px}
   #printArea .sub{color:#555;margin-bottom:14px}
-  #printArea h2{font-size:15px;margin:16px 0 6px;padding-bottom:3px;border-bottom:2px solid #c62828;break-after:avoid}
+  #printArea h2{font-size:15px;margin:16px 0 6px;padding-bottom:3px;border-bottom:2px solid #1f6f4a;break-after:avoid}
   #printArea h2 small{font-weight:400;color:#666;font-size:12px}
   #printArea table{width:100%;border-collapse:collapse;border:0;box-shadow:none;background:#fff;border-radius:0}
   #printArea th{background:#eef2ef;color:#333;font-size:10px;padding:5px 7px;border-bottom:1px solid #ccc}
@@ -170,236 +164,39 @@ select.year,.filters select,.filters input{width:auto}
   #printArea .foot2{margin-top:18px;padding-top:8px;border-top:1px solid #ccc;color:#444}
 }
 header{padding-top:calc(14px + env(safe-area-inset-top,0px))}
-@media (max-width:720px){header{padding-top:calc(10px + env(safe-area-inset-top,0px))}#add{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+@media (max-width:720px){header{padding-top:calc(10px + env(safe-area-inset-top,0px))}#add{bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
 .att{display:flex;gap:8px;align-items:center;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);margin-bottom:6px;font-size:14px}
 .att span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #vdlg{width:min(920px,96vw)}
 #vbar{padding:12px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line)}
 #vbody{padding:12px;max-height:78vh;overflow:auto;text-align:center}
 #vbody img{max-width:100%;height:auto}
-.vchip.on{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
-.sumbar{display:flex;gap:10px;padding:10px 24px;background:var(--card);border-bottom:1px solid var(--line);flex-wrap:wrap}
-.sum{flex:1;min-width:150px;max-width:340px;padding:8px 14px;border-radius:12px;background:var(--bg)}
-.sum b{display:block;font-size:20px;line-height:1.2;font-variant-numeric:tabular-nums}
-.sum span{font-size:12px;color:var(--muted)}
-.sum.ok b{color:var(--good)}.sum.pend b{color:var(--warn)}
-#appfoot{max-width:1280px;margin:0 auto;padding:0 24px 40px;color:var(--muted);font-size:13px}
-#appfoot a{color:var(--accent);cursor:pointer;font-weight:600}
-.new{background:var(--warn);color:#fff;border-radius:99px;padding:0 7px;font-size:11px;margin-left:4px}
-.note{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px;text-align:left}
-.note h4{margin:0 0 4px;font-size:14px;display:flex;gap:8px;align-items:center}
-.note h4 small{color:var(--muted);font-weight:400}
-.note pre{margin:0;white-space:pre-wrap;font:inherit;font-size:14px}
-.note textarea{min-height:90px}
-@media (max-width:720px){.sumbar{padding:8px 12px;gap:6px}.sum{min-width:0;padding:6px 10px}.sum b{font-size:15px}.sum span{font-size:11px}#appfoot{padding:0 12px 130px}}
-.srow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:0;border-bottom:1px solid var(--line);padding:14px 16px;cursor:pointer;font-size:15px}
-.srow:hover{background:var(--accent-bg)}
-.srow .si{font-size:20px;width:28px;text-align:center}
-.srow .st{flex:1;min-width:0}.srow .st b{display:block;font-weight:600}.srow .st small{display:block;color:var(--muted);font-size:12px}
-.srow .sc{color:var(--muted);font-size:20px}
-.sh{padding:14px 16px 6px;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);font-weight:700;background:var(--bg)}
-#sdlg{width:min(560px,96vw);max-height:92vh;overflow:auto;padding:0}
-#shead{display:flex;align-items:center;padding:14px 16px;background:linear-gradient(135deg,var(--hbg1),var(--hbg2));color:#fff;position:sticky;top:0;z-index:2}
-#shead b{flex:1;font-size:18px}
-#shead button{background:rgba(255,255,255,.18);border:0;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px}
-.lic{padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px}
-.lic .kv{display:flex;justify-content:space-between;gap:10px;padding:4px 0}.lic .kv span{color:var(--muted)}.lic .kv b{text-align:right}
-.lic ol{margin:8px 0 10px 18px;padding:0;color:var(--muted)}.lic ol li{margin:3px 0}
-.lic .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.lic .good{color:var(--good);font-weight:700}.lic .bad{color:var(--warn);font-weight:700}
-#sdlg .seg{margin:6px 16px 14px}
-
-/* ===== v1.6 estilo "Mis Gastos" en rojo ===== */
-:root,:root[data-theme=dark],:root[data-theme=light]{
-  --bg:#0e0b0b; --card:#181313; --ink:#f2ecec; --muted:#8f8383; --line:#2c2323;
-  --accent:#ff3b30; --accent-ink:#fff; --accent-bg:#2a1413; --good:#4cc38a; --good-bg:#14261d;
-  --warn:#ffb020; --warn-bg:#2b2111; --shadow:none;
-  --trail:#52c58a; --ultra:#a98aec; --carretera:#6aa3f2; --otros:#e0b05a;
-}
-:root[data-theme=light]{
-  --bg:#f6f1f1; --card:#fff; --ink:#241c1c; --muted:#7a6c6c; --line:#e6dada;
-  --accent:#d92b21; --accent-bg:#fdeaea; --good:#1f6f4a; --good-bg:#e6f4ec; --warn:#b4540a; --warn-bg:#fdf0e3;
-  --trail:#2e8b57; --ultra:#7b4fc4; --carretera:#2f6fd0; --otros:#b9822a;
-}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-header{background:var(--bg)!important;color:var(--ink)!important;box-shadow:none!important;border-bottom:1px solid var(--line);flex-wrap:nowrap!important;gap:12px;padding:12px 18px;padding-top:calc(12px + env(safe-area-inset-top,0px))!important}
-.logo{width:44px;height:44px;border-radius:13px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
-.logo svg{width:26px;height:26px;fill:#fff}
-.ttl{flex:1;min-width:0}
-.ttl h1{font-size:19px!important;letter-spacing:.5px;text-transform:uppercase;color:var(--ink)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:none}
-.ttl small{display:block;font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-select.year{background:var(--card)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:12px!important;padding:8px 10px!important;max-width:110px}
-select.year option{color:var(--ink);background:var(--card)}
-.gear{background:var(--card)!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:12px!important;width:42px;height:42px}
-.gear:hover{border-color:var(--accent)!important}
-nav{position:fixed!important;left:0;right:0;bottom:0;margin:0!important;width:auto;background:var(--bg);border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));gap:4px;z-index:50;box-shadow:none!important;justify-content:center}
-nav button{flex:1;max-width:260px;flex-direction:column!important;gap:3px!important;border-radius:14px!important;font-size:11px!important;letter-spacing:1.4px;text-transform:uppercase;font-weight:600!important;padding:7px 4px!important;background:none!important;color:var(--muted)!important}
-nav button svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-nav button.on{color:var(--accent)!important;background:var(--accent-bg)!important}
-.sp{display:none}
-#add{position:fixed!important;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;z-index:20;border-radius:99px!important;padding:14px 20px!important;font-size:15px!important;box-shadow:0 6px 20px rgba(255,59,48,.35);background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important}
-main{padding:16px 16px 150px!important;max-width:1100px}
-.sumbar{background:var(--bg)!important;border:0!important;padding:12px 16px 0!important;max-width:1100px;margin:0 auto}
-.sum{background:var(--card)!important;border:1px solid var(--line);border-radius:16px!important}
-.sum b{font-size:20px!important}
-.sum.ok{border-color:#1f5a3f}.sum.pend{border-color:#6a4a10}
-.hero{background:var(--card)!important;border:1px solid var(--accent)!important;border-radius:20px!important;box-shadow:none!important;padding:20px!important}
-.hero .lbl{color:var(--accent)!important;letter-spacing:2px!important}
-.hero h2{font-size:24px!important}
-.count div{background:var(--bg)!important;border:1px solid var(--line);border-radius:14px!important}
-.kpis{grid-template-columns:1fr 1fr!important;gap:12px!important}
-.kpi{border-radius:16px!important;padding:14px!important;position:relative;overflow:hidden;border-color:var(--k,var(--line))!important;background:var(--card)}
-.kpi:nth-child(1){--k:#1f5a3f}.kpi:nth-child(1) b{color:var(--good)}
-.kpi:nth-child(2){--k:#5a1f1b}.kpi:nth-child(2) b{color:var(--accent)}
-.kpi:nth-child(3){--k:#6a4a10}.kpi:nth-child(3) b{color:var(--warn)}
-.kpi:nth-child(4){--k:#2a3f6a}.kpi:nth-child(4) b{color:var(--carretera)}
-.kpi:nth-child(5){--k:#6a4a10}.kpi:nth-child(6){--k:#3e2d6a}.kpi:nth-child(6) b{color:var(--ultra)}
-.kpi span{text-transform:uppercase;letter-spacing:1.2px;font-size:11px!important}
-.kpi i{display:block;height:4px;border-radius:4px;background:var(--line);margin-top:10px;overflow:hidden}
-.kpi i u{display:block;height:100%;background:var(--k);filter:brightness(1.8);border-radius:4px;text-decoration:none}
-h3.sec{flex-wrap:wrap;font-style:italic;text-transform:uppercase;letter-spacing:1.5px;font-size:13px!important;color:var(--muted);font-weight:700}
-h3.sec::before{content:"/";color:var(--accent);font-style:normal;margin-right:-4px}
-.rc,.month,table,.empty{border-radius:18px!important;box-shadow:none!important}
-.rc{border-top:1px solid var(--line)!important;border-left:4px solid var(--c,var(--line))!important}
-.btn{border-radius:12px}
-dialog{border:1px solid var(--line)}
-#sdlg{width:100vw;max-width:680px;height:100vh;max-height:100vh;margin:0 auto;border-radius:0;border:0;background:var(--bg)}
-#sdlg::backdrop{background:var(--bg)}
-#shead{background:var(--bg)!important;border-bottom:1px solid var(--line);padding-top:calc(14px + env(safe-area-inset-top,0px))!important}
-#shead b{color:var(--ink);font-size:19px;letter-spacing:.5px;text-transform:uppercase}
-#shead button{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:12px!important;color:var(--ink)!important}
-.sh{background:var(--bg)!important;font-style:italic;letter-spacing:1.5px!important;color:var(--muted)!important;padding:20px 18px 8px!important}
-.sh::before{content:"/ ";color:var(--accent);font-style:normal}
-.srow,.lic{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:16px;margin:0 14px 8px;width:calc(100% - 28px)!important}
-.srow:hover{border-color:var(--accent)!important}
-.lic{padding:14px 16px}
-#sdlg .seg{margin:6px 14px 14px}
-.tgl{position:relative;width:48px;height:28px;flex:none}
-.tgl input{opacity:0;position:absolute;inset:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}
-.tgl span{position:absolute;inset:0;background:var(--line);border-radius:99px;transition:.15s}
-.tgl span::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.15s}
-.tgl input:checked+span{background:var(--accent)}.tgl input:checked+span::after{left:23px}
-#licinfo,#appfoot{display:none!important}
-label.srow{text-transform:none;letter-spacing:0;font-size:15px;color:var(--ink);margin-bottom:8px}
-label.srow .st small{font-size:12px;font-weight:400}
-.ttl h1{font-size:17px!important}
-select.year{max-width:92px!important;font-size:13px!important;padding:8px 6px!important}
-.lbox{display:flex;gap:10px;align-items:flex-start}
-@media (max-width:720px){ header{padding:10px 14px} .logo{width:40px;height:40px} }
-
-/* v1.6.1 sin scroll lateral en Meses */
-html,body{max-width:100%;overflow-x:hidden}
-.months,.grid{grid-template-columns:minmax(0,1fr)!important}
-@media (min-width:721px){.months{grid-template-columns:repeat(auto-fill,minmax(290px,1fr))!important}.grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))!important}}
-.month{min-width:0;max-width:100%;overflow:hidden}
-.month h4{gap:8px}.month h4>*{min-width:0}
-.mi{min-width:0}.mi .n{min-width:0;overflow:hidden}.mi .n span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* ===== v1.7 perfil, logros, equipo ===== */
-.pcard{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px 16px;margin-bottom:14px;cursor:pointer}
-.pcard:hover{border-color:var(--accent)}
-.pcard .pxav{flex:none;background:var(--bg);border-radius:14px;padding:4px 8px}
-.pcard .pi{flex:1;min-width:0}.pcard .pi b{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pcard .pi span{display:block;color:var(--accent);font-size:12px;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
-.pcard .pi small{color:var(--muted);font-size:12px}.pcard .sc{color:var(--muted);font-size:22px}
-.xpbar{height:7px;border-radius:7px;background:var(--line);overflow:hidden;margin:3px 0}
-.xpbar u{display:block;height:100%;background:var(--accent);border-radius:7px;text-decoration:none}
-.pxav{image-rendering:pixelated;display:block}
-#adlg{width:100vw;max-width:680px;height:100vh;max-height:100vh;margin:0 auto;border-radius:0;border:0;background:var(--bg);overflow:hidden}
-#adlg[open]{display:flex;flex-direction:column}
-#adlg::backdrop{background:var(--bg)}
-#ahead{display:flex;align-items:center;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top,0px));border-bottom:1px solid var(--line);flex:none}
-#ahead b{flex:1;font-size:19px;letter-spacing:.5px;text-transform:uppercase}
-#ahead button{background:var(--card);border:1px solid var(--line);color:var(--ink);width:36px;height:36px;border-radius:12px;cursor:pointer;font-size:16px}
-#evdlg{width:100vw;max-width:680px;height:100vh;max-height:100vh;margin:0 auto;border-radius:0;border:0;background:var(--bg);overflow:hidden}
-#evdlg[open]{display:flex;flex-direction:column}
-#evdlg::backdrop{background:var(--bg)}
-#evhead{display:flex;align-items:center;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top,0px));border-bottom:1px solid var(--line);flex:none}
-#evhead b{flex:1;font-size:19px;letter-spacing:.5px;text-transform:uppercase}
-#evhead button{background:var(--accent);border:0;color:#fff;width:36px;height:36px;border-radius:12px;cursor:pointer;font-size:16px}
-#evbody{flex:1;overflow:auto;padding:8px 16px 40px}
-.phero{display:flex;gap:16px;align-items:center;background:var(--card);border:1px solid var(--accent);border-radius:20px;padding:14px}
-.phero .pxav{flex:none;background:var(--bg);border-radius:14px;padding:8px 10px}.phero .pheroi{flex:1;min-width:0}.phero input{width:100%;font-weight:700;font-size:17px;background:var(--bg);border:1px solid var(--accent)}
-.ttl{display:block;font-style:normal;font-size:12px;font-weight:700;color:var(--warn,#ffb020);margin:2px 0 3px}
-#abody{flex:1;overflow:auto;padding:14px 16px 40px}
-.aprev{display:flex;gap:16px;align-items:center;background:var(--card);border:1px solid var(--accent);border-radius:20px;padding:14px}
-.aprev .pxav{flex:none;background:var(--bg);border-radius:14px;padding:6px}.shoeline{display:block;margin-top:4px;color:var(--accent)!important}
-.aprev>div{flex:1;min-width:0}.aprev input{width:100%;font-weight:700;font-size:17px}
-.alv{color:var(--accent);font-weight:700;letter-spacing:1.4px;text-transform:uppercase;font-size:12px;margin:8px 0 2px}
-.aprev small{color:var(--muted)}
-.amsg{min-height:20px;margin:8px 2px 0;color:var(--warn);font-size:13px}
-.vsarena{display:flex;align-items:flex-end;justify-content:space-around;gap:6px;background:linear-gradient(135deg,var(--card),var(--bg));border:1px solid var(--accent);border-radius:20px;padding:14px 8px;margin-bottom:12px}
-.vsside{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:0;text-align:center}
-.vsflip svg{transform:scaleX(-1)}
-.vsvs{font-style:italic;font-weight:900;font-size:30px;color:var(--accent);align-self:center;text-shadow:0 2px 0 rgba(0,0,0,.25)}
-.vsrow{display:grid;grid-template-columns:1fr 1.6fr 1fr;text-align:center;padding:6px 0;border-bottom:1px solid var(--line,rgba(128,128,128,.2))}
-.vsrow span{color:var(--muted);font-size:12px}
-.vscols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.vscol h4{margin:0 0 6px}
-.vsit{display:flex;flex-direction:column;background:var(--card);border-radius:10px;padding:6px 8px;margin-bottom:6px;font-size:13px}
-.vsit span{color:var(--muted);font-size:11px}
-.vsit.co{border:1px solid var(--accent)}
-.sh2{margin:14px 0 8px;font-style:italic;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;font-weight:700;color:var(--muted)}
-.sh2::first-letter{color:var(--accent)}
-.swr,.chips{display:flex;flex-wrap:wrap;gap:8px}
-.sw{width:38px;height:38px;border-radius:12px;border:2px solid var(--line);cursor:pointer;padding:0;font-size:14px;color:#fff}
-.sw.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--accent)}.sw.lock{opacity:.45}
-.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 13px;border-radius:12px;cursor:pointer;font-size:14px}
-.chip.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:700}.chip.lock{opacity:.5}
-.agrid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
-.ach{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 14px;opacity:.55;filter:grayscale(.8)}
-.ach.on{opacity:1;filter:none;border-color:#6a4a10}.ach.sp.on{border-color:var(--accent)}
-.ach .ai{font-size:26px;width:36px;text-align:center;flex:none}
-.ach b{display:block}.ach small{display:block;color:var(--muted);font-size:12px}
-.ach>div{flex:1;min-width:0}
-.celeb{padding:22px 22px 8px;text-align:center}.celeb .pxav{margin:0 auto 6px}.celeb h3{margin:6px 0 10px}.celeb p{margin:6px 0;font-weight:600}
-#cdlg{width:min(380px,92vw)}
-.kmsg{color:var(--muted);font-size:13px;margin:0 0 10px}.kmsg.err,#kmsg.err{color:var(--warn);font-weight:600}
-.rc.eqc.ret{opacity:.6}
-@media (max-width:720px){#kdlg,#gdlg,#edlg{max-height:94vh;overflow:auto}}
-.nlbl{margin:0 0 4px!important;color:var(--accent)!important}.ned{font-style:normal;font-size:13px;opacity:.7}.aprev input{background:var(--bg);border:1px solid var(--accent)}
-.eqintro{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:14px}
-.eqintro h3{margin:0 0 8px;font-size:20px}.eqintro p{margin:0 0 14px;color:var(--muted)}
-.eqc{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:18px;padding:14px 16px;margin-bottom:12px}
-.eqc.ret{opacity:.6}
-.eqtop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.eqt{min-width:0}.eqt h4{margin:0 0 4px;font-size:17px;font-weight:650}
-.eqk{text-align:right;flex:none}.eqk b{display:block;font-size:26px;line-height:1.1}.eqk span{color:var(--muted);font-size:13px}
-.eqc .xpbar{margin:12px 0 6px;height:9px}.eqc .xpbar.warn u{background:var(--warn)}
-.eqact{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.eqact .btn{border-color:var(--line);color:var(--accent)}
-.aprev{position:sticky;top:-8px;z-index:3;box-shadow:0 8px 14px -6px var(--bg)}#abody{padding-top:8px!important}
-.btn.done{background:var(--good-bg);color:var(--good);border-color:var(--good);font-weight:700}
+.vchip.on{background:var(--ok-bg);border-color:var(--accent);color:var(--accent)}
 </style>
 </head>
 <body>
 <header>
-  <div class="logo"><svg viewBox="0 0 24 24"><path d="M2 16.5c0-1 .5-1.6 1.4-1.9l3.3-1.1c.6-.2 1-.7 1.1-1.3l.3-2.3 1.7 1c.9.6 2 .8 3 .5l.9-.3 1.2 2c.5.8 1.3 1.4 2.2 1.7l3.7 1.1c1 .3 1.6 1.1 1.6 2.100V18c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1z"/></svg></div>
-  <div class="ttl"><h1>RacingTrack</h1><small id="subt">Resumen</small></div>
+  <h1>🏃 Gestor de Carreras</h1>
+  <nav id="nav">
+    <button data-v="dash" class="on">Dashboard</button>
+    <button data-v="meses">Calendario por meses</button>
+    <button data-v="todas">Todas las carreras</button>
+  </nav>
+  <div class="sp"></div>
   <select class="year" id="year" title="Año"></select>
-  <button class="gear" id="gear" title="Ajustes" aria-label="Ajustes"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+  <button class="btn" id="pdf">Exportar PDF</button>
+  <button class="btn" id="exp" title="Guardar copia de seguridad de los datos">Guardar copia</button>
+  <button class="btn" id="imp" title="Cargar una copia de seguridad">Restaurar</button>
+  <input type="file" id="file" accept=".json" class="hidden">
+  <button class="btn pri" id="add">+ Añadir carrera</button>
 </header>
-<div class="sumbar" id="sumbar"></div>
 
 <main>
   <section id="v-dash"></section>
   <section id="v-meses" class="hidden"></section>
   <section id="v-todas" class="hidden"></section>
-  <section id="v-equipo" class="hidden"></section>
-  <section id="v-listado" class="hidden"></section>
-  <section id="v-vs" class="hidden"></section>
 </main>
 <div id="licinfo" class="hidden"></div>
-<nav id="nav">
-    <button data-v="dash" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Resumen</span></button>
-    <button data-v="meses"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Meses</span></button>
-    <button data-v="todas"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Todas</span></button>
-    <button data-v="equipo"><svg viewBox="0 0 24 24"><path d="M8 7V5a4 4 0 0 1 8 0v2"/><rect x="5" y="7" width="14" height="14" rx="3"/><path d="M9 13h6M9 17h6"/></svg><span>Equipo</span></button>
-    <button data-v="listado"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span>Listado</span></button>
-    <button data-v="vs"><svg viewBox="0 0 24 24"><path d="M4 5l5 14 3-8M20 5l-5 14"/><path d="M12 5v2"/></svg><span>VS</span></button>
-  </nav>
-  <button class="btn pri" id="add">+ Añadir carrera</button>
-
-<div id="appfoot"></div>
 
 <dialog id="dlg">
 <form id="f" method="dialog">
@@ -416,11 +213,9 @@ html,body{max-width:100%;overflow-x:hidden}
     <div><label>Lugar</label><input type="text" id="lugar" placeholder="Ej: Guadarrama"></div>
     <div><label>Fecha *</label><input type="date" id="fecha" required></div>
     <div><label>Hora de salida (opcional)</label><input type="time" id="hora"></div>
-    <div><label>Distancia (km)</label><input type="text" id="km" inputmode="decimal" list="kmlist" placeholder="Ej: 21,1 o «media maratón»" autocomplete="off"></div>
+    <div><label>Distancia (km)</label><input type="number" id="km" min="0" step="0.1"></div>
     <div><label>Desnivel + (m)</label><input type="number" id="dplus" min="0" step="1" inputmode="numeric"></div>
     <div class="full"><label class="chk"><input type="checkbox" id="prov"> Fecha provisional (aún sin confirmar por la organización)</label></div>
-    <div><label>Precio inscripción (€)</label><input type="number" id="precio" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
-    <div></div>
     <div class="full"><label>¿Voy a ir?</label>
       <div class="seg">
         <label><input type="radio" name="voy" value="si"><span>Sí, voy</span></label>
@@ -430,8 +225,6 @@ html,body{max-width:100%;overflow-x:hidden}
     <div><label>Inscripción</label><label class="chk"><input type="checkbox" id="pagado"> Pagada</label></div>
     <div><label>Compañía</label><label class="chk"><input type="checkbox" id="acomp"> Voy con alguien</label></div>
     <div class="full hidden" id="conWrap"><label>¿Con quién?</label><input type="text" id="con" placeholder="Nombre(s)"></div>
-    <div class="full"><label class="chk"><input type="checkbox" id="hecha"> 🏅 Carrera completada (sube de nivel a tu corredor)</label></div>
-    <div class="full" id="eqpickWrap"><label>Equipo usado</label><div id="eqpick" class="picks"></div></div>
     <div class="full"><label>Resguardo de pago (PDF o imagen)</label>
       <div id="rlist"></div>
       <label class="btn sm" style="display:inline-block;cursor:pointer;margin-top:4px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">+ Añadir archivo<input type="file" id="rfile" accept="image/*,application/pdf" multiple style="display:none"></label></div>
@@ -446,29 +239,6 @@ html,body{max-width:100%;overflow-x:hidden}
 </form>
 </dialog>
 
-<datalist id="kmlist"><option value="Media maratón"></option><option value="Maratón"></option><option value="5"></option><option value="10"></option></datalist>
-<dialog id="ldlg">
-<form id="lf" method="dialog">
-  <h2 id="ltitle">Nueva carrera en el listado</h2>
-  <div class="fg">
-    <div class="full"><label>Nombre *</label><input type="text" id="lnombre" required placeholder="Ej: MoralTrail"></div>
-    <div><label>Tipo</label><select id="ltipo"><option value="trail">Trail</option><option value="ultra">Ultra</option><option value="carretera">Carretera</option><option value="otros">Otros</option></select></div>
-    <div><label>Lugar</label><input type="text" id="llugar" placeholder="Ej: Guadarrama"></div>
-    <div><label>Fecha (si se sabe)</label><input type="date" id="lfecha"></div>
-    <div><label>Distancia (km)</label><input type="text" id="lkm" inputmode="decimal" list="kmlist" placeholder="Ej: 21,1 o «maratón»" autocomplete="off"></div>
-    <div><label>Desnivel + (m)</label><input type="number" id="ldplus" min="0" step="1" inputmode="numeric"></div>
-    <div><label>Precio (€)</label><input type="number" id="lprecio" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
-    <div class="full"><label class="chk"><input type="checkbox" id="lprov"> Fecha aproximada / sin confirmar</label></div>
-    <div class="full"><label>Web</label><input type="url" id="lurl" placeholder="https://"></div>
-    <div class="full"><label>Notas</label><textarea id="lnotas"></textarea></div>
-  </div>
-  <div class="foot">
-    <button type="button" class="btn danger l hidden" id="ldel">Eliminar</button>
-    <button type="button" class="btn" id="lcancel">Cancelar</button>
-    <button type="submit" class="btn pri">Guardar</button>
-  </div>
-</form>
-</dialog>
 <dialog id="pdlg">
 <form id="pf" method="dialog">
   <h2>Exportar a PDF</h2>
@@ -483,44 +253,13 @@ html,body{max-width:100%;overflow-x:hidden}
 </form>
 </dialog>
 <div id="lock" class="hidden"><div class="lockbox">
-  <h2>🔒 RacingTrack</h2>
+  <h2>🔒 Gestor de Carreras</h2>
   <p id="lmsg"></p>
   <label>Código de este dispositivo</label><div class="code" id="ldev"></div>
   <label>Clave de acceso</label><textarea id="lkey" placeholder="GC1.…" style="min-height:90px;font-family:Consolas,monospace;font-size:12px"></textarea>
-  <div class="foot"><button type="button" class="btn hidden" id="lclose">Cerrar</button><button type="button" class="btn" id="lreq">Solicitar clave / renovación</button><button type="button" class="btn pri" id="lgo">Activar</button></div>
+  <div class="foot"><button type="button" class="btn hidden" id="lclose">Cerrar</button><button type="button" class="btn pri" id="lgo">Activar</button></div>
 </div></div>
 <dialog id="vdlg"><div id="vbar"><b id="vtitle" style="flex:1;min-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></b><span id="vchips"></span><button type="button" class="btn sm" id="vdl">Descargar</button><button type="button" class="btn sm" id="vclose">Cerrar</button></div><div id="vbody"></div></dialog>
-<dialog id="sdlg">
-  <div id="shead"><b>Ajustes</b><button type="button" id="sclose" aria-label="Cerrar">✕</button></div>
-  <div class="sh">Licencia</div>
-  <div class="lic" id="slic"></div>
-  <div class="sh">Exportar</div>
-  <button type="button" class="srow" id="pdf"><span class="si">📄</span><span class="st"><b>Exportar a PDF</b><small>Carreras por años y meses</small></span><span class="sc">›</span></button>
-  <div class="sh">Copia de seguridad</div>
-  <div class="srow" style="cursor:default"><span class="si">🕒</span><span class="st"><b>Última copia</b><small id="lastbak">Aún no hay copias</small></span></div>
-  <button type="button" class="srow" id="exp"><span class="si">💾</span><span class="st"><b>Exportar copia ahora</b><small>Todas tus carreras en un archivo o texto</small></span><span class="sc">›</span></button>
-  <button type="button" class="srow" id="imp"><span class="si">📥</span><span class="st"><b>Importar copia</b><small>Recupera carreras desde una copia</small></span><span class="sc">›</span></button>
-  <button type="button" class="srow hidden" id="rauto"><span class="si">♻️</span><span class="st"><b>Restaurar copia automática</b><small>Vuelve a la última copia semanal guardada</small></span><span class="sc">›</span></button>
-  <label class="srow" style="cursor:pointer"><span class="si">🗓️</span><span class="st"><b>Copia automática semanal</b><small id="autosub">Guarda una copia sola cada 7 días</small></span><span class="tgl"><input type="checkbox" id="autobak"><span></span></span></label>
-  <input type="file" id="file" accept=".json" class="hidden">
-  <div class="sh">Recompensas</div>
-  <button type="button" class="srow" id="krow"><span class="si">🎁</span><span class="st"><b>Canjear clave</b><small>Desbloquea logros y objetos con una clave</small></span><span class="sc">›</span></button>
-  <button type="button" class="srow" id="prow"><span class="si">🏅</span><span class="st"><b>Mi corredor y logros</b><small>Avatar, nivel y logros conseguidos</small></span><span class="sc">›</span></button>
-  <button type="button" class="srow" id="grow"><span class="si">🔑</span><span class="st"><b>Generar claves</b><small>Solo propietario: crea claves de recompensa</small></span><span class="sc">›</span></button>
-  <div class="sh">Apariencia</div>
-  <div style="padding:8px 0 0"><div class="seg" id="themeSeg">
-    <label><input type="radio" name="theme" value="auto"><span>Automático</span></label>
-    <label><input type="radio" name="theme" value="light"><span>Claro</span></label>
-    <label><input type="radio" name="theme" value="dark"><span>Oscuro</span></label>
-  </div></div>
-  <div class="sh">Información</div>
-  <button type="button" class="srow" id="snov"><span class="si">🆕</span><span class="st"><b>Novedades</b><small>Qué cambia en cada versión (editable)</small></span><span class="sc">›</span></button>
-  <div class="srow" style="cursor:default"><span class="si">ℹ️</span><span class="st"><b>RacingTrack</b><small id="sver"></small></span></div>
-</dialog>
-<dialog id="ndlg"><div style="padding:16px 18px">
-  <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap"><b style="flex:1;font-size:17px">Novedades</b><button type="button" class="btn sm" id="nnew">+ Nueva nota</button><button type="button" class="btn sm" id="nclose">Cerrar</button></div>
-  <div id="nlist" style="max-height:70vh;overflow:auto"></div>
-</div></dialog>
 <dialog id="mdlg"><form method="dialog" style="padding:20px 22px">
   <p id="mmsg" style="margin:0 0 16px;font-size:15px;white-space:pre-line"></p>
   <div class="foot" style="margin-top:0"><button type="button" class="btn hidden" id="mno">Cancelar</button><button type="button" class="btn pri" id="myes">Aceptar</button></div>
@@ -531,67 +270,9 @@ html,body{max-width:100%;overflow-x:hidden}
   <textarea id="rtext" style="min-height:160px" placeholder='[ { "nombre": ... } ]'></textarea>
   <div class="foot"><button type="button" class="btn" id="rcancel">Cancelar</button><button type="submit" class="btn pri">Restaurar</button></div>
 </form></dialog>
-<dialog id="adlg">
-  <div id="ahead"><b>Mi corredor</b><button type="button" id="aclose" aria-label="Cerrar">✕</button></div>
-  <div id="abody"></div>
-</dialog>
-<dialog id="evdlg">
-  <div id="evhead"><b>Editar avatar</b><button type="button" id="evclose" aria-label="Listo">✓</button></div>
-  <div id="evbody"></div>
-</dialog>
-<dialog id="cdlg"><div id="cbody" class="celeb"></div><div style="padding:0 20px 20px;text-align:center"><button type="button" class="btn pri" id="cok">¡Genial!</button></div></dialog>
-<dialog id="kdlg"><div style="padding:18px 20px">
-  <h2 style="margin:0 0 6px;font-size:19px">🎁 Canjear clave</h2>
-  <p id="kmsg" class="kmsg"></p>
-  <textarea id="ktext" placeholder="GR1.…" style="min-height:90px;font-family:Consolas,monospace;font-size:12px"></textarea>
-  <div class="foot"><button type="button" class="btn" id="kclose">Cerrar</button><button type="button" class="btn pri" id="kgo">Canjear</button></div>
-</div></dialog>
-<dialog id="gdlg"><div style="padding:18px 20px">
-  <h2 style="margin:0 0 6px;font-size:19px">🔑 Generar claves de recompensa</h2>
-  <div id="gown">
-    <p class="kmsg">Solo el propietario puede crear claves. Pega aquí tu <b>clave de propietario</b> (la que muestra el Generador de claves en “Clave de propietario”). Se guarda solo en este dispositivo.</p>
-    <textarea id="gpriv" placeholder="Clave de propietario" style="min-height:70px;font-family:Consolas,monospace;font-size:12px"></textarea>
-    <div class="foot"><button type="button" class="btn pri" id="gsave">Activar modo propietario</button></div>
-  </div>
-  <div id="gmain" class="hidden">
-    <label>Qué desbloquea</label>
-    <select id="gtype"><option value="logro">Logro especial</option><option value="item">Objeto del avatar</option><option value="xp">XP extra</option></select>
-    <div style="margin-top:10px"><label>Cuál</label><select id="gval"></select></div>
-    <div id="gxpwrap" class="hidden" style="margin-top:10px"><label>Cantidad de XP</label><input type="number" id="gxp" min="1" max="100000" value="500"></div>
-    <div style="margin-top:10px"><label>Para quién (nota, opcional)</label><input type="text" id="glab" placeholder="Ej: Pepe"></div>
-    <div style="margin-top:10px"><label>Código de dispositivo (opcional)</label><input type="text" id="gdev" placeholder="XXXX-XXXX — solo funcionará en ese móvil"></div>
-    <div class="foot" style="margin-top:12px"><button type="button" class="btn" id="gforget">Quitar propietario</button><button type="button" class="btn pri" id="ggen">Generar clave</button></div>
-    <div id="gout" class="hidden"><textarea id="gkey" readonly style="min-height:90px;font-family:Consolas,monospace;font-size:12px"></textarea>
-      <div class="foot" style="margin-top:8px"><span id="gcp" class="l" style="color:var(--good)"></span><button type="button" class="btn" id="gshare">Compartir</button><button type="button" class="btn" id="gcopy">Copiar</button></div></div>
-    <div id="ghist" class="lic" style="margin-top:8px;padding:0;border:0"></div>
-  </div>
-  <p id="gmsg" class="kmsg" style="color:var(--warn)"></p>
-  <div class="foot" style="margin-top:0"><button type="button" class="btn" id="gclose">Cerrar</button></div>
-</div></dialog>
-<dialog id="edlg"><form id="ef" method="dialog">
-  <h2 id="etitle">Nuevo equipo</h2>
-  <div class="fg">
-    <div class="full"><label>Tipo</label><select id="etipo"></select></div>
-    <div class="full"><label>Nombre *</label><input type="text" id="enombre" required placeholder="Ej: Speedgoat 6"></div>
-    <div><label>Marca</label><input type="text" id="emarca" placeholder="Ej: Hoka"></div>
-    <div><label>Fecha de compra</label><input type="date" id="efecha"></div>
-    <div><label>Precio (€)</label><input type="number" id="eprecio" min="0" step="0.01" inputmode="decimal"></div>
-    <div><label>Vida útil (km)</label><input type="number" id="evida" min="0" step="1" inputmode="numeric" placeholder="Ej: 700"></div>
-    <div class="full"><label>Km previos (antes de usar la app)</label><input type="number" id="ekm" min="0" step="0.1" inputmode="decimal" placeholder="0"></div>
-    <div class="full"><label class="chk"><input type="checkbox" id="edef"> ⭐ Predeterminado de este tipo (se asigna solo al marcar una carrera como completada)</label></div>
-    <div class="full"><label>Notas</label><textarea id="enotas"></textarea></div>
-  </div>
-  <div class="foot"><button type="button" class="btn danger l hidden" id="edel">Eliminar</button><button type="button" class="btn" id="ecancel">Cancelar</button><button type="submit" class="btn pri">Guardar</button></div>
-</form></dialog>
-<dialog id="asdlg"><div style="padding:18px 20px">
-  <h2 id="astitle" style="margin:0 0 10px;font-size:18px">Asignar carreras</h2>
-  <div id="aslist" style="max-height:60vh;overflow:auto"></div>
-  <div class="foot"><button type="button" class="btn" id="ascancel">Cancelar</button><button type="button" class="btn pri" id="assave">Guardar</button></div>
-</div></dialog>
 <div id="printArea"></div>
 
 <script src="license.js"></script>
-<script src="reward.js"></script>
 <script>
 const TIPOS = {trail:'Trail', ultra:'Ultra', carretera:'Carretera', otros:'Otros'};
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -615,7 +296,7 @@ function ask(msg, yesOnly){
   });
 }
 const info = msg => ask(msg, true);
-function openUrl(u){ if (!/^(https?:\/\/|mailto:)/i.test(u)) return; if (IS_ANDROID) Android.open(u); else window.open(u, '_blank'); }
+function openUrl(u){ if (!/^https?:\/\//i.test(u)) return; if (IS_ANDROID) Android.open(u); else window.open(u, '_blank'); }
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
 function when(r){ return new Date(r.fecha + 'T' + (r.hora || '00:00') + ':00'); }
@@ -658,11 +339,8 @@ async function load(){
     else races = JSON.parse(localStorage.getItem('carreras') || '[]');
   } catch(e){ races = []; }
   if (!Array.isArray(races)) races = [];
-  await loadProfile();
-  await checkProgress(false);
   buildYears();
   render();
-  autoBackup(false);
 }
 async function save(){
   if (HAS_SERVER) await fetch('/api/races', {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(races)});
@@ -694,24 +372,20 @@ function card(r, opts = {}){
       <span class="tag t" style="--c:var(--${r.tipo})">${TIPOS[r.tipo]}</span></div>
     <div class="big" ${past ? 'style="color:var(--muted)"' : ''}>${esc(c.big)}<small>${esc(c.small)}</small></div>
     <div class="row">
-      ${r.precio !== '' && r.precio != null ? `<span class="tag">💶 ${eur(+r.precio)}</span>` : ''}
       ${r.prov ? '<span class="tag bad">📅 Fecha provisional</span>' : ''}
       ${det.length ? `<span class="tag">${esc(det.join(' · '))}</span>` : ''}
       ${r.voy === 'si' ? (r.pagado ? '<span class="tag ok">✔ Pagada</span>' : '<span class="tag bad">⚠ Sin pagar</span>') : ''}
       ${r.recibos && r.recibos.length ? `<span class="tag ok" data-rec="${esc(r.id)}" style="cursor:pointer">📎 Resguardo${r.recibos.length > 1 ? ' (' + r.recibos.length + ')' : ''}</span>` : ''}
       ${r.acomp && r.con ? `<span class="tag">👥 ${esc(r.con)}</span>` : (r.acomp ? '<span class="tag">👥 Acompañado</span>' : '<span class="tag">Voy solo</span>')}
-      ${r.hecha ? '<span class="tag ok">🏅 Completada</span>' : ''}
       ${r.voy === 'pendiente' ? '<span class="tag">Indeciso</span>' : ''}
       ${r.voy === 'no' ? '<span class="tag">No voy</span>' : ''}
     </div>
     <div class="act">
       <button class="btn sm" data-edit="${r.id}">Editar</button>
-      ${r.voy === 'si' ? `<button class="btn sm ${r.hecha ? 'done' : 'pri'}" data-done="${r.id}">${r.hecha ? '✔ Completada' : 'Completar'}</button>` : ''}
       ${r.url ? `<button class="btn sm" data-url="${esc(r.url)}">Web</button>` : ''}
     </div></div>`;
 }
 
-function bar(a, t){ return '<i><u style="width:' + (t ? Math.round(100 * a / t) : 0) + '%"></u></i>'; }
 function renderDash(){
   const list = filtered();
   const upcomingGo = races.filter(r => inscrita(r) && !isPast(r)).sort((a,b) => when(a) - when(b));
@@ -723,7 +397,7 @@ function renderDash(){
   const provN = goYear.filter(r => r.prov && !isPast(r));
   const pend = inYear.filter(r => r.voy === 'pendiente' && !isPast(r));
 
-  let h = profCard();
+  let h = '';
   if (next) {
     h += `<div class="hero"><div><div class="lbl">Próxima carrera</div><h2>${esc(next.nombre)}</h2>
       <div class="meta">${next.prov ? '<b style="color:var(--warn)">Fecha provisional</b> · ' : ''}${esc(fmtDate(next))}${next.lugar ? ' · ' + esc(next.lugar) : ''} · ${TIPOS[next.tipo]}${next.km ? ' · ' + next.km + ' km' : ''}</div></div>
@@ -732,16 +406,16 @@ function renderDash(){
     h += `<div class="hero"><div><div class="lbl">Próxima carrera</div><h2>Ninguna inscrita todavía</h2><div class="meta">Marca “Sí, voy” en una carrera para ver aquí su cuenta atrás.</div></div></div>`;
   }
   h += `<div class="kpis">
-    <div class="kpi"><b>${goYear.length}</b><span>Carreras a las que voy${yearSel==='all'?'':' en '+yearSel}</span>${bar(goYear.length, inYear.length)}</div>
-    <div class="kpi"><b>${goYear.filter(r=>!isPast(r)).length}</b><span>Por correr</span>${bar(goYear.filter(r=>!isPast(r)).length, goYear.length)}</div>
-    <div class="kpi ${unpaid.length ? 'warn' : ''}"><b>${unpaid.length}</b><span>Inscripciones sin pagar</span>${bar(goYear.length - unpaid.length, goYear.length)}</div>
-    <div class="kpi"><b>${withSomeone.length}</b><span>Con compañía</span>${bar(withSomeone.length, goYear.length)}</div>
+    <div class="kpi"><b>${goYear.length}</b><span>Carreras a las que voy${yearSel==='all'?'':' en '+yearSel}</span></div>
+    <div class="kpi"><b>${goYear.filter(r=>!isPast(r)).length}</b><span>Por correr</span></div>
+    <div class="kpi ${unpaid.length ? 'warn' : ''}"><b>${unpaid.length}</b><span>Inscripciones sin pagar</span></div>
+    <div class="kpi"><b>${withSomeone.length}</b><span>Con compañía</span></div>
     <div class="kpi ${provN.length ? 'warn' : ''}"><b>${provN.length}</b><span>Fechas por confirmar</span></div>
     <div class="kpi"><b>${pend.length}</b><span>Indecisas</span></div>
   </div>`;
 
   const up = goYear.filter(r => !isPast(r));
-  h += `<h3 class="sec">Mis carreras inscritas · cuenta atrás</h3>`;
+  h += `<h3 class="sec">Mis carreras inscritas — cuenta atrás</h3>`;
   h += up.length ? `<div class="grid">${up.map(card).join('')}</div>` : `<div class="empty">No tienes carreras inscritas por venir${yearSel==='all'?'':' en '+yearSel}. Pulsa “+ Añadir carrera”.</div>`;
 
   if (pend.length) h += `<h3 class="sec">Pendientes de decidir</h3><div class="grid">${pend.map(card).join('')}</div>`;
@@ -766,7 +440,7 @@ function tick(){
 function renderMeses(){
   const y = yearSel === 'all' ? new Date().getFullYear() : +yearSel;
   const now = new Date();
-  let h = `<h3 class="sec" style="margin-top:0">Calendario ${y}${yearSel==='all' ? '' : ''}</h3><div class="months">`;
+  let h = `<h3 class="sec" style="margin-top:0">Calendario ${y}${yearSel==='all' ? ' <span class="tag">elige un año arriba para cambiarlo</span>' : ''}</h3><div class="months">`;
   for (let m = 0; m < 12; m++){
     const rs = races.filter(r => +r.fecha.slice(0,4) === y && +r.fecha.slice(5,7) === m + 1).sort((a,b) => when(a) - when(b));
     const goN = rs.filter(inscrita).length;
@@ -797,7 +471,7 @@ function renderTodas(){
     <select id="fv"><option value="">Todos los estados</option><option value="si" ${tFilter.voy==='si'?'selected':''}>Voy</option><option value="pendiente" ${tFilter.voy==='pendiente'?'selected':''}>Indeciso</option><option value="no" ${tFilter.voy==='no'?'selected':''}>No voy</option></select>
   </div>`;
   if (!list.length) { $('#v-todas').innerHTML = h + '<div class="empty">No hay carreras con estos filtros.</div>'; bindFilters(); return; }
-  h += `<table><thead><tr><th>Fecha</th><th>Carrera</th><th>Tipo</th><th>Dist.</th><th>Voy</th><th>Pago</th><th>Precio</th><th>Compañía</th><th>Faltan</th><th></th></tr></thead><tbody>`;
+  h += `<table><thead><tr><th>Fecha</th><th>Carrera</th><th>Tipo</th><th>Dist.</th><th>Voy</th><th>Pago</th><th>Compañía</th><th>Faltan</th><th></th></tr></thead><tbody>`;
   for (const r of list){
     const dl = daysLeft(r);
     h += `<tr class="${isPast(r) ? 'past' : ''}">
@@ -807,10 +481,9 @@ function renderTodas(){
       <td>${r.km ? esc(r.km) + ' km' : '—'}</td>
       <td>${r.voy === 'si' ? '<span class="tag ok">Sí</span>' : r.voy === 'no' ? '<span class="tag">No</span>' : '<span class="tag">Indeciso</span>'}</td>
       <td>${r.voy === 'si' ? (r.pagado ? '<span class="tag ok">Pagada</span>' : '<span class="tag bad">Pendiente</span>') : '—'}${r.recibos && r.recibos.length ? ` <span class="tag" data-rec="${esc(r.id)}" style="cursor:pointer">📎 ${r.recibos.length}</span>` : ''}</td>
-      <td>${r.precio !== '' && r.precio != null ? eur(+r.precio) : '—'}</td>
       <td>${r.acomp ? '👥 ' + esc(r.con || 'Sí') : '—'}</td>
       <td>${isPast(r) ? 'Pasada' : dl === 0 ? '<b>HOY</b>' : dl + ' d'}</td>
-      <td><button class="btn sm" data-edit="${r.id}">Editar</button>${r.voy === 'si' ? ` <button class="btn sm ${r.hecha ? 'done' : 'pri'}" data-done="${r.id}">${r.hecha ? '✔ Completada' : 'Completar'}</button>` : ''}</td></tr>`;
+      <td><button class="btn sm" data-edit="${r.id}">Editar</button></td></tr>`;
   }
   $('#v-todas').innerHTML = h + '</tbody></table>';
   bindFilters();
@@ -822,33 +495,12 @@ function bindFilters(){
   $('#fv').onchange = e => { tFilter.voy = e.target.value; renderTodas(); };
 }
 
-const eur = n => (Math.round(n * 100) / 100).toLocaleString('es-ES', {style:'currency', currency:'EUR'});
-const money = r => (r.precio === '' || r.precio == null) ? 0 : +r.precio || 0;
-function renderSummary(){
-  const list = filtered();
-  const paid = list.filter(r => r.pagado);
-  const pend = list.filter(r => r.voy === 'si' && !r.pagado);
-  const sp = paid.reduce((a, r) => a + money(r), 0), sd = pend.reduce((a, r) => a + money(r), 0);
-  const sinPrecio = pend.filter(r => !money(r)).length;
-  const lbl = yearSel === 'all' ? '' : ' ' + yearSel;
-  $('#sumbar').innerHTML =
-    `<div class="sum ok"><b>${eur(sp)}</b><span>Pagado${lbl} · ${paid.length} carrera${paid.length === 1 ? '' : 's'}</span></div>` +
-    `<div class="sum pend"><b>${eur(sd)}</b><span>Pendiente de pagar${lbl} · ${pend.length} carrera${pend.length === 1 ? '' : 's'}${sinPrecio ? ' (' + sinPrecio + ' sin precio)' : ''}</span></div>` +
-    `<div class="sum"><b>${eur(sp + sd)}</b><span>Total${lbl}</span></div>`;
-}
 function render(){
-  renderSummary();
-  for (const v of ['dash','meses','todas','equipo','listado','vs']) $('#v-' + v).classList.toggle('hidden', v !== view);
+  for (const v of ['dash','meses','todas']) $('#v-' + v).classList.toggle('hidden', v !== view);
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.v === view));
-  const SUB = {dash:'Resumen', meses:'Por meses', todas:'Todas', equipo:'Equipo', listado:'Listado', vs:'VS amigos'}; $('#subt').textContent = SUB[view] + (yearSel==='all' || view === 'equipo' || view === 'listado' || view === 'vs' ? '' : ' · ' + yearSel);
   if (view === 'dash') renderDash();
   if (view === 'meses') renderMeses();
   if (view === 'todas') renderTodas();
-  if (view === 'equipo') renderEquipo();
-  if (view === 'listado') renderListado();
-  if (view === 'vs') renderVS();
-  $('#add').classList.toggle('hidden', view === 'equipo' || view === 'vs');
-  $('#add').textContent = view === 'listado' ? '+ Añadir al listado' : '+ Añadir carrera';
 }
 
 /* ---------- Eventos ---------- */
@@ -859,7 +511,7 @@ document.addEventListener('click', e => {
   const ed = e.target.closest('[data-edit]'); if (ed) return openForm(ed.dataset.edit);
   const u = e.target.closest('[data-url]'); if (u) openUrl(u.dataset.url);
 });
-$('#add').onclick = () => view === 'equipo' ? openEquipo(null) : view === 'listado' ? openListado(null) : openForm(null);
+$('#add').onclick = () => openForm(null);
 $('#cancel').onclick = () => $('#dlg').close();
 $('#acomp').onchange = () => $('#conWrap').classList.toggle('hidden', !$('#acomp').checked);
 
@@ -876,11 +528,8 @@ function openForm(id){
   $('#hora').value = r?.hora || '';
   $('#km').value = r?.km ?? '';
   $('#dplus').value = r?.dplus ?? '';
-  $('#precio').value = r?.precio ?? '';
   document.querySelector(`input[name=voy][value=${r?.voy || 'pendiente'}]`).checked = true;
   $('#pagado').checked = !!r?.pagado;
-  $('#hecha').checked = !!r?.hecha;
-  drawEqPick(r?.equipo || []);
   $('#acomp').checked = !!r?.acomp;
   $('#con').value = r?.con || '';
   $('#conWrap').classList.toggle('hidden', !r?.acomp);
@@ -899,13 +548,10 @@ $('#f').onsubmit = async e => {
     fecha: $('#fecha').value,
     prov: $('#prov').checked,
     hora: $('#hora').value,
-    km: parseKm($('#km').value),
+    km: $('#km').value === '' ? '' : +$('#km').value,
     dplus: $('#dplus').value === '' ? '' : +$('#dplus').value,
-    precio: $('#precio').value === '' ? '' : Math.round(+$('#precio').value * 100) / 100,
     voy: document.querySelector('input[name=voy]:checked').value,
     pagado: $('#pagado').checked,
-    hecha: $('#hecha').checked,
-    equipo: [...document.querySelectorAll('#eqpick input:checked')].map(c => c.value),
     acomp: $('#acomp').checked,
     con: $('#acomp').checked ? $('#con').value.trim() : '',
     url: $('#url').value.trim(),
@@ -923,16 +569,11 @@ $('#f').onsubmit = async e => {
     for (const id of removed) await Files.del(id);
     rec.recibos = recs;
   } catch(err) { await info('No se pudo guardar el resguardo en este dispositivo. La carrera no se ha guardado.'); return; }
-  if (rec.hecha) rec.voy = 'si';
-  const prevDone = races.find(x => x.id === rec.id)?.hecha;
-  if (rec.hecha && !prevDone) applyDefaults(rec);
   const i = races.findIndex(x => x.id === rec.id);
-  const wasDone = i >= 0 && !!races[i].hecha;
   if (i >= 0) races[i] = rec; else races.push(rec);
   await save();
   $('#dlg').close();
   buildYears(); render();
-  checkProgress(rec.hecha && !wasDone);
 };
 $('#del').onclick = async () => {
   if (!await ask('¿Eliminar esta carrera?')) return;
@@ -1081,7 +722,7 @@ $('#pf').onsubmit = e => {
   for (const k of Object.keys(groups).sort()){
     const [y, m] = k.split('-');
     h += `<h2>${MESES[+m-1]} ${y} <small>· ${groups[k].length} carrera${groups[k].length>1?'s':''}</small></h2>
-    <table><thead><tr><th style="width:15%">Fecha</th><th>Carrera</th><th style="width:9%">Tipo</th><th style="width:10%">Distancia</th><th style="width:9%">¿Voy?</th><th style="width:9%">Pago</th><th style="width:9%">Precio</th><th style="width:13%">Compañía</th></tr></thead><tbody>`;
+    <table><thead><tr><th style="width:15%">Fecha</th><th>Carrera</th><th style="width:9%">Tipo</th><th style="width:10%">Distancia</th><th style="width:9%">¿Voy?</th><th style="width:9%">Pago</th><th style="width:15%">Compañía</th></tr></thead><tbody>`;
     for (const r of groups[k]){
       const d = r.fecha.split('-').reverse().join('/');
       const det = [r.km ? r.km + ' km' : '', r.dplus ? r.dplus + ' m D+' : ''].filter(Boolean).join(' · ') || '—';
@@ -1091,773 +732,20 @@ $('#pf').onsubmit = e => {
         <td>${esc(det)}</td>
         <td>${r.voy === 'si' ? '<b>Sí</b>' : r.voy === 'no' ? 'No' : 'Indeciso'}</td>
         <td>${r.voy === 'si' ? (r.pagado ? '<span class="okc">Pagada</span>' : '<span class="warn">Sin pagar</span>') : '—'}</td>
-        <td>${money(r) || r.precio === 0 ? eur(money(r)) : '—'}</td>
         <td>${r.acomp ? esc(r.con || 'Sí') : '—'}</td></tr>`;
     }
     h += '</tbody></table>';
   }
   const go = list.filter(r => r.voy === 'si');
-  h += `<div class="foot2">Total: <b>${list.length}</b> · Voy a <b>${go.length}</b> · Sin pagar: <b>${go.filter(r=>!r.pagado).length}</b> · Fechas provisionales: <b>${list.filter(r=>r.prov).length}</b><br>Pagado: <b>${eur(list.filter(r=>r.pagado).reduce((a,r)=>a+money(r),0))}</b> · Pendiente de pagar: <b>${eur(list.filter(r=>r.voy==='si'&&!r.pagado).reduce((a,r)=>a+money(r),0))}</b></div>`;
+  h += `<div class="foot2">Total: <b>${list.length}</b> · Voy a <b>${go.length}</b> · Sin pagar: <b>${go.filter(r=>!r.pagado).length}</b> · Fechas provisionales: <b>${list.filter(r=>r.prov).length}</b></div>`;
   $('#printArea').innerHTML = h;
   $('#pdlg').close();
   setTimeout(() => (IS_ANDROID ? Android.print() : window.print()), 150);
 };
 
-/* ========== v1.7 Perfil: avatar pixelart, niveles, logros, claves y equipo ========== */
-let PROFILE = {};
-const PROF_DEF = () => ({nombre:'Corredor', av:{skin:1, hair:'short', hc:0, out:'rojo', acc:'none', top:'short', bot:'shorts', pc:0, shoe:'road', sc:0, dc:0, sex:'m', obs:false, ec:0, gl:'none', beard:'none', bc:-1, tit:'none', sleeves:false, poles:false, bib:false, medal:false, money:false, cape:false, crown:false, ant:false}, equipo:[], rw:{items:[], xp:0, used:[]}, ach:{}, lvl:1});
-async function loadProfile(){
-  let p = null;
-  try { p = HAS_SERVER ? await (await fetch('/api/profile')).json() : JSON.parse(localStorage.getItem('gc_profile') || 'null'); } catch(e){}
-  const d = PROF_DEF();
-  p = (p && typeof p === 'object') ? p : {};
-  PROFILE = {...d, ...p, av:{...d.av, ...(p.av || {})}, rw:{...d.rw, ...(p.rw || {})}, ach:{...(p.ach || {})}};
-  if (PROFILE.av.acc === 'glasses' || PROFILE.av.acc === 'sunglasses') { PROFILE.av.gl = PROFILE.av.acc; PROFILE.av.acc = 'none'; }
-  if (PROFILE.av.acc === 'medal') { PROFILE.av.acc = 'none'; PROFILE.av.medal = true; }
-  if (!Array.isArray(PROFILE.equipo)) PROFILE.equipo = [];
-  if (!Array.isArray(PROFILE.listado)) PROFILE.listado = [];
-  PROFILE.equipo.forEach(x => { if (x.tipo === 'nutricion' || x.tipo === 'otros') x.tipo = 'otro'; if (x.tipo === 'mochila' || x.tipo === 'ropa') {} });
-  if (!Array.isArray(PROFILE.rw.items)) PROFILE.rw.items = [];
-  if (!Array.isArray(PROFILE.rw.used)) PROFILE.rw.used = [];
-}
-async function saveProfile(){
-  const j = JSON.stringify(PROFILE);
-  try { if (HAS_SERVER) await fetch('/api/profile', {method:'PUT', headers:{'Content-Type':'application/json'}, body:j}); else localStorage.setItem('gc_profile', j); } catch(e){}
-}
-
-/* --- XP y niveles --- */
-const doneRaces = () => races.filter(r => r.hecha);
-const raceXp = r => 50 + Math.round((+r.km || 0) * 3) + Math.round((+r.dplus || 0) / 25);
-const totalXp = () => doneRaces().reduce((a, r) => a + raceXp(r), 0) + (+PROFILE.rw.xp || 0);
-const levelOf = xp => Math.min(50, Math.floor(Math.sqrt(Math.max(0, xp) / 60)) + 1);
-const lvlBase = L => 60 * (L - 1) * (L - 1);
-const titleOf = L => L >= 17 ? 'Leyenda' : L >= 12 ? 'Élite' : L >= 8 ? 'Veterano' : L >= 5 ? 'Corredor' : L >= 3 ? 'Aficionado' : 'Novato';
-function maxYearSpend(){
-  const by = {};
-  for (const r of races) if (r.fecha && (r.voy === 'si' || r.pagado)) { const y = r.fecha.slice(0, 4); by[y] = (by[y] || 0) + (r.precio === '' || r.precio == null ? 0 : +r.precio || 0); }
-  return Math.max(0, ...Object.values(by));
-}
-function pstats(){
-  const d = doneRaces(), sum = k => d.reduce((a, r) => a + (+r[k] || 0), 0);
-  return {n:d.length, km:sum('km'), dp:sum('dplus'), tipos:new Set(d.map(r => r.tipo)).size, ultra:d.filter(r => r.tipo === 'ultra').length,
-    trail:d.filter(r => r.tipo === 'trail').length, road:d.filter(r => r.tipo === 'carretera').length, maxkm:Math.max(0, ...d.map(r => +r.km || 0)), comp:d.filter(r => r.acomp).length,
-    lvl:levelOf(totalXp()), eq:PROFILE.equipo.length, gasto:maxYearSpend()};
-}
-const ACH = [
-  {id:'first', tit:'Debutante', ic:'🏁', n:'Primera meta', d:'Completa tu primera carrera', p:s => [s.n, 1]},
-  {id:'c5', tit:'El Constante', ic:'🔥', n:'Constante', d:'Completa 5 carreras', p:s => [s.n, 5]},
-  {id:'c10', tit:'El Imparable', ic:'⚡', n:'Imparable', d:'Completa 10 carreras', p:s => [s.n, 10]},
-  {id:'c25', tit:'Leyenda del dorsal', ic:'🏆', n:'Leyenda del dorsal', d:'Completa 25 carreras', p:s => [s.n, 25]},
-  {id:'mar', tit:'Maratoniano', ic:'🎽', n:'Distancia maratón', d:'Completa una carrera de 42 km o más', p:s => [s.maxkm, 42]},
-  {id:'k100', tit:'Centenario', ic:'👟', n:'Centenario', d:'Acumula 100 km en carreras', p:s => [s.km, 100]},
-  {id:'k500', tit:'Devorakilómetros', ic:'🌍', n:'Medio millar', d:'Acumula 500 km en carreras', p:s => [s.km, 500]},
-  {id:'d1000', tit:'El Escalador', ic:'⛰️', n:'Escalador', d:'Acumula 1.000 m de desnivel positivo', p:s => [s.dp, 1000]},
-  {id:'d5000', tit:'El Alpinista', ic:'🏔️', n:'Alpinista', d:'Acumula 5.000 m de desnivel positivo', p:s => [s.dp, 5000]},
-  {id:'asf', tit:'Rompeasfalto', ic:'🛣️', n:'Rompeasfalto', d:'Completa 5 carreras de carretera', p:s => [s.road, 5]},
-  {id:'ultra', tit:'Ultrafondista', ic:'🌙', n:'Ultrafondista', d:'Completa una ultra', p:s => [s.ultra, 1]},
-  {id:'trail5', tit:'El Trailero', ic:'🌲', n:'Trailero', d:'Completa 5 trails', p:s => [s.trail, 5]},
-  {id:'todo', tit:'Todoterreno', ic:'🧭', n:'Todoterreno', d:'Completa carreras de 3 tipos distintos', p:s => [s.tipos, 3]},
-  {id:'comp', tit:'Compañero de ruta', ic:'🤝', n:'Mejor en compañía', d:'Completa una carrera acompañado', p:s => [s.comp, 1]},
-  {id:'l5', tit:'Corredor de pro', ic:'⭐', n:'Nivel 5', d:'Alcanza el nivel 5', p:s => [s.lvl, 5]},
-  {id:'l10', tit:'Estrella', ic:'🌟', n:'Nivel 10', d:'Alcanza el nivel 10', p:s => [s.lvl, 10]},
-  {id:'derro', tit:'El Derrochador', ic:'💸', n:'Derrochador', d:'Gasta 500 € en carreras en un mismo año (inscritas o pagadas). Desbloquea el saco de billetes.', p:s => [s.gasto, 500]},
-  {id:'eq3', tit:'Bien equipado', ic:'🎒', n:'Bien equipado', d:'Añade 3 piezas de equipo', p:s => [s.eq, 3]}
-];
-const SPECIAL = [
-  {id:'fundador', tit:'Socio fundador', ic:'👑', n:'Socio fundador', d:'Logro especial: se consigue con una clave de recompensa. Desbloquea la capa y la corona.'},
-  {id:'beta', tit:'Beta tester', ic:'🧪', n:'Beta tester', d:'Logro especial: se consigue con una clave de recompensa. Desbloquea las antenas.'}
-];
-async function checkProgress(announce, extra){
-  const s = pstats(), msgs = extra ? extra.slice() : [], lvl = s.lvl;
-  let ch = false;
-  if (announce && lvl > (PROFILE.lvl || 1)) msgs.push('⬆️ ¡Subes al nivel ' + lvl + '! (' + titleOf(lvl) + ')');
-  if (PROFILE.lvl !== lvl) { PROFILE.lvl = lvl; ch = true; }
-  for (const a of ACH) {
-    const [v, t] = a.p(s);
-    if (v >= t && !PROFILE.ach[a.id]) { PROFILE.ach[a.id] = new Date().toISOString().slice(0, 10); ch = true; if (announce) msgs.push(a.ic + ' Logro desbloqueado: ' + a.n); }
-    else if (v < t && PROFILE.ach[a.id]) { delete PROFILE.ach[a.id]; ch = true; if (announce) msgs.push('↩️ Logro retirado: ' + a.n + ' (ya no se cumple el requisito)'); }
-  }
-  if (ch) {  /* quita del avatar lo que se haya bloqueado */
-    const av = PROFILE.av, D = PROF_DEF().av;
-    for (const [key, list] of [['top', CAT.top], ['bot', CAT.bot], ['shoe', CAT.shoe], ['acc', ACCS], ['gl', GLASS], ['beard', BEARDS]]) { const it = list.find(x => x.id === av[key]); if (it && !unl(it)) av[key] = D[key]; }
-    if (av.tit && av.tit !== 'none' && !PROFILE.ach[av.tit]) av.tit = 'none';
-    for (const x of TOGS.concat(EXTRAS)) if (av[x.k] && !unl(x)) av[x.k] = false;
-    for (const [key, list] of [['out', OUTFITS], ['pc', PANT_COLS], ['sc', SHOE_COLS], ['dc', DETAIL_COLS]]) { const it = key === 'out' ? list.find(x => x.id === av.out) : list[av[key]]; if (it && !unl(it)) av[key] = D[key]; }
-  }
-  if (ch) await saveProfile();
-  if (announce && msgs.length) showCelebration(msgs);
-  else if ($('#adlg').open) renderProfile();
-}
-function showCelebration(msgs){
-  $('#cbody').innerHTML = avatarSVG(PROFILE.av, 120) + '<h3>¡Enhorabuena, ' + esc(PROFILE.nombre) + '!</h3>' + (titleTag() ? '<p>' + titleTag() + '</p>' : '') + msgs.map(m => '<p>' + esc(m) + '</p>').join('');
-  $('#cdlg').showModal();
-}
-
-/* --- Avatar pixelart de cuerpo completo 24x37, formas cuadradas, ropa de correr y zapatillas --- */
-const rw = (...p) => { const a = Array(20).fill('.'); for (const [f, t, c] of p) for (let x = f; x <= t; x++) a[x] = c; return a.join(''); };
-const rb = (...p) => { const a = Array(24).fill('.'); for (const [f, t, c] of p) for (let x = f; x <= t; x++) a[x] = c; return a.join(''); };
-const mixr = (a, b) => { const r = [...a]; for (let i = 0; i < b.length; i++) if (b[i] !== '.') r[i] = b[i]; return r.join(''); };
-const mk = spec => { const o = {}; for (const [r0, r1, s] of spec) for (let r = r0; r <= r1; r++) o[r] = o[r] ? mixr(o[r], s) : s; return o; };
-const SK_COL = ['#f8d9bd', '#eab98f', '#c98b5f', '#8d5a3b', '#5a3a26'];
-const HAIR_COL = ['#2b1d14', '#6b3e1d', '#c9922d', '#ecd59a', '#b8341e', '#8a8a8a', '#3a6ee8', '#d1389b', '#111111', '#9a5a2e', '#e8a35c', '#f2f2f2', '#6a3fb5', '#22b8a4', '#3fb950', '#ff8a1a', '#ff6fa8', '#1e2f6b'];
-const OUTFITS = [{id:'rojo', n:'Rojo', c:'#e0302a', lvl:0}, {id:'azul', n:'Azul', c:'#2f6fe0', lvl:0}, {id:'verde', n:'Verde', c:'#2fb36a', lvl:0}, {id:'negro', n:'Negro', c:'#2a2a33', lvl:0}, {id:'violeta', n:'Violeta', c:'#8a4fe0', lvl:5}, {id:'dorado', n:'Dorado', c:'#e0b030', lvl:12}];
-const PANT_COLS = [{c:'#2a2e3d', lvl:0}, {c:'#1f3a8a', lvl:0}, {c:'#6b7280', lvl:0}, {c:'#e0302a', lvl:0}, {c:'#2fb36a', lvl:0}, {c:'#f4f4f4', lvl:0}, {c:'#ff7a1a', id:'pc6', lvl:5}, {c:'#ffd23f', id:'pc7', lvl:9}];
-const SHOE_COLS = [{c:'#e0302a', lvl:0}, {c:'#2f6fe0', lvl:0}, {c:'#2fb36a', lvl:0}, {c:'#f4f4f4', lvl:0}, {c:'#2a2a33', lvl:0}, {c:'#ff7a1a', lvl:0}, {c:'#d7ff3a', id:'sc6', lvl:6}, {c:'#e0b030', id:'sc7', lvl:12}];
-const EYE_COLS = [{c:'#4a2e1a', n:'Marrón', lvl:0}, {c:'#3a7bd5', n:'Azul', lvl:0}, {c:'#2fa05a', n:'Verde', lvl:0}, {c:'#7a8794', n:'Gris', lvl:0}, {c:'#c8892b', n:'Miel', lvl:2}, {c:'#8a4fd6', n:'Violeta', lvl:5}, {c:'#38d9ff', n:'Cian', lvl:8}, {c:'#e0343a', n:'Rojo', lvl:12}];
-const DETAIL_COLS = [{c:'#f4f4f4', lvl:0}, {c:'#ffd23f', lvl:0}, {c:'#38d9ff', lvl:0}, {c:'#ff7a59', lvl:0}, {c:'#b0b0b0', lvl:0}, {c:'#ff3b30', lvl:0}, {c:'#8a4fe0', lvl:0}, {c:'#d7ff3a', id:'dc7', lvl:7}];
-const HAIRS = {short:'Corto', long:'Largo', mohawk:'Cresta', pony:'Coleta', afro:'Afro', bald:'Calvo'};
-const CAT = {
-  top:[{id:'short', n:'Manga corta', lvl:0}, {id:'tank', n:'Tirantes', lvl:2}, {id:'long', n:'Manga larga', lvl:4}, {id:'jacket', n:'Cortavientos', lvl:8}, {id:'finisher', n:'Finisher', ach:'c10'}],
-  bot:[{id:'shorts', n:'Pantalón corto', lvl:0}, {id:'half', n:'Mallas cortas', lvl:3}, {id:'tights', n:'Mallas largas', lvl:6}, {id:'baggy', n:'Pantalón técnico', lvl:9}],
-  shoe:[{id:'road', n:'Carretera', lvl:0}, {id:'trail', n:'Trail', lvl:2}, {id:'retro', n:'Clásicas', lvl:4}, {id:'plate', n:'Placa de carbono', ach:'mar'}]
-};
-const TITLES = () => SPECIAL.concat(ACH).map(x => ({id:x.id, n:x.tit, ach:x.id, ic:x.ic}));
-const titleTag = av => { const t = (av || PROFILE.av).tit, x = t && t !== 'none' && PROFILE.ach[t] && SPECIAL.concat(ACH).find(y => y.id === t); return x ? `<em class="ttl">${x.ic} ${esc(x.tit)}</em>` : ''; };
-const ACCS = [{id:'none', n:'Ninguno', lvl:0}, {id:'headband', n:'Cinta', lvl:2}, {id:'cap', n:'Gorra', lvl:4}, {id:'headphones', n:'Auriculares', lvl:12}, {id:'visor', n:'Visera', lvl:3}, {id:'capback', n:'Gorra hacia atrás', lvl:5}, {id:'bandana', n:'Bandana', lvl:7}, {id:'beanie', n:'Gorro', lvl:10}];
-const GLASS = [{id:'none', n:'Sin gafas', lvl:0}, {id:'glasses', n:'Gafas de ver', lvl:6}, {id:'sunglasses', n:'Gafas de sol', lvl:8}];
-const BEARDS = [{id:'none', n:'Sin barba', lvl:0}, {id:'bigote', n:'Bigote', lvl:0}, {id:'perilla', n:'Perilla', lvl:0}, {id:'patillas', n:'Patillas', lvl:0}, {id:'candado', n:'Candado', lvl:3}, {id:'corta', n:'Barba corta', lvl:5}, {id:'completa', n:'Barba completa', lvl:7}, {id:'larga', n:'Barba larga', lvl:10}];
-const BEARD_L = {
-  bigote:{10:rw([12,16,'X'])},
-  perilla:{10:rw([13,15,'X']), 11:rw([12,12,'X'],[15,15,'X']), 12:rw([11,15,'X']), 13:rw([12,14,'x'])},
-  patillas:{6:rw([8,9,'X']), 7:rw([8,9,'X']), 8:rw([8,9,'X']), 9:rw([8,9,'X']), 10:rw([8,10,'X']), 11:rw([9,10,'x'])},
-  candado:{10:rw([12,16,'X']), 11:rw([12,12,'X'],[15,15,'X']), 12:rw([11,15,'X']), 13:rw([12,14,'x'])},
-  corta:{9:rw([9,10,'X']), 10:rw([8,16,'X']), 11:rw([6,12,'X'],[15,15,'X']), 12:rw([7,15,'x'])},
-  completa:{8:rw([9,10,'X']), 9:rw([9,11,'X']), 10:rw([6,16,'X']), 11:rw([5,12,'X'],[15,16,'X']), 12:rw([6,15,'X']), 13:rw([8,14,'x'])},
-  larga:{8:rw([9,10,'X']), 9:rw([9,11,'X']), 10:rw([6,16,'X']), 11:rw([5,12,'X'],[15,16,'X']), 12:rw([6,15,'X']), 13:rw([7,15,'X']), 14:rw([8,15,'X']), 15:rw([9,14,'x']), 16:rw([10,13,'x'])}
-};
-const TOGS = [{k:'sleeves', id:'sleeves', n:'Manguitos', lvl:5}, {k:'poles', id:'poles', n:'Bastones', ach:'trail5'}, {k:'bib', id:'bib', n:'Dorsal', ach:'first'}, {k:'medal', id:'medal', n:'Medalla', lvl:10}, {k:'money', id:'money', n:'Saco de billetes', ach:'derro'}];
-const EXTRAS = [{k:'cape', id:'cape', n:'Capa', ach:'fundador'}, {k:'crown', id:'crown', n:'Corona', ach:'fundador'}, {k:'ant', id:'ant', n:'Antenas', ach:'beta'}, {k:'obs', id:'obsidiana', n:'Estilo obsidiana'}];
-const KNOWN_ITEMS = ['obsidiana', 'visor', 'capback', 'bandana', 'beanie', 'headband', 'cap', 'glasses', 'sunglasses', 'headphones', 'violeta', 'dorado', 'cape', 'crown', 'ant', 'tank', 'long', 'jacket', 'finisher', 'half', 'tights', 'baggy', 'trail', 'retro', 'plate', 'sleeves', 'poles', 'bib', 'medal', 'money', 'sc6', 'sc7', 'dc7', 'pc6', 'pc7'];
-/* cabeza de perfil 3/4 mirando a la derecha (rejilla de 20 columnas, se coloca con +2) */
-const HEAD_BASE = {
-  2:rw([4,15,'S']), 3:rw([4,15,'S']), 4:rw([4,15,'S']), 5:rw([4,15,'S']),
-  6:rw([4,15,'S'],[11,12,'b'],[14,15,'b']),
-  7:rw([4,15,'S'],[11,11,'W'],[12,12,'I'],[14,14,'W'],[15,15,'I']),
-  8:rw([4,16,'S'],[7,8,'s'],[11,11,'W'],[12,12,'I'],[14,14,'W'],[15,15,'I']),
-  9:rw([4,16,'S'],[7,8,'s'],[10,11,'K'],[15,15,'s']),
-  10:rw([4,15,'S']),
-  11:rw([5,15,'S'],[13,14,'M']),
-  12:rw([7,14,'S'])
-};
-const SHORT = {1:rw([6,13,'H']), 2:rw([4,15,'H']), 3:rw([4,16,'H']), 4:rw([4,15,'H']), 5:rw([4,9,'H'],[14,15,'H']), 6:rw([4,7,'H']), 7:rw([4,6,'H']), 8:rw([4,6,'H']), 9:rw([4,5,'H'])};
-const HAIR_L = {
-  short:SHORT,
-  long:{...SHORT, 5:rw([4,12,'H'],[14,15,'H']), 10:rw([3,6,'H']), 11:rw([3,6,'H']), 12:rw([3,7,'H']), 13:rw([2,7,'H']), 14:rw([2,7,'H'])},
-  mohawk:{0:rw([6,13,'H']), 1:rw([5,14,'H']), 2:rw([5,14,'H']), 3:rw([5,12,'H'])},
-  pony:{...SHORT, 4:rw([2,15,'H']), 5:rw([2,9,'H'],[14,15,'H']), 6:rw([2,7,'H']), 7:rw([2,6,'H']), 8:rw([2,6,'H']), 9:rw([2,5,'H']), 10:rw([2,3,'H']), 11:rw([2,3,'H'])},
-  afro:{0:rw([5,14,'H']), 1:rw([3,16,'H']), 2:rw([2,17,'H']), 3:rw([2,17,'H']), 4:rw([2,17,'H']), 5:rw([2,10,'H'],[14,17,'H']), 6:rw([2,7,'H']), 7:rw([2,6,'H']), 8:rw([2,6,'H']), 9:rw([2,6,'H'])},
-  bald:{}
-};
-const ACC_L = {
-  headband:{4:rw([4,16,'A'])},
-  cap:{1:rw([6,13,'A']), 2:rw([4,15,'A']), 3:rw([4,15,'A']), 4:rw([4,13,'A'],[14,18,'a'])},
-  glasses:{6:rw([10,13,'G'],[14,16,'G']), 7:rw([7,9,'G'],[10,10,'G'],[13,14,'G'],[16,16,'G']), 8:rw([10,10,'G'],[13,14,'G'],[16,16,'G']), 9:rw([10,13,'G'],[14,16,'G'])},
-  sunglasses:{7:rw([7,16,'G']), 8:rw([10,13,'G'],[14,16,'G'])},
-  headphones:{1:rw([7,12,'U']), 2:rw([6,6,'U'],[13,13,'U']), 3:rw([5,5,'U']), 4:rw([5,5,'U']), 5:rw([5,5,'U']), 6:rw([5,5,'U']), 7:rw([5,9,'U']), 8:rw([5,9,'U']), 9:rw([5,9,'U']), 10:rw([5,9,'U'])},
-  capback:{1:rw([6,13,'A']), 2:rw([4,15,'A']), 3:rw([4,15,'A']), 4:rw([4,15,'A'],[0,3,'a']), 5:rw([1,3,'a'])},
-  visor:{4:rw([4,13,'A'],[14,18,'a'])},
-  bandana:{2:rw([4,15,'C']), 3:rw([4,15,'C'],[6,6,'W'],[9,9,'W'],[12,12,'W']), 4:rw([4,16,'C'],[2,3,'C']), 5:rw([1,3,'C']), 6:rw([1,2,'C'])},
-  beanie:{0:rw([9,10,'W']), 1:rw([6,13,'A']), 2:rw([4,15,'A']), 3:rw([4,15,'A']), 4:rw([4,16,'a'])},
-  none:{}
-};
-const CROWN_L = {0:rw([6,6,'Y'],[9,9,'Y'],[12,12,'Y']), 1:rw([5,13,'Y'])};
-const ANT_L = {0:rw([8,8,'N'],[12,12,'N']), 1:rw([8,8,'Q'],[12,12,'Q'])};
-/* cuerpo esbelto (rejilla de 24 columnas x 40 filas) */
-const SKIN_BODY = mk([[13, 13, rb([10,13,'s'])], [14, 24, rb([8,15,'S'])], [14, 23, rb([6,7,'S'],[16,17,'S'])], [25, 26, rb([8,15,'S'])], [27, 34, rb([8,10,'S'],[13,15,'S'])]]);
-const TORSO = rb([8,15,'O']), NECK = rb([10,13,'S']);
-const TOP = {
-  short:mk([[14, 24, TORSO], [14, 16, rb([6,7,'O'],[16,17,'O'])], [14, 14, NECK]]),
-  tank:mk([[14, 15, rb([8,9,'O'],[14,15,'O'])], [16, 24, TORSO]]),
-  long:mk([[14, 24, TORSO], [14, 21, rb([6,7,'O'],[16,17,'O'])], [14, 14, NECK]]),
-  jacket:mk([[14, 24, TORSO], [14, 21, rb([6,7,'O'],[16,17,'O'])], [14, 24, rb([11,12,'z'])], [13, 14, rb([9,14,'o'])]]),
-  finisher:mk([[14, 24, TORSO], [14, 16, rb([6,7,'O'],[16,17,'O'])], [14, 14, NECK], [16, 16, rb([6,7,'Y'],[16,17,'Y'])], [24, 24, rb([8,15,'Y'])]])
-};
-const BOT = {
-  shorts:mk([[25, 26, rb([8,15,'P'])], [27, 28, rb([7,10,'P'],[13,16,'P'])], [25, 25, rb([8,15,'w'])]]),
-  half:mk([[25, 26, rb([8,15,'P'])], [27, 30, rb([8,10,'P'],[13,15,'P'])], [25, 25, rb([8,15,'w'])]]),
-  tights:mk([[25, 26, rb([8,15,'P'])], [27, 34, rb([8,10,'P'],[13,15,'P'])], [27, 34, rb([8,8,'f'],[15,15,'f'])], [25, 25, rb([8,15,'w'])]]),
-  baggy:mk([[25, 26, rb([8,15,'P'])], [27, 34, rb([7,10,'P'],[13,16,'P'])], [25, 25, rb([8,15,'w'])]])
-};
-const SHOE = {  /* se dibuja el pie izquierdo y se refleja */
-  road:{35:rb([8,10,'F'],[9,9,'L']), 36:rb([7,10,'F'],[8,9,'L']), 37:rb([6,10,'F']), 38:rb([5,10,'F'],[5,6,'f']), 39:rb([4,10,'R'])},
-  trail:{35:rb([8,10,'F'],[9,9,'L']), 36:rb([7,10,'F'],[8,9,'L']), 37:rb([6,10,'F'],[6,8,'f']), 38:rb([5,10,'F']), 39:rb([4,10,'r'],[5,5,'R'],[7,7,'R'],[9,9,'R'])},
-  retro:{35:rb([8,10,'F']), 36:rb([7,10,'F'],[9,10,'f']), 37:rb([6,10,'F'],[8,10,'f']), 38:rb([5,10,'F']), 39:rb([4,10,'R'])},
-  plate:{35:rb([8,10,'F'],[9,9,'L']), 36:rb([7,10,'F'],[8,9,'L']), 37:rb([6,10,'F']), 38:rb([4,10,'f']), 39:rb([4,10,'R'])}
-};
-const mirrorRows = rows => { const o = {}; for (const k in rows) { const a = [...rows[k]]; for (let x = 0; x < 12; x++) if (a[x] !== '.') a[23 - x] = a[x]; o[k] = a.join(''); } return o; };
-const SLEEVES_L = mk([[17, 21, rb([6,7,'f'],[16,17,'f'])]]);
-const BIB_L = mk([[17, 20, rb([9,14,'W'])], [18, 19, rb([10,10,'E'],[12,13,'E'])]]);
-const MONEY_L = mk([[24, 24, rb([5,5,'V'],[6,7,'J'],[8,8,'V'])], [25, 25, rb([4,7,'B'])], [26, 28, rb([3,7,'B'])], [27, 27, rb([5,5,'Y'])], [26, 28, rb([3,3,'J'])], [29, 29, rb([3,7,'J'])], [30, 30, rb([4,6,'J'])]]);
-const MEDAL_L = mk([[15, 16, rb([11,12,'Y'])]]);
-const POLES_L = mk([[20, 27, rb([5,5,'T'],[18,18,'T'])], [28, 33, rb([4,4,'T'],[19,19,'T'])], [34, 39, rb([3,3,'T'],[20,20,'T'])], [21, 23, rb([5,5,'G'],[18,18,'G'])], [37, 37, rb([2,4,'T'],[19,21,'T'])]]);
-const CAPE_L = mk([[13, 13, rb([8,15,'C'])], [14, 24, rb([4,19,'C'])], [25, 35, rb([6,17,'C'])]]);
-const CAPE_FRONT = mk([[15, 15, rb([10,13,'Y'])]]);
-function shade(hex, f){
-  const n = parseInt(hex.slice(1), 16), c = k => Math.max(0, Math.min(255, Math.round(((n >> k) & 255) * f)));
-  return '#' + [16, 8, 0].map(k => c(k).toString(16).padStart(2, '0')).join('');
-}
-function avatarSVG(av, w, mode){
-  av = {...PROF_DEF().av, ...(av || PROFILE.av)};
-  if (av.acc === 'glasses' || av.acc === 'sunglasses') { if (!av.gl || av.gl === 'none') av.gl = av.acc; av.acc = 'none'; }
-  const out = OUTFITS.find(o => o.id === av.out) || OUTFITS[0];
-  const skin = SK_COL[av.skin] || SK_COL[1], hair = HAIR_COL[av.hc] || HAIR_COL[0];
-  const pant = (PANT_COLS[av.pc] || PANT_COLS[0]).c, shoe = (SHOE_COLS[av.sc] || SHOE_COLS[0]).c, det = (DETAIL_COLS[av.dc] || DETAIL_COLS[0]).c;
-  const col = {S:skin, s:shade(skin, .86), K:'#f08a86', H:hair, h:shade(hair, 1.4), d:shade(hair, .72), b:shade(hair, .6), E:'#241a2b', W:'#ffffff', M:'#c2434f',
-    O:out.c, o:shade(out.c, .78), z:shade(out.c, .6), C:'#b3202a', Y:'#ffd23f', A:['cap', 'capback', 'visor', 'beanie'].includes(av.acc) ? out.c : '#f4f4f4', I:(EYE_COLS[av.ec] || EYE_COLS[0]).c, X:av.bc >= 0 && HAIR_COL[av.bc] ? HAIR_COL[av.bc] : hair, x:shade(av.bc >= 0 && HAIR_COL[av.bc] ? HAIR_COL[av.bc] : hair, .78), a:shade(out.c, .72), G:'#1b1b24', U:'#3a7bd5', Q:'#38d9ff', N:'#ff7a59',
-    P:pant, p:shade(pant, .8), w:shade(pant, .66), F:shoe, f:det, L:'#ffffff', R:'#f2f2f2', r:'#9b9b9b', T:'#9aa0a6', B:'#c8a165', J:'#8a6a3a', V:'#2fb36a'};
-  const g = Array.from({length:40}, () => Array(24).fill('.'));
-  const put = (rows, dx) => { dx = dx || 0; for (const k in rows) { const s = rows[k]; for (let x = 0; x < s.length; x++) if (s[x] !== '.' && x + dx < 24) g[+k][x + dx] = s[x]; } };
-  if (av.cape) put(CAPE_L);
-  put(SKIN_BODY); put(HEAD_BASE, 2);
-  put(BOT[av.bot] || BOT.shorts); put(TOP[av.top] || TOP.short); put(mirrorRows(SHOE[av.shoe] || SHOE.road));
-  if (av.sleeves) put(SLEEVES_L);
-  if (av.bib) put(BIB_L);
-  if (av.medal) put(MEDAL_L);
-  if (av.money) put(MONEY_L);
-  if (av.poles) put(POLES_L);
-  if (av.cape) put(CAPE_FRONT);
-  put(HAIR_L[av.hair] || HAIR_L.short, 2);
-  put(BEARD_L[av.beard] || {}, 2);
-  put(ACC_L[av.gl] || {}, 2);
-  put(ACC_L[av.acc] || {}, 2);
-  if (av.crown) put(CROWN_L, 2);
-  if (av.ant) put(ANT_L, 2);
-  if (av.sex === 'f') {
-    for (let y = 21; y <= 24; y++) { g[y][8] = '.'; g[y][15] = '.'; }
-    g[7][12] = 'E'; g[7][18] = 'E';
-  }
-  const at = (y, x) => (y < 0 || y > 39 || x < 0 || x > 23) ? '.' : g[y][x];
-  const fin = g.map(r => r.slice());
-  for (let y = 0; y < 40; y++) for (let x = 0; x < 24; x++) {
-    const ch = g[y][x], rt = at(y, x + 1) === '.', bt = at(y + 1, x) === '.';
-    if (ch === 'S' && (rt || bt)) fin[y][x] = 's';
-    else if (ch === 'H') fin[y][x] = at(y - 1, x) === '.' ? 'h' : (rt || bt) ? 'd' : 'H';
-    else if (ch === 'O' && rt) fin[y][x] = 'o';
-    else if (ch === 'P' && rt) fin[y][x] = 'p';
-  }
-  const OBSP = ['#07040d', '#0c0716', '#120a20', '#1a0f2e', '#221238', '#2a1458', '#3b1d7e', '#5a1fb0', '#7a1fd6', '#9b30ff', '#b455ff'], KEEP = 'SsKWEMIGb';
-  const obsCol = (ch, x, y) => {
-    const h = (((x * 73856093) ^ (y * 19349663) ^ (ch.charCodeAt(0) * 83492791)) >>> 0) % 100, h2 = (h * 7 + x + y) % 5;
-    const T = 'OoPpwz'.includes(ch) ? [66, 90] : 'HhdXx'.includes(ch) ? [72, 93] : 'FfLRr'.includes(ch) ? [22, 55] : [32, 62];
-    return h < T[0] ? OBSP[h2 % 5] : h < T[1] ? OBSP[5 + h2 % 3] : OBSP[8 + h2 % 3];
-  };
-  let r = '';
-  for (let y = 0; y < 40; y++) for (let x = 0; x < 24; x++) {
-    const ch = fin[y][x];
-    if (ch !== '.') r += `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${av.obs && !KEEP.includes(ch) ? obsCol(ch, x, y) : col[ch]}"${ch === 'K' ? ' fill-opacity=".75"' : ''}/>`;
-  }
-  const px = w || 96, bust = mode === 'bust', card = mode === 'card';
-  const vb = bust ? '2 0 20 18' : card ? '3 0 18 40' : '0 0 24 40', h = bust ? px * 18 / 20 : card ? px * 40 / 18 : px * 40 / 24;
-  return `<svg class="pxav" xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" shape-rendering="crispEdges" style="width:${px}px;height:${Math.round(h)}px">${r}</svg>`;
-}
-const hasItem = id => PROFILE.rw.items.includes(id);
-const curLvl = () => levelOf(totalXp());
-const unl = it => (it.lvl === 0) || (it.lvl && curLvl() >= it.lvl) || (it.ach && !!PROFILE.ach[it.ach]) || (it.id && hasItem(it.id)) || (!it.lvl && !it.ach && !it.id);
-
-/* --- Tarjeta de perfil y pantalla "Mi corredor" --- */
-function reqText(it){
-  const p = [];
-  if (it.lvl) p.push('el nivel ' + it.lvl);
-  if (it.ach) { const a = ACH.concat(SPECIAL).find(x => x.id === it.ach); p.push('el logro «' + (a ? a.n : it.ach) + '»'); }
-  return 'Se desbloquea con ' + (p.length ? p.join(' o ') + ' o ' : '') + 'una clave de recompensa';
-}
-function profCard(){
-  const xp = totalXp(), L = levelOf(xp), a = lvlBase(L), b = lvlBase(L + 1), pct = Math.max(0, Math.min(100, Math.round(100 * (xp - a) / (b - a))));
-  const nAch = ACH.concat(SPECIAL).filter(x => PROFILE.ach[x.id]).length;
-  return `<div class="pcard" data-prof="1">${avatarSVG(PROFILE.av, 50, 'card')}<div class="pi"><b>${esc(PROFILE.nombre)} <em class="ned">✏️</em></b>${titleTag()}<span>Nivel ${L} · ${titleOf(L)}</span>
-    <div class="xpbar"><u style="width:${pct}%"></u></div><small>${xp - a} / ${b - a} XP · ${nAch} logro${nAch === 1 ? '' : 's'}</small></div><span class="sc">›</span></div>`;
-}
-function renderProfile(){
-  const av = {...PROF_DEF().av, ...PROFILE.av}, xp = totalXp(), L = levelOf(xp), a = lvlBase(L), b = lvlBase(L + 1);
-  const shoeItem = PROFILE.equipo.find(x => x.tipo === 'zapatillas' && x.def && !x.retirado);
-  let h = `<div class="phero">${avatarSVG(av, 130)}<div class="pheroi"><label for="aname" class="nlbl">✏️ Nombre del corredor</label><input id="aname" maxlength="14" value="${esc(PROFILE.nombre)}" placeholder="Escribe tu nombre">${titleTag()}<div class="alv">Nivel ${L} · ${titleOf(L)}</div><div class="xpbar"><u style="width:${Math.max(0, Math.min(100, Math.round(100 * (xp - a) / (b - a))))}%"></u></div><small>${xp - a} / ${b - a} XP para el nivel ${L + 1}</small>${shoeItem ? `<small class="shoeline">👟 ${esc(shoeItem.nombre)}</small>` : ''}</div></div>
-  <button type="button" class="btn pri" id="aedit" style="width:100%;margin-top:10px">🎨 Editar avatar</button>
-  <div class="sh2">/ Logros</div><div class="agrid">`;
-  const s = pstats();
-  for (const x of SPECIAL) { const dn = PROFILE.ach[x.id]; h += `<div class="ach ${dn ? 'on' : ''} sp"><span class="ai">${x.ic}</span><div><b>${x.n}</b><small>${dn ? 'Conseguido el ' + esc(dn.split('-').reverse().join('/')) : x.d}</small></div></div>`; }
-  for (const x of ACH) {
-    const dn = PROFILE.ach[x.id], [v, t] = x.p(s), pc = Math.min(100, Math.round(100 * v / t));
-    h += `<div class="ach ${dn ? 'on' : ''}"><span class="ai">${x.ic}</span><div><b>${x.n}</b><small>${dn ? 'Conseguido el ' + esc(dn.split('-').reverse().join('/')) : x.d}</small>${dn ? '' : `<div class="xpbar"><u style="width:${pc}%"></u></div>`}</div></div>`;
-  }
-  h += '</div>';
-  const keep = $('#abody').scrollTop;
-  $('#abody').innerHTML = h; $('#abody').scrollTop = keep;
-}
-function renderEditor(){
-  const av = {...PROF_DEF().av, ...PROFILE.av}, xp = totalXp(), L = levelOf(xp);
-  const lk = it => unl(it) ? '' : `data-lock="${esc(reqText(it))}"`;
-  const chips = (list, key, cur) => list.map(x => `<button type="button" class="chip ${cur === x.id ? 'on' : ''} ${unl(x) ? '' : 'lock'}" data-av="${key}" data-v="${x.id}" ${lk(x)}>${unl(x) ? '' : '🔒 '}${x.n}</button>`).join('');
-  const tgl = list => list.map(x => `<button type="button" class="chip ${av[x.k] ? 'on' : ''} ${unl(x) ? '' : 'lock'}" data-av="extra" data-v="${x.k}" ${lk(x)}>${unl(x) ? '' : '🔒 '}${x.n}</button>`).join('');
-  const sw = (list, key, cur) => list.map((o, i) => `<button type="button" class="sw ${cur === i ? 'on' : ''} ${unl(o) ? '' : 'lock'}" data-av="${key}" data-v="${i}" ${lk(o)} style="background:${o.c}">${unl(o) ? '' : '🔒'}</button>`).join('');
-  const plain = (list, key, cur) => list.map((c, i) => `<button type="button" class="sw ${cur === i ? 'on' : ''}" data-av="${key}" data-v="${i}" style="background:${c}"></button>`).join('');
-  const h = `<div class="aprev">${avatarSVG(av, 92)}<div><b style="font-size:17px">${esc(PROFILE.nombre)}</b>${titleTag(av)}<div class="alv">Nivel ${L} · ${titleOf(L)}</div><small>Toca las opciones para ver los cambios al momento</small></div></div>
-  <p class="amsg"></p>
-  <div class="sh2">/ Personaje</div><div class="chips"><button type="button" class="chip ${av.sex !== 'f' ? 'on' : ''}" data-av="sex" data-v="m">👦 Chico</button><button type="button" class="chip ${av.sex === 'f' ? 'on' : ''}" data-av="sex" data-v="f">👧 Chica</button></div>
-  <div class="sh2">/ Piel</div><div class="swr">${plain(SK_COL, 'skin', av.skin)}</div>
-  <div class="sh2">/ Color de ojos</div><div class="swr">${sw(EYE_COLS, 'ec', av.ec)}</div>
-  <div class="sh2">/ Peinado</div><div class="chips">${Object.entries(HAIRS).map(([k, n]) => `<button type="button" class="chip ${av.hair === k ? 'on' : ''}" data-av="hair" data-v="${k}">${n}</button>`).join('')}</div>
-  <div class="sh2">/ Color de pelo</div><div class="swr">${plain(HAIR_COL, 'hc', av.hc)}</div>
-  <div class="sh2">/ Barba</div><div class="chips">${chips(BEARDS, 'beard', av.beard)}</div>
-  <div class="sh2">/ Color de barba</div><div class="swr"><button type="button" class="chip ${av.bc < 0 ? 'on' : ''}" data-av="bc" data-v="-1">Igual que el pelo</button>${plain(HAIR_COL, 'bc', av.bc)}</div>
-  <div class="sh2">/ Gafas</div><div class="chips">${chips(GLASS, 'gl', av.gl)}</div>
-  <div class="sh2">/ Cabeza</div><div class="chips">${chips(ACCS, 'acc', av.acc)}</div>
-  <div class="sh2">/ Camiseta</div><div class="chips">${chips(CAT.top, 'top', av.top)}</div>
-  <div class="sh2">/ Color de la camiseta</div><div class="swr">${OUTFITS.map(o => `<button type="button" class="sw ${av.out === o.id ? 'on' : ''} ${unl(o) ? '' : 'lock'}" data-av="out" data-v="${o.id}" ${lk(o)} style="background:${o.c}" title="${o.n}">${unl(o) ? '' : '🔒'}</button>`).join('')}</div>
-  <div class="sh2">/ Pantalón</div><div class="chips">${chips(CAT.bot, 'bot', av.bot)}</div>
-  <div class="sh2">/ Color del pantalón</div><div class="swr">${sw(PANT_COLS, 'pc', av.pc)}</div>
-  <div class="sh2">/ Zapatillas</div><div class="chips">${chips(CAT.shoe, 'shoe', av.shoe)}</div>
-  <div class="sh2">/ Color de las zapatillas</div><div class="swr">${sw(SHOE_COLS, 'sc', av.sc)}</div>
-  <div class="sh2">/ Detalles (suela, rayas, manguitos)</div><div class="swr">${sw(DETAIL_COLS, 'dc', av.dc)}</div>
-  <div class="sh2">/ Título junto al nombre</div><div class="chips">${chips([{id:'none', n:'Sin título', lvl:0}].concat(TITLES()), 'tit', av.tit || 'none')}</div>
-  <div class="sh2">/ Complementos</div><div class="chips">${tgl(TOGS)}</div>
-  <div class="sh2">/ Especiales</div><div class="chips">${tgl(EXTRAS)}</div>`;
-  const keep = $('#evbody').scrollTop;
-  $('#evbody').innerHTML = h; $('#evbody').scrollTop = keep;
-}
-function openProfile(){ renderProfile(); $('#adlg').showModal(); }
-function openEditor(){ renderEditor(); $('#evdlg').showModal(); }
-$('#abody').onclick = e => { if (e.target.closest('#aedit')) openEditor(); };
-$('#evbody').onclick = async e => {
-  const b = e.target.closest('[data-av]'); if (!b) return;
-  if (b.dataset.lock) { $('#evbody .amsg').textContent = '🔒 ' + b.dataset.lock; return; }
-  const k = b.dataset.av, v = b.dataset.v, av = PROFILE.av;
-  if (['skin', 'hc', 'pc', 'sc', 'dc', 'ec', 'bc'].includes(k)) av[k] = +v;
-  else if (k === 'extra') av[v] = !av[v];
-  else av[k] = v;
-  await saveProfile(); renderEditor();
-};
-$('#evclose').onclick = () => { $('#evdlg').close(); renderProfile(); };
-$('#abody').oninput = e => { if (e.target.id === 'aname') { PROFILE.nombre = e.target.value.trim().slice(0, 14) || 'Corredor'; saveProfile(); } };
-$('#abody').addEventListener('focusout', e => { if (e.target.id === 'aname' && !e.target.value.trim()) e.target.value = PROFILE.nombre; });
-$('#aclose').onclick = () => { $('#adlg').close(); if (view === 'dash') renderDash(); };
-$('#cok').onclick = () => { $('#cdlg').close(); if (view === 'dash') renderDash(); };
-
-function drawEqPick(sel){
-  const it = PROFILE.equipo.filter(x => !x.retirado || sel.includes(x.id));
-  $('#eqpick').innerHTML = it.length ? it.map(x => `<label class="chk"><input type="checkbox" value="${esc(x.id)}" ${sel.includes(x.id) ? 'checked' : ''}> ${(EQ_T[x.tipo] || EQ_T.otro)[0]} ${esc(x.nombre)}</label>`).join('') : '<span class="kmsg">Añade equipo en la pestaña Equipo para asignarlo aquí.</span>';
-}
-/* --- Carrera completada --- */
-async function toggleDone(id){
-  const r = races.find(x => x.id === id); if (!r) return;
-  if (r.hecha && !await ask('¿Quitar la marca de completada de «' + r.nombre + '»? Se restarán sus XP.')) return;
-  r.hecha = !r.hecha;
-  if (r.hecha) { r.voy = 'si'; applyDefaults(r); }
-  await save(); render();
-  await checkProgress(r.hecha);
-}
-
-/* --- Claves de recompensa --- */
-const b64u = u => { let s = ''; u.forEach(c => s += String.fromCharCode(c)); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); };
-async function redeemKey(txt){
-  const m = (txt || '').replace(/\s+/g, '').match(/^GR1\.([\w-]+)\.([\w-]+)$/);
-  if (!m) return {ok:false, msg:'La clave no tiene un formato válido.'};
-  let pl, sg;
-  try { pl = b64d(m[1]); sg = b64d(m[2]); } catch(e){ return {ok:false, msg:'La clave está dañada.'}; }
-  let good = false;
-  try { good = nacl.sign.detached.verify(pl, sg, b64d(window.REWARD_PK)); } catch(e){}
-  if (!good) return {ok:false, msg:'Clave no válida.'};
-  const [type, val, label, nonce, dev] = new TextDecoder().decode(pl).split('|');
-  if (dev && dev !== '*' && dev.replace('-', '') !== devCode().replace('-', '')) return {ok:false, msg:'Esta clave pertenece a otro dispositivo.'};
-  if (PROFILE.rw.used.includes(nonce)) return {ok:false, msg:'Esta clave ya se canjeó en este dispositivo.'};
-  const now = new Date().toISOString().slice(0, 10);
-  let msg;
-  if (type === 'logro' && (val === 'fundador' || val === 'beta')) {
-    PROFILE.ach[val] = PROFILE.ach[val] || now;
-    const sp = SPECIAL.find(x => x.id === val); msg = sp.ic + ' ¡Logro conseguido: ' + sp.n + '!';
-  } else if (type === 'item' && val === 'obsidiana') {
-    for (const id of KNOWN_ITEMS) if (!hasItem(id)) PROFILE.rw.items.push(id);
-    Object.assign(PROFILE.av, {obs:true, sleeves:true, poles:true, bib:true, medal:true, money:true, cape:true, crown:true, ant:true});
-    msg = '🟣 ¡Pack Obsidiana! Todos los accesorios desbloqueados y puestos en estilo obsidiana (puedes quitarlos en Editar avatar).';
-  } else if (type === 'item' && KNOWN_ITEMS.includes(val)) {
-    if (!hasItem(val)) PROFILE.rw.items.push(val);
-    msg = '🎁 Objeto desbloqueado: ' + (label || val);
-  } else if (type === 'xp' && +val > 0 && +val <= 100000) {
-    PROFILE.rw.xp = (+PROFILE.rw.xp || 0) + Math.round(+val); msg = '✨ +' + Math.round(+val) + ' XP';
-  } else return {ok:false, msg:'Esta clave no se puede canjear en esta versión.'};
-  PROFILE.rw.used.push(nonce);
-  await saveProfile();
-  return {ok:true, msg};
-}
-$('#kgo').onclick = async () => {
-  if (tryOwnerKey($('#ktext').value)) { $('#kdlg').close(); $('#ktext').value = ''; showCelebration(['🔑 Modo propietario activado en este dispositivo.']); return; }
-  const r = await redeemKey($('#ktext').value);
-  if (!r.ok) { $('#kmsg').textContent = r.msg; $('#kmsg').className = 'err'; return; }
-  $('#kdlg').close(); $('#ktext').value = '';
-  await checkProgress(true, [r.msg]);
-};
-$('#kclose').onclick = () => $('#kdlg').close();
-$('#krow').onclick = () => { $('#sdlg').close(); $('#kmsg').textContent = 'Pega aquí la clave de recompensa que te han dado.'; $('#kmsg').className = ''; $('#kdlg').showModal(); };
-$('#prow').onclick = () => { $('#sdlg').close(); openProfile(); };
-
-/* --- Generador de claves (modo propietario) --- */
-function tryOwnerKey(v){
-  try {
-    const sk = b64d(String(v).replace(/\s+/g, '')); if (sk.length !== 64) return false;
-    const t = new Uint8Array([1, 2, 3]);
-    if (!nacl.sign.detached.verify(t, nacl.sign.detached(t, sk), b64d(window.REWARD_PK))) return false;
-    localStorage.setItem('gc_owner', String(v).replace(/\s+/g, '')); return true;
-  } catch(e){ return false; }
-}
-const ownerKey = () => { try { return localStorage.getItem('gc_owner') || ''; } catch(e){ return ''; } };
-const ITEM_NAMES = {obsidiana:'Pack Obsidiana (todo + estilo obsidiana)', headband:'Cinta', cap:'Gorra', glasses:'Gafas', sunglasses:'Gafas de sol', headphones:'Auriculares', visor:'Visera', capback:'Gorra hacia atrás', bandana:'Bandana', beanie:'Gorro', medal:'Medalla', money:'Saco de billetes', violeta:'Ropa violeta', dorado:'Ropa dorada', cape:'Capa', crown:'Corona', ant:'Antenas', tank:'Camiseta de tirantes', long:'Camiseta manga larga', jacket:'Cortavientos', finisher:'Camiseta Finisher', half:'Mallas cortas', tights:'Mallas largas', baggy:'Pantalón técnico', trail:'Zapatillas trail', retro:'Zapatillas clásicas', plate:'Zapatillas de placa', sleeves:'Manguitos', poles:'Bastones', bib:'Dorsal', sc6:'Zapatillas color neón', sc7:'Zapatillas color oro', dc7:'Detalles neón', pc6:'Pantalón naranja', pc7:'Pantalón amarillo'};
-function fillGenValues(){
-  const t = $('#gtype').value, s = $('#gval');
-  $('#gxpwrap').classList.toggle('hidden', t !== 'xp'); s.parentElement.classList.toggle('hidden', t === 'xp');
-  s.innerHTML = t === 'logro' ? SPECIAL.map(x => `<option value="${x.id}">${x.ic} ${x.n}</option>`).join('') : Object.entries(ITEM_NAMES).map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
-}
-function drawGenHist(){
-  let h = []; try { h = JSON.parse(localStorage.getItem('gc_rwhist') || '[]'); } catch(e){}
-  $('#ghist').innerHTML = h.length ? h.slice().reverse().slice(0, 15).map(x => `<div class="kv"><span>${esc(new Date(x.at).toLocaleDateString('es-ES'))} · ${esc(x.what)}</span><b>${esc(x.lab || '—')}</b></div>`).join('') : '';
-}
-function openGen(){
-  const has = !!ownerKey();
-  $('#gown').classList.toggle('hidden', has); $('#gmain').classList.toggle('hidden', !has);
-  $('#gout').classList.add('hidden'); $('#gmsg').textContent = '';
-  fillGenValues(); drawGenHist();
-  $('#gdlg').showModal();
-}
-$('#grow').onclick = () => { $('#sdlg').close(); openGen(); };
-$('#gclose').onclick = () => $('#gdlg').close();
-$('#gtype').onchange = fillGenValues;
-$('#gsave').onclick = () => {
-  const v = $('#gpriv').value.trim();
-  try {
-    const sk = b64d(v); if (sk.length !== 64) throw 0;
-    const t = new Uint8Array([1, 2, 3]);
-    if (!nacl.sign.detached.verify(t, nacl.sign.detached(t, sk), b64d(window.REWARD_PK))) throw 0;
-  } catch(e){ $('#gmsg').textContent = 'Esa clave de propietario no es válida.'; return; }
-  try { localStorage.setItem('gc_owner', v); } catch(e){}
-  $('#gpriv').value = ''; openGen();
-};
-$('#gforget').onclick = async () => { if (await ask('¿Quitar la clave de propietario de este dispositivo?')) { try { localStorage.removeItem('gc_owner'); } catch(e){} $('#gdlg').close(); } };
-$('#ggen').onclick = () => {
-  const type = $('#gtype').value;
-  const val = type === 'xp' ? String(Math.round(+$('#gxp').value || 0)) : $('#gval').value;
-  if (type === 'xp' && (+val <= 0 || +val > 100000)) { $('#gmsg').textContent = 'Indica una cantidad de XP entre 1 y 100000.'; return; }
-  let dev = $('#gdev').value.trim().toUpperCase().replace(/[^0-9A-Z]/g, '');
-  if (dev && dev.length !== 8) { $('#gmsg').textContent = 'El código de dispositivo debe tener 8 caracteres.'; return; }
-  const lab = $('#glab').value.trim().replace(/\|/g, '/') || (type === 'item' ? ITEM_NAMES[val] : '');
-  const nonce = Math.random().toString(36).slice(2, 10);
-  const payload = new TextEncoder().encode([type, val, lab, nonce, dev || '*'].join('|'));
-  let key;
-  try { key = 'GR1.' + b64u(payload) + '.' + b64u(nacl.sign.detached(payload, b64d(ownerKey()))); } catch(e){ $('#gmsg').textContent = 'No se pudo firmar la clave.'; return; }
-  $('#gmsg').textContent = ''; $('#gkey').value = key; $('#gout').classList.remove('hidden'); $('#gcp').textContent = '';
-  const what = type === 'logro' ? SPECIAL.find(x => x.id === val).n : type === 'xp' ? '+' + val + ' XP' : ITEM_NAMES[val];
-  let h = []; try { h = JSON.parse(localStorage.getItem('gc_rwhist') || '[]'); } catch(e){}
-  h.push({at:Date.now(), what, lab}); try { localStorage.setItem('gc_rwhist', JSON.stringify(h)); } catch(e){}
-  drawGenHist();
-};
-$('#gcopy').onclick = async () => { $('#gkey').select(); try { await navigator.clipboard.writeText($('#gkey').value); } catch(e){ try { document.execCommand('copy'); } catch(e2){} } $('#gcp').textContent = '✔ Copiada'; };
-$('#gshare').onclick = () => { const k = $('#gkey').value; if (IS_ANDROID) Android.share(k); else if (navigator.share) navigator.share({text:k}).catch(() => {}); };
-
-/* --- Equipo --- */
-const EQ_T = {zapatillas:['👟', 'Zapatillas'], bici:['🚴', 'Bici'], bastones:['🦯', 'Bastones'], mochila:['🎒', 'Mochila / chaleco hidratación'], reloj:['⌚', 'Reloj / GPS'],
-  frontal:['🔦', 'Frontal'], ropa:['👕', 'Ropa técnica'], chaqueta:['🧥', 'Chaqueta / cortavientos'], casco:['⛑️', 'Casco'], otro:['📦', 'Otro']};
-let eqEditing = null, eqAssign = null;
-const eqRaces = id => doneRaces().filter(r => (r.equipo || []).includes(id));
-const eqKm = x => Math.round(((+x.km || 0) + eqRaces(x.id).reduce((a, r) => a + (+r.km || 0), 0)) * 10) / 10;
-function applyDefaults(r){ if (!(r.equipo && r.equipo.length)) r.equipo = PROFILE.equipo.filter(x => x.def && !x.retirado).map(x => x.id); }
-/* --- Distancias inteligentes --- */
-function parseKm(v){
-  const t = String(v ?? '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ');
-  if (!t) return '';
-  if (!/ultra/.test(t)) {
-    if (/(^|\s)(media|medio|half|1\/2)(\s|$)/.test(t)) return 21.1;
-    if (/maraton|marathon/.test(t)) return 42.2;
-  }
-  const n = parseFloat(t.replace(',', '.').replace(/[^0-9.]/g, ''));
-  return isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : '';
-}
-function bindKm(id){
-  const el = $(id);
-  el.addEventListener('input', () => { if (/^(media maraton|medio maraton|half marathon|maraton|marathon)$/i.test(el.value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) el.value = String(parseKm(el.value)); });
-  el.addEventListener('change', () => { const k = parseKm(el.value); el.value = k === '' ? '' : String(k); });
-}
-bindKm('#km'); bindKm('#lkm');
-
-/* --- Listado (base de datos de carreras, de un año a otro) --- */
-const lFilter = {q:'', tipo:'', year:''};
-let lEditing = null;
-const lFmt = x => x.fecha ? new Date(x.fecha + 'T00:00:00').toLocaleDateString('es-ES', {day:'numeric', month:'short', year:'numeric'}) : 'Sin fecha';
-function renderListado(){
-  const all = PROFILE.listado, today = new Date().toISOString().slice(0, 10);
-  const years = [...new Set(all.filter(x => x.fecha).map(x => x.fecha.slice(0, 4)))].sort().reverse();
-  const q = lFilter.q.toLowerCase();
-  const list = all.filter(x => (!lFilter.tipo || x.tipo === lFilter.tipo) && (!lFilter.year || (lFilter.year === 'nd' ? !x.fecha : (x.fecha || '').startsWith(lFilter.year)))
-    && (!q || (x.nombre + ' ' + (x.lugar || '') + ' ' + (x.notas || '')).toLowerCase().includes(q)));
-  $('#sumbar').innerHTML = `<div class="sum"><b>${all.length}</b><span>Carreras en el listado</span></div><div class="sum"><b>${all.filter(x => x.fecha && x.fecha >= today).length}</b><span>Próximas con fecha</span></div><div class="sum"><b>${all.filter(x => !x.fecha).length}</b><span>Sin fecha</span></div>`;
-  let h = `<div class="filters"><input id="lq" placeholder="Buscar…" value="${esc(lFilter.q)}">
-    <select id="lt"><option value="">Todos los tipos</option>${Object.entries(TIPOS).map(([k, v]) => `<option value="${k}" ${lFilter.tipo === k ? 'selected' : ''}>${v}</option>`).join('')}</select>
-    <select id="ly"><option value="">Todos los años</option>${years.map(y => `<option value="${y}" ${lFilter.year === y ? 'selected' : ''}>${y}</option>`).join('')}<option value="nd" ${lFilter.year === 'nd' ? 'selected' : ''}>Sin fecha</option></select><button type="button" class="btn sm" id="limp">⬇ Importar</button></div>`;
-  if (!all.length) h += '<div class="empty">Aún no hay carreras en el listado. Pulsa «+ Añadir al listado» para guardar las que vayan saliendo, aunque no te apuntes.</div>';
-  else if (!list.length) h += '<div class="empty">No hay carreras con estos filtros.</div>';
-  const grp = {};
-  for (const x of list) (grp[x.fecha ? x.fecha.slice(0, 4) : 'Sin fecha'] = grp[x.fecha ? x.fecha.slice(0, 4) : 'Sin fecha'] || []).push(x);
-  for (const g of Object.keys(grp).sort((a, b) => a === 'Sin fecha' ? 1 : b === 'Sin fecha' ? -1 : b.localeCompare(a))) {
-    h += `<div class="sh2">/ ${g}</div>`;
-    h += grp[g].sort((a, b) => (a.fecha || '9').localeCompare(b.fecha || '9') || a.nombre.localeCompare(b.nombre)).map(x => {
-      const sub = [TIPOS[x.tipo] || '', x.lugar, x.fecha ? (x.prov ? '~ ' : '') + lFmt(x) : '', x.precio !== '' && x.precio != null ? eur(+x.precio) : ''].filter(Boolean).map(esc).join(' · ');
-      const dup = races.some(r => r.nombre.trim().toLowerCase() === x.nombre.trim().toLowerCase() && x.fecha && r.fecha === x.fecha);
-      return `<div class="eqc"><div class="eqtop"><div class="eqt"><h4>🏁 ${esc(x.nombre)}${dup ? ' <span class="tag ok">En mis carreras</span>' : ''}</h4><div class="when">${sub}</div></div>
-        <div class="eqk"><b>${x.km !== '' && x.km != null ? (+x.km).toLocaleString('es-ES') + ' km' : '—'}</b><span>${x.dplus ? '+' + (+x.dplus).toLocaleString('es-ES') + ' m' : ''}</span></div></div>
-        ${x.notas ? `<div class="when">${esc(x.notas)}</div>` : ''}
-        <div class="eqact"><button class="btn sm" data-ledit="${x.id}">✎ Editar</button><button class="btn sm" data-lmine="${x.id}">➕ A mis carreras</button>${x.url ? `<button class="btn sm" data-url="${esc(x.url)}">🌐 Web</button>` : ''}</div></div>`;
-    }).join('');
-  }
-  const keep = window.scrollY;
-  $('#v-listado').innerHTML = h;
-  const q2 = $('#lq');
-  q2.oninput = () => { lFilter.q = q2.value; const pos = q2.selectionStart; renderListado(); const n = $('#lq'); n.focus(); n.setSelectionRange(pos, pos); };
-  $('#lt').onchange = e => { lFilter.tipo = e.target.value; renderListado(); };
-  $('#ly').onchange = e => { lFilter.year = e.target.value; renderListado(); };
-  $('#limp').onclick = openImport;
-}
-/* --- Importar al listado (JSON o CSV, archivo o pegado) --- */
-function parseImport(txt){
-  txt = (txt || '').trim(); if (!txt) return [];
-  let arr = null;
-  if (txt[0] === '[' || txt[0] === '{') { try { const j = JSON.parse(txt); arr = Array.isArray(j) ? j : (j.listado || j.carreras || []); } catch(e){} }
-  if (!arr) {
-    const lines = txt.split(/\r?\n/).filter(l => l.trim()); if (!lines.length) return [];
-    const sep = (lines[0].match(/;/g) || []).length >= (lines[0].match(/,/g) || []).length ? ';' : ',';
-    const cut = l => { const o = []; let c = '', q = false; for (let i = 0; i < l.length; i++) { const ch = l[i]; if (ch === '"') { if (q && l[i + 1] === '"') { c += '"'; i++; } else q = !q; } else if (ch === sep && !q) { o.push(c); c = ''; } else c += ch; } o.push(c); return o.map(v => v.trim()); };
-    const hd = cut(lines[0]).map(h => h.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
-    arr = lines.slice(1).map(l => { const v = cut(l), o = {}; hd.forEach((h, i) => o[h] = v[i] || ''); return o; });
-  }
-  const tp = t => { t = String(t || '').toLowerCase(); return t.startsWith('ultra') ? 'ultra' : t.startsWith('trail') || t.includes('monta') ? 'trail' : t.startsWith('carr') || t.includes('asfalt') || t.includes('ruta') ? 'carretera' : TIPOS[t] ? t : 'otros'; };
-  const bl = v => v === true || /^(1|true|si|sí|x)$/i.test(String(v || '').trim());
-  return arr.map(o => ({id: uid(), nombre: String(o.nombre || '').trim(), tipo: tp(o.tipo), lugar: String(o.lugar || '').trim(),
-    fecha: /^\d{4}-\d{2}-\d{2}$/.test(String(o.fecha || '').trim()) ? o.fecha.trim() : '', prov: bl(o.prov || o.prevista),
-    km: parseKm(String(o.km ?? '')), dplus: o.dplus === '' || o.dplus == null || isNaN(+o.dplus) ? '' : +o.dplus,
-    precio: o.precio === '' || o.precio == null || isNaN(+o.precio) ? '' : +o.precio, url: String(o.url || '').trim(), notas: String(o.notas || '').trim()})).filter(x => x.nombre);
-}
-function openImport(){
-  let d = $('#limpdlg');
-  if (!d) {
-    d = document.createElement('dialog'); d.id = 'limpdlg';
-    d.innerHTML = `<form method="dialog" style="display:flex;flex-direction:column;gap:10px;min-width:min(92vw,420px)"><h3 style="margin:0">Importar al listado</h3>
-      <div class="when">Elige un archivo .json o .csv (columnas: nombre, tipo, lugar, fecha, km, dplus, precio, prov, url, notas) o pega el contenido. Las carreras ya existentes (mismo nombre y fecha) se omiten.</div>
-      <input type="file" id="limpf" accept=".json,.csv,.txt,application/json,text/csv">
-      <textarea id="limpt" rows="6" placeholder="Pega aquí el JSON o CSV…"></textarea>
-      <div class="when" id="limpr"></div>
-      <div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" class="btn" id="limpc">Cerrar</button><button type="button" class="btn pri" id="limpg">Importar</button></div></form>`;
-    document.body.appendChild(d);
-    $('#limpc').onclick = () => d.close();
-    $('#limpf').onchange = async e => { const f = e.target.files[0]; if (f) $('#limpt').value = await f.text(); };
-    $('#limpg').onclick = async () => {
-      const nuevos = parseImport($('#limpt').value);
-      if (!nuevos.length) { $('#limpr').textContent = 'No se ha encontrado ninguna carrera válida.'; return; }
-      const key = x => x.nombre.trim().toLowerCase() + '|' + (x.fecha || '');
-      const have = new Set(PROFILE.listado.map(key)); let add = 0;
-      for (const x of nuevos) { if (have.has(key(x))) continue; have.add(key(x)); PROFILE.listado.push(x); add++; }
-      await saveProfile(); renderListado();
-      $('#limpr').textContent = `Importadas ${add} carreras nuevas · ${nuevos.length - add} ya existían.`;
-      $('#limpt').value = '';
-    };
-  }
-  $('#limpr').textContent = ''; d.showModal();
-}
-function openListado(id){
-  lEditing = id; const x = id ? PROFILE.listado.find(y => y.id === id) : null;
-  $('#ltitle').textContent = x ? 'Editar carrera del listado' : 'Nueva carrera en el listado';
-  $('#ldel').classList.toggle('hidden', !x);
-  $('#lnombre').value = x?.nombre || ''; $('#ltipo').value = x?.tipo || 'trail'; $('#llugar').value = x?.lugar || '';
-  $('#lfecha').value = x?.fecha || ''; $('#lkm').value = x?.km ?? ''; $('#ldplus').value = x?.dplus ?? ''; $('#lprecio').value = x?.precio ?? '';
-  $('#lprov').checked = !!x?.prov; $('#lurl').value = x?.url || ''; $('#lnotas').value = x?.notas || '';
-  $('#ldlg').showModal();
-}
-$('#lf').onsubmit = async e => {
-  e.preventDefault();
-  const rec = {id: lEditing || uid(), nombre: $('#lnombre').value.trim(), tipo: $('#ltipo').value, lugar: $('#llugar').value.trim(), fecha: $('#lfecha').value,
-    prov: $('#lprov').checked, km: parseKm($('#lkm').value), dplus: $('#ldplus').value === '' ? '' : +$('#ldplus').value,
-    precio: $('#lprecio').value === '' ? '' : Math.round(+$('#lprecio').value * 100) / 100, url: $('#lurl').value.trim(), notas: $('#lnotas').value.trim()};
-  if (!rec.nombre) return;
-  const i = PROFILE.listado.findIndex(y => y.id === rec.id);
-  if (i >= 0) PROFILE.listado[i] = rec; else PROFILE.listado.push(rec);
-  await saveProfile(); $('#ldlg').close(); renderListado();
-};
-$('#lcancel').onclick = () => $('#ldlg').close();
-$('#ldel').onclick = async () => {
-  if (!(await ask('¿Eliminar esta carrera del listado?'))) return;
-  PROFILE.listado = PROFILE.listado.filter(y => y.id !== lEditing); await saveProfile(); $('#ldlg').close(); renderListado();
-};
-$('#v-listado').addEventListener('click', e => {
-  const ed = e.target.closest('[data-ledit]'); if (ed) return openListado(ed.dataset.ledit);
-  const m = e.target.closest('[data-lmine]');
-  if (m) {
-    const x = PROFILE.listado.find(y => y.id === m.dataset.lmine); if (!x) return;
-    openForm(null);
-    $('#nombre').value = x.nombre; $('#tipo').value = x.tipo || 'trail'; $('#lugar').value = x.lugar || ''; $('#fecha').value = x.fecha || '';
-    $('#prov').checked = !!x.prov; $('#km').value = x.km ?? ''; $('#dplus').value = x.dplus ?? ''; $('#precio').value = x.precio ?? ''; $('#url').value = x.url || ''; $('#notas').value = x.notas || '';
-  }
-});
-/* --- VS: comparar carreras con un amigo --- */
-const vsMine = () => {
-  const xp = totalXp(), L = levelOf(xp), tt = (PROFILE.av.tit && PROFILE.av.tit !== 'none' && PROFILE.ach[PROFILE.av.tit]) ? SPECIAL.concat(ACH).find(y => y.id === PROFILE.av.tit) : null;
-  return {gc:'vs1', nombre: PROFILE.nombre, nivel: L, titulo: tt ? tt.ic + ' ' + tt.tit : '', logros: ACH.concat(SPECIAL).filter(x => PROFILE.ach[x.id]).length, av: PROFILE.av,
-    carreras: races.filter(r => r.voy === 'si' && r.fecha).map(r => ({nombre: r.nombre, fecha: r.fecha, km: r.km === '' || r.km == null ? '' : +r.km, tipo: r.tipo || '', lugar: r.lugar || ''}))};
-};
-const vsNorm = t => String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
-const vsFmt = f => new Date(f + 'T00:00:00').toLocaleDateString('es-ES', {day:'numeric', month:'short', year:'numeric'});
-function vsParse(txt){
-  try { const j = JSON.parse((txt || '').trim()); if (j && j.gc === 'vs1' && Array.isArray(j.carreras)) { j.nombre = String(j.nombre || 'Amigo').slice(0, 14); j.carreras = j.carreras.filter(c => c && c.nombre && /^\d{4}-\d{2}-\d{2}$/.test(c.fecha || '')); return j; } } catch(e){}
-  return null;
-}
-function renderVS(){
-  const me = vsMine(), fr = PROFILE.vs || null;
-  const km = l => Math.round(l.reduce((a, c) => a + (+c.km || 0), 0) * 10) / 10;
-  let h = `<div class="eqintro" style="padding:12px 14px;display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn pri" id="vsexp">⬆ Exportar mis carreras</button><button type="button" class="btn" id="vsimp">⬇ Importar amigo</button>${fr ? '<button type="button" class="btn sm" id="vsclr">Quitar amigo</button>' : ''}</div>`;
-  if (!fr) {
-    h += `<div class="empty">Exporta tus carreras y pásaselas a un amigo (archivo o texto). Cuando él te envíe las suyas, pulsa «Importar amigo» para enfrentaros.</div>`;
-  } else {
-    const key = c => vsNorm(c.nombre) + '|' + c.fecha;
-    const fk = new Map(fr.carreras.map(c => [key(c), c]));
-    const same = me.carreras.filter(c => fk.has(key(c)));
-    const sameDay = me.carreras.filter(c => !fk.has(key(c)) && fr.carreras.some(o => o.fecha === c.fecha));
-    const mk = km(me.carreras), fk2 = km(fr.carreras);
-    const side = (x, flip) => `<div class="vsside"><div class="${flip ? 'vsflip' : ''}">${avatarSVG(x.av, 120)}</div><b>${esc(x.nombre)}</b>${x.titulo ? `<em class="ttl">${esc(x.titulo)}</em>` : ''}<small>Nivel ${x.nivel} · ${x.logros} logros</small></div>`;
-    h += `<div class="vsarena">${side(me, false)}<div class="vsvs">VS</div>${side(fr, true)}</div>`;
-    const row = (l, a, b) => `<div class="vsrow"><b>${a}</b><span>${l}</span><b>${b}</b></div>`;
-    h += `<div class="eqc">${row('Carreras apuntadas', me.carreras.length, fr.carreras.length)}${row('Km totales', mk.toLocaleString('es-ES'), fk2.toLocaleString('es-ES'))}${row('Nivel', me.nivel, fr.nivel)}${row('Logros', me.logros, fr.logros)}${row('Carreras en común', same.length, same.length)}</div>`;
-    h += `<div class="sh2">/ Coincidencias</div>`;
-    h += same.length || sameDay.length ? same.map(c => `<div class="eqc"><div class="eqt"><h4>🤝 ${esc(c.nombre)}</h4><div class="when">${vsFmt(c.fecha)} · ¡La corréis los dos!</div></div></div>`).join('')
-      + sameDay.map(c => `<div class="eqc"><div class="eqt"><h4>📅 ${vsFmt(c.fecha)}</h4><div class="when">Mismo día, distinta carrera: ${esc(c.nombre)} (tú) · ${esc(fr.carreras.filter(o => o.fecha === c.fecha).map(o => o.nombre).join(', '))} (${esc(fr.nombre)})</div></div></div>`).join('')
-      : '<div class="empty">No coincidís en ninguna carrera todavía.</div>';
-    const col = (x, mineSide) => `<div class="vscol"><h4>${esc(x.nombre)}</h4>${x.carreras.slice().sort((a, b) => a.fecha.localeCompare(b.fecha)).map(c => {
-      const co = (mineSide ? fk.has(key(c)) : me.carreras.some(m => key(m) === key(c)));
-      return `<div class="vsit ${co ? 'co' : ''}"><b>${esc(c.nombre)}</b><span>${vsFmt(c.fecha)}${c.km !== '' ? ' · ' + c.km + ' km' : ''}</span></div>`; }).join('') || '<small>Sin carreras</small>'}</div>`;
-    h += `<div class="sh2">/ Calendario de cada uno</div><div class="vscols">${col(me, true)}${col(fr, false)}</div>`;
-  }
-  $('#v-vs').innerHTML = h;
-  $('#vsexp').onclick = vsExport; $('#vsimp').onclick = vsImportDlg;
-  if ($('#vsclr')) $('#vsclr').onclick = async () => { if (!(await ask('¿Quitar al amigo importado?'))) return; delete PROFILE.vs; await saveProfile(); renderVS(); };
-}
-function vsExport(){
-  const txt = JSON.stringify(vsMine());
-  let d = $('#vsexpdlg');
-  if (!d) {
-    d = document.createElement('dialog'); d.id = 'vsexpdlg';
-    d.innerHTML = `<form method="dialog" style="display:flex;flex-direction:column;gap:10px;min-width:min(92vw,420px)"><h3 style="margin:0">Exportar mis carreras</h3><div class="when">Se genera un archivo .json con tus carreras. Pásaselo a tu amigo para que lo importe en su pestaña VS.</div><textarea id="vsext" rows="5" readonly></textarea><div class="when" id="vsexr"></div><div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap"><button type="button" class="btn" id="vsexc">Cerrar</button><button type="button" class="btn" id="vsexcp">Copiar</button><button type="button" class="btn pri" id="vsexd">Guardar archivo .json</button></div></form>`;
-    document.body.appendChild(d);
-    $('#vsexc').onclick = () => d.close();
-    $('#vsexcp').onclick = async () => { $('#vsext').select(); try { await navigator.clipboard.writeText($('#vsext').value); $('#vsexr').textContent = 'Copiado.'; } catch(e){ document.execCommand('copy'); $('#vsexr').textContent = 'Copiado.'; } };
-    if (USE_PASTE) { $('#vsexd').textContent = 'Compartir archivo'; $('#vsext').style.display = 'none'; }
-    $('#vsexd').onclick = async () => {
-      const txt = $('#vsext').value, name = 'carreras-' + vsNorm(PROFILE.nombre).replace(/ /g, '-') + '.vs.json';
-      if (IS_ANDROID) { let ok = false; try { ok = Android.saveFile ? Android.saveFile(name, txt) : false; } catch(e){} if (!ok) Android.share(txt); return; }
-      try { const f = new File([txt], name, {type:'application/json'}); if (navigator.canShare && navigator.canShare({files: [f]})) { await navigator.share({files: [f]}); return; } } catch(e){ if (e && e.name === 'AbortError') return; }
-      if (USE_PASTE && navigator.share) { try { await navigator.share({title:'Mis carreras', text: txt}); return; } catch(e){ if (e && e.name === 'AbortError') return; } }
-      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], {type:'application/json'})); a.download = name; document.body.appendChild(a); a.click(); a.remove();
-    };
-  }
-  $('#vsext').value = txt; $('#vsexr').textContent = ''; d.showModal();
-}
-function vsImportDlg(){
-  let d = $('#vsimpdlg');
-  if (!d) {
-    d = document.createElement('dialog'); d.id = 'vsimpdlg';
-    d.innerHTML = `<form method="dialog" style="display:flex;flex-direction:column;gap:10px;min-width:min(92vw,420px)"><h3 style="margin:0">Importar amigo</h3><div class="when">Elige el archivo .vs.json que te ha pasado o pega su texto.</div><input type="file" id="vsimpf" accept=".json,.txt,application/json"><textarea id="vsimpt" rows="5" placeholder="Pega aquí el texto…"></textarea><div class="when" id="vsimpr"></div><div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" class="btn" id="vsimpc">Cerrar</button><button type="button" class="btn pri" id="vsimpg">¡VS!</button></div></form>`;
-    document.body.appendChild(d);
-    $('#vsimpc').onclick = () => d.close();
-    $('#vsimpf').onchange = async e => { const f = e.target.files[0]; if (f) $('#vsimpt').value = await f.text(); };
-    $('#vsimpg').onclick = async () => {
-      const j = vsParse($('#vsimpt').value); if (!j) { $('#vsimpr').textContent = 'El contenido no es válido.'; return; }
-      PROFILE.vs = j; await saveProfile(); d.close(); renderVS();
-    };
-  }
-  $('#vsimpr').textContent = ''; $('#vsimpt').value = ''; d.showModal();
-}
-function renderEquipo(){
-  const list = PROFILE.equipo, act = list.filter(x => !x.retirado);
-  const inv = list.reduce((a, x) => a + (+x.precio || 0), 0), km = list.reduce((a, x) => a + eqKm(x), 0);
-  $('#sumbar').innerHTML = `<div class="sum"><b>${act.length}</b><span>Piezas en uso</span></div><div class="sum"><b>${eur(inv)}</b><span>Invertido</span></div><div class="sum"><b>${Math.round(km).toLocaleString('es-ES')} km</b><span>Km de uso</span></div>`;
-  let h = `<div class="eqintro" style="padding:12px 14px"><button type="button" class="btn pri" data-eadd="1">+ Añadir equipo</button></div>`;
-  const sorted = list.slice().sort((a, b) => (a.retirado ? 1 : 0) - (b.retirado ? 1 : 0));
-  h += sorted.map(x => {
-    const [ic, nm] = EQ_T[x.tipo] || EQ_T.otro, k = eqKm(x), n = eqRaces(x.id).length, vida = +x.vida || 0, pc = vida ? Math.min(100, Math.round(100 * k / vida)) : 0;
-    const sub = [nm, x.marca, x.fecha ? 'desde ' + new Date(x.fecha + 'T00:00:00').toLocaleDateString('es-ES', {day:'numeric', month:'short', year:'numeric'}) : '', x.precio !== '' && x.precio != null ? eur(+x.precio) : ''].filter(Boolean).map(esc).join(' · ');
-    return `<div class="eqc ${x.retirado ? 'ret' : ''}"><div class="eqtop"><div class="eqt"><h4>${ic} ${esc(x.nombre)}${x.def ? ' <span class="tag">⭐ Predeterminado</span>' : ''}${x.retirado ? ' <span class="tag">Retirado</span>' : ''}</h4><div class="when">${sub}</div></div>
-      <div class="eqk"><b>${k.toLocaleString('es-ES')} km</b><span>${n} uso${n === 1 ? '' : 's'}</span></div></div>
-      ${vida ? `<div class="xpbar ${pc >= 85 ? 'warn' : ''}"><u style="width:${pc}%"></u></div><div class="when">${k.toLocaleString('es-ES')} / ${vida.toLocaleString('es-ES')} km de vida útil</div>` : ''}
-      ${x.notas ? `<div class="when">${esc(x.notas)}</div>` : ''}
-      <div class="eqact"><button class="btn sm" data-eedit="${x.id}">✎ Editar</button><button class="btn sm" data-eassign="${x.id}">↺ Asignar carreras pasadas</button><button class="btn sm" data-eret="${x.id}">${x.retirado ? 'Reactivar' : 'Retirar'}</button></div></div>`;
-  }).join('');
-  $('#v-equipo').innerHTML = h;
-}
-function openEquipo(id){
-  eqEditing = id; const x = id ? PROFILE.equipo.find(y => y.id === id) : null;
-  $('#etitle').textContent = x ? 'Editar equipo' : 'Nuevo equipo';
-  $('#etipo').innerHTML = Object.entries(EQ_T).map(([k, [ic, n]]) => `<option value="${k}">${ic} ${n}</option>`).join('');
-  $('#etipo').value = x?.tipo || 'zapatillas'; $('#enombre').value = x?.nombre || ''; $('#emarca').value = x?.marca || '';
-  $('#efecha').value = x?.fecha || ''; $('#eprecio').value = x?.precio ?? ''; $('#ekm').value = x?.km ?? '';
-  $('#evida').value = x ? (x.vida ?? '') : 700; $('#edef').checked = !!x?.def;
-  $('#enotas').value = x?.notas || ''; $('#edel').classList.toggle('hidden', !x);
-  $('#edlg').showModal();
-}
-$('#etipo').onchange = () => { if (!eqEditing && $('#evida').value !== '') $('#evida').value = $('#etipo').value === 'zapatillas' ? 700 : ''; };
-$('#ef').onsubmit = async e => {
-  e.preventDefault();
-  const old = eqEditing ? PROFILE.equipo.find(y => y.id === eqEditing) : null;
-  const x = {id:eqEditing || uid(), tipo:$('#etipo').value, nombre:$('#enombre').value.trim(), marca:$('#emarca').value.trim(), fecha:$('#efecha').value,
-    precio:$('#eprecio').value === '' ? '' : Math.round(+$('#eprecio').value * 100) / 100, km:$('#ekm').value === '' ? '' : +$('#ekm').value,
-    vida:$('#evida').value === '' ? '' : +$('#evida').value, def:$('#edef').checked, notas:$('#enotas').value.trim(), retirado:!!old?.retirado};
-  if (!x.nombre) return;
-  if (x.def) PROFILE.equipo.forEach(y => { if (y.tipo === x.tipo && y.id !== x.id) y.def = false; });
-  const i = PROFILE.equipo.findIndex(y => y.id === x.id);
-  if (i >= 0) PROFILE.equipo[i] = x; else PROFILE.equipo.push(x);
-  await saveProfile(); $('#edlg').close(); render(); await checkProgress(true);
-};
-$('#ecancel').onclick = () => $('#edlg').close();
-$('#edel').onclick = async () => {
-  if (!await ask('¿Eliminar esta pieza de equipo?')) return;
-  PROFILE.equipo = PROFILE.equipo.filter(y => y.id !== eqEditing);
-  let ch = false; races.forEach(r => { if ((r.equipo || []).includes(eqEditing)) { r.equipo = r.equipo.filter(i => i !== eqEditing); ch = true; } });
-  if (ch) await save();
-  await saveProfile(); $('#edlg').close(); render();
-};
-function openAssign(id){
-  const x = PROFILE.equipo.find(y => y.id === id); if (!x) return;
-  eqAssign = id; $('#astitle').textContent = 'Asignar carreras · ' + x.nombre;
-  const d = doneRaces().sort((a, b) => b.fecha.localeCompare(a.fecha));
-  $('#aslist').innerHTML = d.length ? d.map(r => `<label class="chk" style="margin-bottom:6px"><input type="checkbox" data-as="${esc(r.id)}" ${(r.equipo || []).includes(id) ? 'checked' : ''}> <span>${esc(r.nombre)} <small style="color:var(--muted)">· ${esc(r.fecha.split('-').reverse().join('/'))}${r.km ? ' · ' + esc(r.km) + ' km' : ''}</small></span></label>`).join('')
-    : '<p class="kmsg">Aún no tienes carreras completadas. Marca una carrera como ✔ Completada y podrás asignarle equipo.</p>';
-  $('#asdlg').showModal();
-}
-$('#assave').onclick = async () => {
-  document.querySelectorAll('#aslist [data-as]').forEach(c => {
-    const r = races.find(y => y.id === c.dataset.as); if (!r) return;
-    const s = new Set(r.equipo || []); if (c.checked) s.add(eqAssign); else s.delete(eqAssign); r.equipo = [...s];
-  });
-  await save(); $('#asdlg').close(); render();
-};
-$('#ascancel').onclick = () => $('#asdlg').close();
-document.addEventListener('click', async e => {
-  const q = e.target.closest('[data-eedit]'); if (q) return openEquipo(q.dataset.eedit);
-  if (e.target.closest('[data-eadd]')) return openEquipo(null);
-  const a = e.target.closest('[data-eassign]'); if (a) return openAssign(a.dataset.eassign);
-  const rt = e.target.closest('[data-eret]'); if (rt) { const x = PROFILE.equipo.find(y => y.id === rt.dataset.eret); if (x) { x.retirado = !x.retirado; if (x.retirado) x.def = false; await saveProfile(); render(); } return; }
-  const p = e.target.closest('[data-prof]'); if (p) return openProfile();
-  const d = e.target.closest('[data-done]'); if (d) return toggleDone(d.dataset.done);
-});
-
-/* Copia automática semanal */
-function bakGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
-function bakSet(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
-function fmtBak(ts){ return ts ? new Date(+ts).toLocaleString('es-ES', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}) : ''; }
-async function autoBackup(force){
-  if (!force && bakGet('gc_autobak') !== '1') return;
-  const last = +(bakGet('gc_lastbak') || 0);
-  if (!force && Date.now() - last < 7 * 86400000) return;
-  if (!races.length && !force) return;
-  const json = JSON.stringify({v:2, races, perfil:PROFILE});
-  if (HAS_SERVER) { try { await fetch('/api/backup', {method:'POST', headers:{'Content-Type':'application/json'}, body: json}); } catch(e){ return; } }
-  bakSet('gc_snap', json); bakSet('gc_lastbak', String(Date.now()));
-}
-
 /* Exportar / importar */
 $('#exp').onclick = () => {
-  bakSet('gc_lastbak', String(Date.now())); bakSet('gc_snap', JSON.stringify(races));
-  const json = JSON.stringify({v:2, races, perfil:PROFILE}, null, 2);
+  const json = JSON.stringify(races, null, 2);
   if (IS_ANDROID) { Android.share(json); return; }
   if (USE_PASTE && navigator.share) { navigator.share({title:'Copia de carreras', text: json}).catch(()=>{}); return; }
   const blob = new Blob([json], {type:'application/json'});
@@ -1868,12 +756,10 @@ $('#exp').onclick = () => {
 };
 async function applyImport(text){
   try {
-    const data0 = JSON.parse(text);
-    const data = Array.isArray(data0) ? data0 : data0.races;
+    const data = JSON.parse(text);
     if (!Array.isArray(data)) throw 0;
     if (!await ask(`Se reemplazarán tus ${races.length} carreras por las ${data.length} de la copia. ¿Continuar?`)) return false;
     races = data.map(r => ({...r, id: r.id || uid()}));
-    if (!Array.isArray(data0) && data0.perfil && typeof data0.perfil === 'object') { const d = PROF_DEF(), p = data0.perfil; PROFILE = {...d, ...p, av:{...d.av, ...(p.av || {})}, rw:{...d.rw, ...(p.rw || {})}, ach:{...(p.ach || {})}}; if (!Array.isArray(PROFILE.equipo)) PROFILE.equipo = []; await saveProfile(); }
     await save(); buildYears(); render();
     return true;
   } catch { await info('La copia no es válida.'); return false; }
@@ -1896,146 +782,6 @@ if (HAS_SERVER) {
 setInterval(() => { tick(); }, 1000);
 setInterval(() => { if (view === 'dash' && !$('#dlg').open) renderDash(); }, 60000 * 30);
 
-/* ---------- Novedades (editables) ---------- */
-const APP_VERSION = '1.9.19';
-const NOTES_DEFAULT = [
-  {v:'1.9.19', d:'2026-11-05', t:'• VS: en Android «Compartir archivo» genera un archivo .json real (se guarda en Descargas y se abre el menú para enviarlo) en lugar de texto. Importar sigue aceptando archivo o texto.'},
-  {v:'1.9.18', d:'2026-11-05', t:'• VS: en el móvil el botón de exportar pasa a «Compartir» y abre el menú de compartir (WhatsApp, correo…); antes no guardaba nada. «Copiar» sigue disponible.'},
-  {v:'1.9.17', d:'2026-11-05', t:'• La app pasa a llamarse RacingTrack, con nuevo icono: la zapatilla con las siglas RT en mayúsculas y borde blanco. Tus datos y licencia se conservan.'},
-  {v:'1.9.16', d:'2026-11-05', t:'• Nueva pestaña «VS»: exporta tus carreras apuntadas y compáralas con las de un amigo (archivo o texto). Muestra los dos avatares enfrentados, resumen comparativo, coincidencias y el calendario de cada uno.'},
-  {v:'1.9.15', d:'2026-11-05', t:'• Listado: nuevo botón «Importar» (archivo .json/.csv o texto pegado) con detección de duplicados. Incluye listado de carreras de trail y asfalto de Madrid y alrededores (resto de 2026 y 2027).'},
-  {v:'1.9.14', d:'2026-11-05', t:'• Nueva pestaña «Listado»: base de datos de carreras que van saliendo (aunque no te apuntes), agrupadas por año, con buscador y filtros. Botón «A mis carreras» para pasarlas a tu calendario.\n• Distancia inteligente: al escribir «media maratón» o «maratón» se rellena sola (21,1 / 42,2 km).'},
-  {v:'1.9.13', d:'2026-11-05', t:'• Nueva recompensa «Pack Obsidiana»: desbloquea todos los accesorios y un estilo exclusivo obsidiana (negro y morado con textura) que se activa/desactiva en Editar avatar → Especiales.'},
-  {v:'1.9.12', d:'2026-11-05', t:'• Patillas rehechas: bajan pegadas al pelo, delante de la oreja, y acaban en punta.'},
-  {v:'1.9.11', d:'2026-11-05', t:'• Barbas rehechas: ahora siguen la mandíbula, se unen con el bigote y la patilla y sobresalen en la barbilla, con sombreado.'},
-  {v:'1.9.10', d:'2026-11-05', t:'• 18 colores de pelo.\n• Barbas: bigote, perilla, patillas, candado, corta, completa y larga, con color propio.\n• Gafas de ver o de sol independientes de gorras y demás accesorios de cabeza.'},
-  {v:'1.9.9', d:'2026-11-05', t:'• Ojos más grandes con color elegible (8 colores, algunos por nivel).\n• Nuevos accesorios de cabeza: visera, gorra hacia atrás, bandana y gorro.'},
-  {v:'1.9.8', d:'2026-11-05', t:'• Caras rediseñadas en estilo pixel-art de perfil: cabeza girada casi 90° mirando a la derecha, con nariz, oreja y mirada de lado. Peinados y accesorios adaptados.'},
-  {v:'1.9.7', d:'2026-11-04', t:'• Equipo: se quita el texto explicativo y queda solo el botón «Añadir equipo».'},
-  {v:'1.9.6', d:'2026-11-04', t:'• Los logros dan títulos (El Escalador, Rompeasfalto, Maratoniano…) que puedes poner junto al nombre desde Editar avatar → Título.\n• Nuevo logro «Rompeasfalto»: 5 carreras de carretera.'},
-  {v:'1.9.5', d:'2026-11-04', t:'• Mi corredor muestra primero el avatar y los logros; el botón «Editar avatar» abre una ventana aparte con todas las opciones.\n• Puedes elegir entre chico y chica.'},
-  {v:'1.9.4', d:'2026-11-04', t:'• Si dejas de cumplir el requisito de un logro (por ejemplo desmarcas una carrera), el logro se retira y se quita del avatar lo que desbloqueaba.\n• «Generar claves» solo aparece si metes la clave de propietario (en Canjear clave o en la pantalla de licencia).'},
-  {v:'1.9.3', d:'2026-11-04', t:'• Nuevo logro «Derrochador»: gasta 500 € en carreras en un mismo año.\n• Nueva recompensa: saco de billetes para el avatar (Complementos).'},
-  {v:'1.9.2', d:'2026-11-04', t:'• El Resumen muestra ya el avatar de cuerpo completo.\n• Cuerpo más esbelto (torso, brazos y piernas más finos) y cabeza proporcionalmente más grande.'},
-  {v:'1.9.1', d:'2026-11-04', t:'• Botón «Completar» en rojo; al pulsarlo pasa a «✔ Completada» en verde (volver a pulsarlo pide confirmación).'},
-  {v:'1.9', d:'2026-11-05', t:'• Avatar de cuerpo completo con ropa de correr: camiseta (manga corta, tirantes, manga larga, cortavientos, finisher), pantalón (corto, mallas cortas, mallas largas, técnico), manguitos, bastones y dorsal.\n• Zapatillas como pieza principal: modelos Carretera, Trail, Clásicas y Placa de carbono, con color y detalles.\n• Muchas prendas se desbloquean con nivel, logros o claves de recompensa.'},
-  {v:'1.8', d:'2026-11-04', t:'• Avatares con formas cuadradas (cara, pelo y cuerpo).\n• Equipo rediseñado: Zapatillas, Bici, Bastones, Mochila/chaleco, Reloj/GPS, Frontal, Ropa técnica, Chaqueta, Casco y Otro.\n• Los km del equipo se suman solos con las carreras completadas donde lo uses; vida útil con barra, equipo predeterminado y «Asignar carreras pasadas».\n• En cada carrera puedes elegir el equipo usado.'},
-  {v:'1.7.2', d:'2026-11-04', t:'• Nuevo estilo del avatar: busto pixelart con cabeza grande, ojos con brillo, mejillas y sombreado.\n• Nuevo accesorio: auriculares (nivel 12).'},
-  {v:'1.7.1', d:'2026-11-04', t:'• El nombre del corredor se edita de forma visible en «Mi corredor» (toca la tarjeta del Resumen, ✏️).'},
-  {v:'1.7', d:'2026-11-05', t:'• Tu corredor en pixelart: personaliza piel, pelo, ropa y accesorios; sube de nivel al marcar carreras como completadas ✔.\n• Logros automáticos (primera meta, km, desnivel, ultra…) y logros especiales: Socio fundador y Beta tester, con clave de recompensa.\n• Ajustes → Recompensas: canjear claves y (propietario) generar claves.\n• Nueva pestaña Equipo: zapatillas, bicis, mochilas, relojes…\n• Las copias de seguridad incluyen ahora corredor, logros y equipo.'},
-  {v:'1.6.1', d:'2026-11-04', t:'• Pestaña Meses ajustada al ancho del móvil: sin movimiento lateral, solo arriba y abajo.'},
-  {v:'1.6', d:'2026-11-04', t:'• Nuevo diseño oscuro en rojo, igual que Mis Gastos: cabecera con logo, barra inferior con iconos y tarjetas con barra de progreso.\n• Ajustes como pantalla completa: Licencia, Exportar, Copia de seguridad y Apariencia.\n• Copia automática semanal (activable) y botón para restaurarla.'},
-  {v:'1.5', d:'2026-11-05', t:'• Nuevo diseño en rojo con barra de pestañas.\n• Rueda de ajustes ⚙: licencia, datos, apariencia y novedades.\n• Cómo solicitar la renovación de la licencia (con tu código de dispositivo).\n• Nuevo icono: zapatilla de correr.'},
-  {v:'1.4', d:'2026-11-04', t:'• Precio de cada carrera (al crearla o editarla).\n• Resumen superior: total pagado, pendiente de pagar y total.\n• Novedades editables por ti.\n• Claves de licencia de por vida.'},
-  {v:'1.3', d:'2026-11-02', t:'• El desnivel admite cualquier número (por ejemplo 1654).'},
-  {v:'1.2', d:'2026-11-02', t:'• Resguardos de pago: adjunta PDF o imagen a cada carrera y consúltalos cuando quieras.'},
-  {v:'1.1', d:'2026-11-02', t:'• Clave de acceso con caducidad (APK y versión iPhone).\n• Fecha confirmada o provisional.\n• Exportar a PDF por años y meses.'},
-  {v:'1.0', d:'2026-10-31', t:'• Primera versión: calendario por meses, cuenta atrás, pagada / voy / compañía.'}
-];
-let notes = [];
-async function loadNotes(){
-  let st = [];
-  try { st = HAS_SERVER ? await (await fetch('/api/notes')).json() : JSON.parse(localStorage.getItem('gc_notes') || '[]'); } catch(e){}
-  if (!Array.isArray(st)) st = [];
-  let changed = false;
-  for (const d of NOTES_DEFAULT) if (!st.some(n => n.id === 'v' + d.v)) { st.push({id:'v' + d.v, v:d.v, d:d.d, t:d.t}); changed = true; }
-  notes = st;
-  if (changed) await saveNotes();
-}
-async function saveNotes(){
-  try { if (HAS_SERVER) await fetch('/api/notes', {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(notes)}); else localStorage.setItem('gc_notes', JSON.stringify(notes)); } catch(e){}
-}
-const vkey = v => String(v).split('.').map(x => +x || 0);
-function cmpV(a, b){ const x = vkey(a), y = vkey(b); for (let i = 0; i < 4; i++) { const d = (y[i] || 0) - (x[i] || 0); if (d) return d; } return 0; }
-let nEdit = null;
-function drawNotes(){
-  const list = notes.slice().sort((a, b) => cmpV(a.v, b.v) || (b.d || '').localeCompare(a.d || ''));
-  $('#nlist').innerHTML = list.map(n => n.id === nEdit ? `<div class="note"><div class="fg"><div><label>Versión / título</label><input type="text" id="nv" value="${esc(n.v)}"></div><div><label>Fecha</label><input type="date" id="nd" value="${esc(n.d || '')}"></div><div class="full"><label>Texto</label><textarea id="nt">${esc(n.t)}</textarea></div></div><div class="foot" style="margin-top:8px"><button type="button" class="btn sm danger l" data-ndel="${n.id}">Eliminar</button><button type="button" class="btn sm" data-ncancel="1">Cancelar</button><button type="button" class="btn sm pri" data-nsave="${n.id}">Guardar</button></div></div>`
-    : `<div class="note"><h4>${esc(n.v)} <small>${n.d ? esc(n.d.split('-').reverse().join('/')) : ''}</small>${n.v === APP_VERSION ? '<span class="tag ok">actual</span>' : ''}<span style="flex:1"></span><button type="button" class="btn sm" data-nedit="${n.id}">Editar</button></h4><pre>${esc(n.t)}</pre></div>`).join('') || '<div class="empty">Sin notas</div>';
-}
-async function openNotes(){
-  await loadNotes(); nEdit = null; drawNotes(); $('#ndlg').showModal();
-  try { localStorage.setItem('gc_seen', APP_VERSION); } catch(e){}
-  drawFoot();
-}
-function drawFoot(){
-  let seen = ''; try { seen = localStorage.getItem('gc_seen') || ''; } catch(e){}
-  $('#appfoot').innerHTML = 'RacingTrack v' + APP_VERSION + ' · <a id="nov">Novedades</a>' + (seen !== APP_VERSION ? '<span class="new">NUEVO</span>' : '');
-  $('#nov').onclick = openNotes;
-}
-$('#nclose').onclick = () => $('#ndlg').close();
-$('#nnew').onclick = () => { const id = uid(); notes.push({id, v: APP_VERSION, d: new Date().toISOString().slice(0,10), t: ''}); nEdit = id; drawNotes(); };
-$('#nlist').onclick = async e => {
-  const b = e.target.closest('button'); if (!b) return;
-  if (b.dataset.nedit) { nEdit = b.dataset.nedit; drawNotes(); }
-  else if (b.dataset.ncancel) { notes = notes.filter(n => n.t !== '' || n.id !== nEdit); nEdit = null; drawNotes(); }
-  else if (b.dataset.nsave) { const n = notes.find(x => x.id === b.dataset.nsave); n.v = $('#nv').value.trim() || n.v; n.d = $('#nd').value; n.t = $('#nt').value; nEdit = null; await saveNotes(); drawNotes(); }
-  else if (b.dataset.ndel) { if (await ask('¿Eliminar esta nota?')) { notes = notes.filter(x => x.id !== b.dataset.ndel); nEdit = null; await saveNotes(); drawNotes(); } }
-};
-drawFoot();
-
-/* ---------- Ajustes y renovación ---------- */
-function getContact(){
-  let c = ''; try { const k = localStorage.getItem('gc_key'); if (k) { const r = checkKey(k); if (r.ok && r.contact) c = r.contact; } if (!c) c = localStorage.getItem('gc_contact') || ''; } catch(e){}
-  return c;
-}
-async function shareText(t){
-  if (IS_ANDROID) { Android.share(t); return; }
-  if (navigator.share) { try { await navigator.share({text: t}); return; } catch(e){ return; } }
-  try { await navigator.clipboard.writeText(t); await info('Mensaje copiado. Pégalo y envíalo a quien te dio la app.'); } catch(e){ await info(t); }
-}
-async function requestRenewal(){
-  const c = getContact().trim();
-  let est = 'sin clave activa';
-  if (window.LICENSE_PK) { const s = licState(); est = s.ok ? (s.exp === Infinity ? 'de por vida' : 'caduca el ' + new Date(s.exp).toLocaleDateString('es-ES')) : 'caducada o sin activar'; }
-  const msg = 'Hola, quiero renovar la licencia de RacingTrack.\nCódigo de dispositivo: ' + devCode() + '\nEstado actual: ' + est;
-  if (/@/.test(c)) openUrl('mailto:' + c + '?subject=' + encodeURIComponent('Renovación de licencia - RacingTrack') + '&body=' + encodeURIComponent(msg));
-  else if (/^\+?[\d\s]{9,}$/.test(c)) { let n = c.replace(/\D/g, ''); if (n.length === 9) n = '34' + n; openUrl('https://wa.me/' + n + '?text=' + encodeURIComponent(msg)); }
-  else await shareText(msg);
-}
-function refreshBak(){
-  const t = bakGet('gc_lastbak');
-  $('#lastbak').textContent = t ? fmtBak(t) : 'Aún no hay copias automáticas';
-  $('#autobak').checked = bakGet('gc_autobak') === '1';
-  $('#rauto').classList.toggle('hidden', !bakGet('gc_snap'));
-  $('#autosub').textContent = HAS_SERVER ? 'Guarda una copia sola cada 7 días (carpeta «copias»)' : 'Guarda una copia sola cada 7 días dentro de la app';
-}
-function renderSettings(){
-  refreshBak();
-  $('#grow').classList.toggle('hidden', !ownerKey());
-  const box = $('#slic');
-  if (!window.LICENSE_PK) { box.innerHTML = '<div class="kv"><span>Estado</span><b class="good">Esta versión no requiere clave</b></div>'; }
-  else {
-    const s = licState(), c = getContact();
-    let st;
-    if (s.ok) {
-      const days = s.exp === Infinity ? null : Math.ceil((s.exp - Date.now()) / 86400000);
-      st = s.exp === Infinity ? '<b class="good">Activa · de por vida</b>' : '<b class="' + (days <= 7 ? 'bad' : 'good') + '">Activa · caduca el ' + new Date(s.exp).toLocaleDateString('es-ES') + ' (' + days + ' día' + (days === 1 ? '' : 's') + ')</b>';
-    } else st = '<b class="bad">' + esc(s.msg) + '</b>';
-    box.innerHTML = '<div class="kv"><span>Estado</span>' + st + '</div>' +
-      (s.ok && s.label ? '<div class="kv"><span>Licencia de</span><b>' + esc(s.label) + '</b></div>' : '') +
-      '<div class="kv"><span>Código de este dispositivo</span><b style="font-family:Consolas,monospace;letter-spacing:1px">' + devCode() + '</b></div>' +
-      '<div class="kv"><span>Solicitar a</span><b>' + (c ? esc(c) : 'quien te facilitó la app') + '</b></div>' +
-      '<b style="display:block;margin-top:10px">Cómo renovar la licencia</b><ol><li>Pulsa «Solicitar renovación»: se prepara un mensaje con tu código de dispositivo.</li><li>Envíalo a ' + (c ? esc(c) : 'quien te facilitó la app') + '.</li><li>Te enviarán una clave nueva: pulsa «Introducir clave» y pégala.</li></ol>' +
-      '<div class="acts"><button type="button" class="btn pri" id="srenew">Solicitar renovación</button><button type="button" class="btn" id="skey">Introducir clave</button></div>';
-    $('#srenew').onclick = requestRenewal;
-    $('#skey').onclick = () => { $('#sdlg').close(); $('#lkey').value = ''; showLock('Introduce la clave de acceso.', true, false); };
-  }
-  $('#sver').textContent = 'Versión ' + APP_VERSION;
-  const th = (() => { try { return localStorage.getItem('gc_theme') || 'auto'; } catch(e){ return 'auto'; } })();
-  document.querySelector('input[name=theme][value=' + th + ']').checked = true;
-}
-function applyTheme(t){ if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme'); }
-try { applyTheme(localStorage.getItem('gc_theme') || 'auto'); } catch(e){}
-$('#autobak').onchange = async e => { bakSet('gc_autobak', e.target.checked ? '1' : '0'); if (e.target.checked) { bakSet('gc_lastbak', '0'); await autoBackup(false); } refreshBak(); };
-$('#rauto').onclick = async () => { const t = bakGet('gc_snap'); if (t) { $('#sdlg').close(); await applyImport(t); } };
-$('#gear').onclick = () => { renderSettings(); $('#sdlg').showModal(); };
-$('#sclose').onclick = () => $('#sdlg').close();
-$('#themeSeg').onchange = e => { const t = e.target.value; try { localStorage.setItem('gc_theme', t); } catch(err){} applyTheme(t); };
-['pdf', 'exp', 'imp'].forEach(id => $('#' + id).addEventListener('click', () => $('#sdlg').close()));
-$('#snov').onclick = () => { $('#sdlg').close(); openNotes(); };
-$('#lreq').onclick = requestRenewal;
-
 /* ---------- Licencia (solo si el paquete incluye license.js) ---------- */
 function b64d(s){ s = s.replace(/-/g,'+').replace(/_/g,'/'); while (s.length % 4) s += '='; const b = atob(s); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
 function devCode(){
@@ -2057,9 +803,9 @@ function checkKey(k){
   try { good = nacl.sign.detached.verify(pl, sg, b64d(window.LICENSE_PK)); } catch(e){}
   if (!good) return {ok:false, msg:'Clave no válida.'};
   const parts = new TextDecoder().decode(pl).split('|');
-  const exp = +parts[0], dev = parts[1] || '*', label = parts[2] || '', contact = parts[3] || '';
+  const exp = +parts[0], dev = parts[1] || '*', label = parts[2] || '';
   if (dev !== '*' && dev.replace('-','') !== devCode().replace('-','')) return {ok:false, msg:'Esta clave pertenece a otro dispositivo.'};
-  return {ok:true, exp: exp === 0 ? Infinity : exp * 1000, label, contact};
+  return {ok:true, exp: exp * 1000, label};
 }
 function licState(){
   const now = Date.now();
@@ -2071,7 +817,7 @@ function licState(){
   const r = checkKey(k);
   if (!r.ok) return r;
   if (now >= r.exp) return {ok:false, msg:'Tu clave caducó el ' + new Date(r.exp).toLocaleDateString('es-ES') + '. Solicita una nueva.'};
-  return {ok:true, exp:r.exp, label:r.label, contact:r.contact};
+  return {ok:true, exp:r.exp, label:r.label};
 }
 function showLock(msg, closable, isErr){
   $('#lmsg').textContent = msg; $('#lmsg').className = isErr ? 'err' : '';
@@ -2085,22 +831,19 @@ function enforce(){
   const s = licState();
   if (!s.ok) { if (!$('#lock').classList.contains('hidden') && $('#lmsg').className === 'err') return false; showLock(s.msg, false, false); return false; }
   $('#lock').classList.add('hidden');
-  if (s.contact) { try { localStorage.setItem('gc_contact', s.contact); } catch(e){} }
-  const forever = s.exp === Infinity;
-  const days = forever ? 99999 : Math.ceil((s.exp - Date.now()) / 86400000);
+  const days = Math.ceil((s.exp - Date.now()) / 86400000);
   const li = $('#licinfo');
   li.classList.remove('hidden'); li.classList.toggle('soon', days <= 3);
-  li.innerHTML = (forever ? 'Licencia de por vida' : days <= 3 ? '⚠ Tu licencia caduca ' + (days <= 1 ? 'hoy o mañana' : 'en ' + days + ' días') : 'Licencia válida hasta el ' + new Date(s.exp).toLocaleDateString('es-ES')) + (s.label ? ' · ' + esc(s.label) : '') + ' · <a id="lchg">Cambiar clave</a>';
+  li.innerHTML = (days <= 3 ? '⚠ Tu licencia caduca ' + (days <= 1 ? 'hoy o mañana' : 'en ' + days + ' días') : 'Licencia válida hasta el ' + new Date(s.exp).toLocaleDateString('es-ES')) + (s.label ? ' · ' + esc(s.label) : '') + ' · <a id="lchg">Cambiar clave</a>';
   $('#lchg').onclick = () => { $('#lkey').value = ''; showLock('Introduce la nueva clave de acceso.', true, false); };
   if (!started) { started = true; load(); }
   return true;
 }
 $('#lgo').onclick = () => {
   const v = $('#lkey').value;
-  if (tryOwnerKey(v)) { $('#lkey').value = ''; showLock('Modo propietario activado. Introduce ahora la clave de licencia.', !$('#lclose').classList.contains('hidden'), false); enforce(); return; }
   const r = checkKey(v);
   if (!r.ok) { showLock(r.msg, !$('#lclose').classList.contains('hidden'), true); return; }
-  if (r.exp !== Infinity && Date.now() >= r.exp) { showLock('Esa clave ya está caducada (' + new Date(r.exp).toLocaleDateString('es-ES') + ').', !$('#lclose').classList.contains('hidden'), true); return; }
+  if (Date.now() >= r.exp) { showLock('Esa clave ya está caducada (' + new Date(r.exp).toLocaleDateString('es-ES') + ').', !$('#lclose').classList.contains('hidden'), true); return; }
   try { localStorage.setItem('gc_key', v.replace(/\s+/g,'')); } catch(e){}
   $('#lkey').value = '';
   $('#lmsg').className = '';
