@@ -528,7 +528,7 @@ html,body{max-width:100%;overflow-x:hidden}
   <div class="sh">Recompensas</div>
   <button type="button" class="srow" id="krow"><span class="si">🎁</span><span class="st"><b>Canjear clave</b><small>Desbloquea logros y objetos con una clave</small></span><span class="sc">›</span></button>
   <button type="button" class="srow" id="prow"><span class="si">🏅</span><span class="st"><b>Mi corredor y logros</b><small>Avatar, nivel y logros conseguidos</small></span><span class="sc">›</span></button>
-  <button type="button" class="srow" id="grow"><span class="si">🔑</span><span class="st"><b>Generar claves</b><small>Solo propietario: crea claves de recompensa</small></span><span class="sc">›</span></button>
+  <button type="button" class="srow" id="grow"><span class="si">🔑</span><span class="st"><b>Generar claves</b><small>Solo propietario: crea licencias de uso y claves de recompensa</small></span><span class="sc">›</span></button>
   <div class="sh">Apariencia</div>
   <div style="padding:8px 0 0"><div class="seg" id="themeSeg">
     <label><input type="radio" name="theme" value="auto"><span>Automático</span></label>
@@ -569,7 +569,7 @@ html,body{max-width:100%;overflow-x:hidden}
   <div class="foot"><button type="button" class="btn" id="kclose">Cerrar</button><button type="button" class="btn pri" id="kgo">Canjear</button></div>
 </div></dialog>
 <dialog id="gdlg"><div style="padding:18px 20px">
-  <h2 style="margin:0 0 6px;font-size:19px">🔑 Generar claves de recompensa</h2>
+  <h2 style="margin:0 0 6px;font-size:19px">🔑 Generar claves</h2>
   <div id="gown">
     <p class="kmsg">Solo el propietario puede crear claves. Pega aquí tu <b>clave de propietario</b> (la que muestra el Generador de claves en “Clave de propietario”). Se guarda solo en este dispositivo.</p>
     <textarea id="gpriv" placeholder="Clave de propietario" style="min-height:70px;font-family:Consolas,monospace;font-size:12px"></textarea>
@@ -577,8 +577,14 @@ html,body{max-width:100%;overflow-x:hidden}
   </div>
   <div id="gmain" class="hidden">
     <label>Qué desbloquea</label>
-    <select id="gtype"><option value="logro">Logro especial</option><option value="item">Objeto del avatar</option><option value="xp">XP extra</option></select>
+    <select id="gtype"><option value="licencia">🔐 Licencia de uso</option><option value="logro">Logro especial</option><option value="item">Objeto del avatar</option><option value="xp">XP extra</option></select>
     <div style="margin-top:10px"><label>Cuál</label><select id="gval"></select></div>
+    <div id="glicwrap" class="hidden" style="margin-top:10px">
+      <label>Duración de la licencia</label>
+      <select id="gdur"><option value="1">1 día</option><option value="7">7 días</option><option value="30" selected>30 días</option><option value="90">90 días</option><option value="365">1 año</option><option value="0">De por vida</option></select>
+      <div style="margin-top:10px"><label>…o caduca el (opcional, sustituye a la duración)</label><input type="date" id="gdate"></div>
+      <div style="margin-top:10px"><label>Contacto para renovaciones (opcional)</label><input type="text" id="gcontact" placeholder="Tu email o teléfono — se muestra en la app del cliente"></div>
+    </div>
     <div id="gxpwrap" class="hidden" style="margin-top:10px"><label>Cantidad de XP</label><input type="number" id="gxp" min="1" max="100000" value="500"></div>
     <div style="margin-top:10px"><label>Para quién (nota, opcional)</label><input type="text" id="glab" placeholder="Ej: Pepe"></div>
     <div style="margin-top:10px"><label>Código de dispositivo (opcional)</label><input type="text" id="gdev" placeholder="XXXX-XXXX — solo funcionará en ese móvil"></div>
@@ -1216,9 +1222,19 @@ const SPECIAL = [
   {id:'duende', tit:'Duende de la suerte', ic:'🍀', n:'Pote de oro', d:'Logro único de temporada (San Patricio): se consigue con una clave de recompensa. Desbloquea el disfraz de duende de la suerte.'},
   {id:'bruja', tit:'Bruja', ic:'🧙‍♀️', n:'Escoba veloz', d:'Logro único de temporada (Halloween): se consigue con una clave de recompensa. Desbloquea el disfraz de bruja.'},
   {id:'esqueleto', tit:'Esqueleto', ic:'💀', n:'Hasta los huesos', d:'Logro único de temporada (Halloween): se consigue con una clave de recompensa. Desbloquea el disfraz de esqueleto.'},
-  {id:'playa', tit:'Veraneante', ic:'🏖️', n:'Pies en la arena', d:'Logro único de temporada (Verano): se consigue con una clave de recompensa. Desbloquea el disfraz de veraneante.'}
+  {id:'playa', tit:'Veraneante', ic:'🏖️', n:'Pies en la arena', d:'Logro único de temporada (Verano): se consigue con una clave de recompensa. Desbloquea el disfraz de veraneante.'},
+  {id:'nigiri', tit:'Nigiri', ic:'🍣', n:'Salmón sobre ruedas', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de nigiri.'},
+  {id:'maki', tit:'Maki', ic:'🍱', n:'Rodando con arroz', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de maki.'},
+  {id:'huevo', tit:'Huevo frito', ic:'🍳', n:'A la plancha', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de huevo frito.'},
+  {id:'hamburguesa', tit:'Hamburguesa', ic:'🍔', n:'Doble con queso', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de hamburguesa.'},
+  {id:'pizza', tit:'Pizza', ic:'🍕', n:'Porción extra', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de pizza.'},
+  {id:'helado', tit:'Helado', ic:'🍦', n:'Un cucurucho de ganas', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de helado.'},
+  {id:'donut', tit:'Donut', ic:'🍩', n:'Dulce velocidad', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de donut.'},
+  {id:'sandia', tit:'Sandía', ic:'🍉', n:'Pepitas y velocidad', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de sandía.'},
+  {id:'taco', tit:'Taco', ic:'🌮', n:'Taco de media hora', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de taco.'},
+  {id:'palomitas', tit:'Palomitas', ic:'🍿', n:'Cine de domingo', d:'Logro único (disfraces de comida): se consigue con una clave de recompensa. Desbloquea el disfraz de palomitas.'}
 ];
-const COSTUMES = [{id:'none', n:'Sin disfraz', lvl:0}, {id:'dino', n:'🦖 Dinosaurio', ach:'dino'}, {id:'pirata', n:'🏴‍☠️ Pirata', ach:'pirata'}, {id:'zombi', n:'🧟 Zombi', ach:'zombi'}, {id:'gallina', n:'🐔 Gallina', ach:'gallina'}, {id:'fantasma', n:'👻 Fantasma', ach:'fantasma'}, {id:'astro', n:'🧑‍🚀 Astronauta', ach:'astro'}, {id:'vaquero', n:'🤠 Vaquero', ach:'vaquero'}, {id:'ninja', n:'🥷 Ninja', ach:'ninja'}, {id:'payaso', n:'🤡 Payaso', ach:'payaso'}, {id:'robot', n:'🤖 Robot', ach:'robot'}, {id:'vampiro', n:'🧛 Vampiro', ach:'vampiro'}, {id:'caballero', n:'🛡️ Caballero', ach:'caballero'}, {id:'platano', n:'🍌 Plátano', ach:'platano'}, {id:'pinguino', n:'🐧 Pingüino', ach:'pinguino'}, {id:'gato', n:'🐱 Gato', ach:'gato'}, {id:'calabaza', n:'🎃 Halloween (calabaza)', ach:'calabaza'}, {id:'papanoel', n:'🎅 Papá Noel (Navidad)', ach:'papanoel'}, {id:'reno', n:'🦌 Reno (Navidad)', ach:'reno'}, {id:'muneco', n:'⛄ Muñeco de nieve (Invierno)', ach:'muneco'}, {id:'reymago', n:'🎁 Rey Mago (Reyes)', ach:'reymago'}, {id:'cupido', n:'💘 Cupido (San Valentín)', ach:'cupido'}, {id:'conejo', n:'🐰 Conejo de Pascua (Pascua)', ach:'conejo'}, {id:'duende', n:'🍀 Duende de la suerte (San Patricio)', ach:'duende'}, {id:'bruja', n:'🧙‍♀️ Bruja (Halloween)', ach:'bruja'}, {id:'esqueleto', n:'💀 Esqueleto (Halloween)', ach:'esqueleto'}, {id:'playa', n:'🏖️ Veraneante (Verano)', ach:'playa'}];
+const COSTUMES = [{id:'none', n:'Sin disfraz', lvl:0}, {id:'dino', n:'🦖 Dinosaurio', ach:'dino'}, {id:'pirata', n:'🏴‍☠️ Pirata', ach:'pirata'}, {id:'zombi', n:'🧟 Zombi', ach:'zombi'}, {id:'gallina', n:'🐔 Gallina', ach:'gallina'}, {id:'fantasma', n:'👻 Fantasma', ach:'fantasma'}, {id:'astro', n:'🧑‍🚀 Astronauta', ach:'astro'}, {id:'vaquero', n:'🤠 Vaquero', ach:'vaquero'}, {id:'ninja', n:'🥷 Ninja', ach:'ninja'}, {id:'payaso', n:'🤡 Payaso', ach:'payaso'}, {id:'robot', n:'🤖 Robot', ach:'robot'}, {id:'vampiro', n:'🧛 Vampiro', ach:'vampiro'}, {id:'caballero', n:'🛡️ Caballero', ach:'caballero'}, {id:'platano', n:'🍌 Plátano', ach:'platano'}, {id:'pinguino', n:'🐧 Pingüino', ach:'pinguino'}, {id:'gato', n:'🐱 Gato', ach:'gato'}, {id:'calabaza', n:'🎃 Halloween (calabaza)', ach:'calabaza'}, {id:'papanoel', n:'🎅 Papá Noel (Navidad)', ach:'papanoel'}, {id:'reno', n:'🦌 Reno (Navidad)', ach:'reno'}, {id:'muneco', n:'⛄ Muñeco de nieve (Invierno)', ach:'muneco'}, {id:'reymago', n:'🎁 Rey Mago (Reyes)', ach:'reymago'}, {id:'cupido', n:'💘 Cupido (San Valentín)', ach:'cupido'}, {id:'conejo', n:'🐰 Conejo de Pascua (Pascua)', ach:'conejo'}, {id:'duende', n:'🍀 Duende de la suerte (San Patricio)', ach:'duende'}, {id:'bruja', n:'🧙‍♀️ Bruja (Halloween)', ach:'bruja'}, {id:'esqueleto', n:'💀 Esqueleto (Halloween)', ach:'esqueleto'}, {id:'playa', n:'🏖️ Veraneante (Verano)', ach:'playa'}, {id:'nigiri', n:'🍣 Nigiri', ach:'nigiri'}, {id:'maki', n:'🍱 Maki', ach:'maki'}, {id:'huevo', n:'🍳 Huevo frito', ach:'huevo'}, {id:'hamburguesa', n:'🍔 Hamburguesa', ach:'hamburguesa'}, {id:'pizza', n:'🍕 Pizza', ach:'pizza'}, {id:'helado', n:'🍦 Helado', ach:'helado'}, {id:'donut', n:'🍩 Donut', ach:'donut'}, {id:'sandia', n:'🍉 Sandía', ach:'sandia'}, {id:'taco', n:'🌮 Taco', ach:'taco'}, {id:'palomitas', n:'🍿 Palomitas', ach:'palomitas'}];
 async function checkProgress(announce, extra){
   const s = pstats(), msgs = extra ? extra.slice() : [], lvl = s.lvl;
   let ch = false;
@@ -1448,7 +1464,17 @@ const COS_COL = {
   duende:{O:'#2fb36a', o:'#25915a', z:'#1b6e43', P:'#6b4a2b', p:'#563a20', w:'#563a20', F:'#2a1a10', f:'#ffd23f', v:'#2fa05a', n:'#e8742a'},
   bruja:{S:'#8fd17a', s:'#74b562', K:'#6aa65a', O:'#2a2a33', o:'#1c1c24', z:'#14141a', P:'#8a4fe0', p:'#6a38b8', w:'#6a38b8', F:'#14141a', f:'#14141a', l:'#8a4fe0', n:'#5c9a4c'},
   esqueleto:{S:'#f4f0e4', s:'#d9d3c0', O:'#14141a', o:'#0e0e12', z:'#0a0a0e', P:'#14141a', p:'#0e0e12', w:'#0a0a0e', F:'#f4f0e4', f:'#d9d3c0', g:'#f4f0e4', j:'#d9d3c0'},
-  playa:{O:'#3fc7c7', o:'#2fa5a5', z:'#238080', P:'#ff7a59', p:'#e0583a', w:'#c04a30', F:'#2f6fe0', f:'#2f6fe0', C:'#e0302a'}
+  playa:{O:'#3fc7c7', o:'#2fa5a5', z:'#238080', P:'#ff7a59', p:'#e0583a', w:'#c04a30', F:'#2f6fe0', f:'#2f6fe0', C:'#e0302a'},
+  nigiri:{O:'#fafafa', o:'#e6e2d8', z:'#d2cec2', P:'#fafafa', p:'#e6e2d8', w:'#d2cec2', F:'#e6e2d8', f:'#d2cec2', n:'#ff7a4a', g:'#fff3ea', j:'#e6e2d8', V:'#1d3a2a', v:'#7ac74f'},
+  maki:{O:'#1d3a2a', o:'#142a1e', z:'#0e1f16', P:'#1d3a2a', p:'#142a1e', w:'#0e1f16', F:'#fafafa', f:'#e6e2d8', g:'#fafafa', n:'#ff7a4a', v:'#7ac74f', C:'#e0302a', V:'#1d3a2a'},
+  huevo:{O:'#fafafa', o:'#e6e2d8', z:'#d2cec2', P:'#fafafa', p:'#e6e2d8', w:'#d2cec2', F:'#ffc20a', f:'#ffc20a', g:'#fafafa', j:'#e6e2d8', Y:'#ffc20a', y:'#ff9f0a'},
+  hamburguesa:{O:'#6b3a1e', o:'#552d17', z:'#40220f', P:'#c4813a', p:'#a66a2c', w:'#8a5822', F:'#6b3a1e', f:'#6b3a1e', B:'#e0a458', J:'#c4813a', t:'#6b3a1e', v:'#4fb34a', C:'#e0302a', Y:'#ffd23f', g:'#fff3d6'},
+  pizza:{O:'#ffc83a', o:'#e0a820', z:'#c08c10', P:'#e0302a', p:'#b8221f', w:'#901a18', F:'#fafafa', f:'#e6e2d8', B:'#d99a4a', C:'#e0302a', E:'#2a2a33', v:'#4fb34a', g:'#fafafa'},
+  helado:{O:'#e8b46a', o:'#d09a50', z:'#b88438', P:'#e8b46a', p:'#d09a50', w:'#b88438', F:'#fafafa', f:'#e6e2d8', B:'#e8b46a', J:'#c4883a', N:'#ff9ec7', C:'#e0302a', g:'#fff0f6'},
+  donut:{O:'#e8b46a', o:'#d09a50', z:'#b88438', P:'#e8b46a', p:'#d09a50', w:'#b88438', F:'#ff9ec7', f:'#ff9ec7', B:'#e8b46a', N:'#ff9ec7', Z:'#ffd23f', U:'#3a7bd5', v:'#4fb34a', g:'#fafafa', D:'#b88438'},
+  sandia:{O:'#e0302a', o:'#c42623', z:'#a81f1c', P:'#2fa05a', p:'#25915a', w:'#1b6e43', F:'#1d5a35', f:'#1d5a35', C:'#e0302a', v:'#2fa05a', V:'#1b6e43', y:'#c8f0a0', E:'#241a2b'},
+  taco:{O:'#f2c14e', o:'#d9a53a', z:'#bc8a28', P:'#d99a2b', p:'#bc8420', w:'#9a6c18', F:'#bc8420', f:'#bc8420', B:'#f2c14e', v:'#4fb34a', C:'#e0302a', Y:'#ffd23f'},
+  palomitas:{O:'#fafafa', o:'#e6e2d8', z:'#d2cec2', P:'#e0302a', p:'#b8221f', w:'#901a18', F:'#fafafa', f:'#e6e2d8', C:'#e0302a', g:'#fffaf0', Y:'#ffd23f'}
 };
 const cb = (...p) => rb(...p);
 const COS_HEAD = {  /* filas con rejilla de 20 columnas, dx = 2 */
@@ -1477,6 +1503,16 @@ const COS_HEAD = {  /* filas con rejilla de 20 columnas, dx = 2 */
   bruja:mk([[0, 0, rw([9,10,'E'])], [1, 1, rw([8,11,'E'])], [2, 2, rw([7,12,'l'])], [3, 3, rw([2,17,'E'])], [9, 10, rw([9,10,'n'])]]),
   esqueleto:mk([[0, 0, rw([6,13,'g'])], [1, 2, rw([4,15,'g'])], [3, 12, rw([3,16,'g'])], [3, 12, rw([15,16,'j'])], [6, 8, rw([5,8,'E'],[11,14,'E'])], [9, 10, rw([9,10,'E'])], [11, 11, rw([6,13,'E'])], [12, 12, rw([6,6,'E'],[8,8,'E'],[10,10,'E'],[12,12,'E'],[14,14,'E'])]]),
   playa:mk([[0, 1, rw([6,13,'Z'])], [2, 2, rw([5,14,'C'])], [3, 3, rw([0,19,'Z'])], [6, 8, rw([4,8,'E'],[11,15,'E'])], [6, 6, rw([9,10,'E'],[5,5,'W'],[12,12,'W'])]]),
+  nigiri:mk([[0, 0, rw([5,14,'n'])], [1, 1, rw([3,16,'n'])], [2, 3, rw([2,17,'n'])], [1, 1, rw([6,6,'g'],[11,11,'g'])], [2, 2, rw([8,8,'g'],[13,13,'g'])], [3, 3, rw([5,5,'g'],[10,10,'g'])], [4, 4, rw([9,10,'v'])]]),
+  maki:mk([[2, 3, rw([3,16,'g'])], [2, 3, rw([9,10,'C'])]]),
+  huevo:mk([[0, 0, rw([7,12,'g'])], [1, 1, rw([4,15,'g'])], [2, 3, rw([2,17,'g'])], [0, 2, rw([8,11,'Y'])], [1, 1, rw([7,12,'Y'])], [0, 0, rw([8,9,'W'])], [2, 2, rw([8,11,'y'])]]),
+  hamburguesa:mk([[0, 0, rw([6,13,'B'])], [1, 1, rw([4,15,'B'])], [2, 3, rw([2,17,'B'])], [1, 1, rw([7,7,'g'],[11,11,'g'],[14,14,'g'])], [2, 2, rw([5,5,'g'],[9,9,'g'],[13,13,'g'])], [3, 3, rw([6,6,'J'],[10,10,'J'])]]),
+  pizza:mk([[0, 0, rw([7,12,'g'])], [1, 1, rw([5,14,'g'])], [2, 3, rw([4,15,'g'])], [1, 1, rw([7,7,'j'],[12,12,'j'])], [9, 9, rw([6,8,'E'],[11,13,'E'])], [10, 10, rw([5,5,'E'],[14,14,'E'])]]),
+  helado:mk([[0, 0, rw([9,10,'C'])], [1, 3, rw([4,15,'N'])], [1, 1, rw([6,7,'g'])], [4, 4, rw([4,5,'N'],[9,9,'N'],[14,15,'N'])], [2, 3, rw([5,6,'C'],[11,12,'C'])]]),
+  donut:mk([[0, 0, rw([6,13,'N'])], [1, 3, rw([3,16,'N'])], [4, 4, rw([3,4,'N'],[15,16,'N'],[9,9,'N'])], [1, 1, rw([6,6,'Z'],[12,12,'U'])], [2, 2, rw([8,8,'g'],[14,14,'v'],[5,5,'U'])], [3, 3, rw([6,6,'v'],[10,10,'Z'],[15,15,'g'])]]),
+  sandia:mk([[0, 1, rw([6,13,'v'])], [2, 3, rw([3,16,'v'])], [0, 3, rw([6,6,'V'],[9,9,'V'],[12,12,'V'],[15,15,'V'])]]),
+  taco:mk([[0, 0, rw([5,7,'v'],[9,11,'v'],[13,15,'v'])], [1, 2, rw([3,16,'v'])], [3, 3, rw([4,15,'v'])], [1, 1, rw([6,6,'C'],[11,11,'C'])], [2, 2, rw([8,9,'Y'],[14,14,'C'])]]),
+  palomitas:mk([[0, 0, rw([4,6,'g'],[8,11,'g'],[13,15,'g'])], [1, 1, rw([3,17,'g'])], [2, 3, rw([2,17,'g'])], [0, 0, rw([5,5,'Y'],[10,10,'Y'])], [2, 2, rw([7,7,'Y'],[12,12,'Y'],[15,15,'Y'])], [3, 3, rw([5,5,'Y'],[10,10,'Y'])]]),
   gallina:{0:rw([7,8,'C'],[10,11,'C'],[13,13,'C']), 1:rw([6,13,'C'],[5,5,'g']), 2:rw([4,15,'g']), 3:rw([4,16,'g']), 4:rw([4,15,'g'],[6,6,'j'],[10,10,'j']), 5:rw([4,5,'g'],[14,15,'g']), 9:rw([15,17,'Y']), 10:rw([15,16,'n'],[16,16,'C']), 11:rw([15,15,'C'])}
 };
 const COS_BODY = {
@@ -1504,6 +1540,16 @@ const COS_BODY = {
   bruja:mk([[14, 24, cb([8,15,'O'])], [14, 22, cb([6,7,'O'],[16,17,'O'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [14, 14, cb([8,15,'l'])], [20, 20, cb([8,15,'l'])], [25, 28, cb([7,16,'O'])], [28, 28, cb([7,16,'l'])], [25, 34, cb([8,10,'P'],[13,15,'P'])], [29, 29, cb([8,10,'g'],[13,15,'g'])], [31, 31, cb([8,10,'g'],[13,15,'g'])], [33, 33, cb([8,10,'g'],[13,15,'g'])]]),
   esqueleto:mk([[14, 24, cb([8,15,'O'])], [14, 22, cb([6,7,'O'],[16,17,'O'])], [14, 24, cb([11,12,'g'])], [15, 15, cb([9,14,'g'])], [17, 17, cb([9,14,'g'])], [19, 19, cb([9,14,'g'])], [21, 21, cb([9,14,'g'])], [16, 16, cb([6,7,'g'],[16,17,'g'])], [19, 19, cb([6,7,'g'],[16,17,'g'])], [22, 22, cb([6,7,'g'],[16,17,'g'])], [23, 24, cb([8,15,'g'])], [25, 34, cb([8,10,'P'],[13,15,'P'])], [27, 27, cb([8,10,'g'],[13,15,'g'])], [30, 30, cb([8,10,'g'],[13,15,'g'])], [33, 33, cb([8,10,'g'],[13,15,'g'])]]),
   playa:mk([[14, 24, cb([8,15,'O'])], [14, 22, cb([6,7,'O'],[16,17,'O'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [16, 16, cb([9,9,'Y'],[13,13,'C'])], [18, 18, cb([11,11,'C'],[15,15,'Y'])], [20, 20, cb([9,9,'C'],[14,14,'Y'])], [25, 30, cb([8,10,'P'],[13,15,'P'])], [31, 34, cb([8,10,'S'],[13,15,'S'])], [23, 25, cb([5,7,'C'],[8,10,'W'],[11,13,'C'],[14,16,'W'],[17,18,'C'])]]),
+  nigiri:mk([[14, 24, cb([8,15,'O'])], [14, 23, cb([6,7,'O'],[16,17,'O'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [15, 15, cb([9,9,'j'],[13,13,'j'])], [17, 17, cb([10,10,'j'],[14,14,'j'])], [24, 24, cb([9,9,'j'],[12,12,'j'])], [19, 22, cb([6,17,'V'])], [25, 34, cb([8,10,'P'],[13,15,'P'])], [28, 28, cb([9,9,'j'],[14,14,'j'])], [31, 31, cb([10,10,'j'],[13,13,'j'])]]),
+  maki:mk([[14, 24, cb([8,15,'O'])], [14, 23, cb([6,7,'O'],[16,17,'O'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [15, 23, cb([9,14,'g'])], [16, 22, cb([10,13,'g'])], [17, 21, cb([11,12,'n'])], [18, 19, cb([11,11,'v'])], [20, 20, cb([12,12,'C'])], [25, 34, cb([8,10,'P'],[13,15,'P'])]]),
+  huevo:mk([[14, 26, cb([6,17,'g'])], [14, 26, cb([5,5,'g'],[18,18,'g'])], [14, 23, cb([6,7,'g'],[16,17,'g'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [27, 27, cb([7,16,'j'])], [16, 22, cb([9,14,'Y'])], [15, 15, cb([10,13,'Y'])], [23, 23, cb([10,13,'Y'])], [17, 18, cb([10,11,'W'])], [20, 22, cb([13,14,'y'])], [25, 34, cb([8,10,'P'],[13,15,'P'])]]),
+  hamburguesa:mk([[14, 24, cb([8,15,'t'])], [14, 22, cb([6,7,'B'],[16,17,'B'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [14, 14, cb([5,18,'v'])], [15, 15, cb([6,17,'C'])], [16, 16, cb([6,17,'Y'])], [17, 17, cb([7,16,'Y'])], [22, 22, cb([6,17,'v'])], [23, 24, cb([7,16,'B'])], [25, 34, cb([8,10,'P'],[13,15,'P'])]]),
+  pizza:mk([[14, 24, cb([8,15,'O'])], [14, 22, cb([6,7,'O'],[16,17,'O'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [14, 15, cb([6,17,'B'])], [17, 18, cb([9,11,'C'])], [20, 21, cb([12,14,'C'])], [23, 24, cb([8,10,'C'])], [18, 18, cb([13,13,'E'])], [22, 22, cb([11,11,'E'])], [16, 16, cb([15,15,'v'])], [25, 34, cb([8,10,'P'],[13,15,'P'])], [29, 30, cb([8,10,'g'],[13,15,'g'])], [33, 34, cb([8,10,'g'],[13,15,'g'])]]),
+  helado:mk([[14, 24, cb([8,15,'B'])], [14, 22, cb([6,7,'B'],[16,17,'B'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [15, 15, cb([9,9,'J'],[12,12,'J'],[15,15,'J'])], [17, 17, cb([8,8,'J'],[11,11,'J'],[14,14,'J'])], [19, 19, cb([9,9,'J'],[12,12,'J'],[15,15,'J'])], [21, 21, cb([8,8,'J'],[11,11,'J'],[14,14,'J'])], [23, 23, cb([9,9,'J'],[12,12,'J'],[15,15,'J'])], [25, 34, cb([8,10,'P'],[13,15,'P'])], [28, 28, cb([9,9,'J'],[14,14,'J'])], [31, 31, cb([10,10,'J'],[13,13,'J'])]]),
+  donut:mk([[14, 24, cb([8,15,'B'])], [14, 22, cb([6,7,'B'],[16,17,'B'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [14, 19, cb([8,15,'N'])], [14, 19, cb([6,7,'N'],[16,17,'N'])], [20, 20, cb([8,15,'N'],[10,10,'N'],[13,13,'N'])], [18, 19, cb([11,12,'D'])], [15, 15, cb([9,9,'Z'],[14,14,'U'])], [16, 16, cb([10,10,'g'],[12,12,'v'],[8,8,'U'])], [17, 17, cb([9,9,'v'],[15,15,'Z'])], [21, 21, cb([8,8,'Z'],[12,12,'N'])], [25, 34, cb([8,10,'P'],[13,15,'P'])]]),
+  sandia:mk([[14, 24, cb([8,15,'O'])], [14, 22, cb([6,7,'v'],[16,17,'v'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [24, 24, cb([8,15,'v'])], [23, 23, cb([8,15,'y'])], [16, 16, cb([9,9,'E'],[13,13,'E'])], [18, 18, cb([11,11,'E'],[15,15,'E'])], [20, 20, cb([9,9,'E'],[13,13,'E'])], [22, 22, cb([11,11,'E'],[15,15,'E'])], [25, 34, cb([8,10,'P'],[13,15,'P'])]]),
+  taco:mk([[14, 24, cb([8,15,'B'])], [14, 22, cb([6,7,'B'],[16,17,'B'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [13, 14, cb([7,16,'v'])], [14, 14, cb([8,8,'C'],[11,11,'Y'],[14,14,'C'])], [14, 24, cb([8,8,'o'],[15,15,'o'])], [20, 20, cb([9,14,'o'])], [25, 34, cb([8,10,'P'],[13,15,'P'])]]),
+  palomitas:mk([[14, 24, cb([8,9,'C'],[10,11,'g'],[12,13,'C'],[14,15,'g'])], [14, 22, cb([6,7,'C'],[16,17,'C'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [14, 14, cb([8,15,'g'])], [25, 34, cb([8,10,'P'],[13,15,'P'])]]),
   calabaza:mk([[14, 24, cb([8,15,'O'])], [14, 22, cb([6,7,'O'],[16,17,'O'])], [22, 23, cb([6,7,'S'],[16,17,'S'])], [22, 23, cb([8,15,'n'])], [14, 14, cb([8,15,'D'])], [17, 17, cb([12,12,'n'],[10,10,'n'])], [25, 34, cb([8,10,'P'],[13,15,'P'])], [33, 34, cb([8,10,'F'],[13,15,'F'])]]),
   gallina:mk([[14, 24, cb([8,15,'g'])], [16, 16, cb([9,10,'j'],[13,14,'j'])], [18, 18, cb([10,11,'j'],[14,15,'j'])], [20, 20, cb([9,10,'j'],[13,14,'j'])], [22, 22, cb([10,11,'j'],[14,15,'j'])], [14, 21, cb([6,7,'g'],[16,17,'g'])], [16, 16, cb([6,6,'j'],[17,17,'j'])], [18, 18, cb([7,7,'j'],[16,16,'j'])], [20, 20, cb([6,6,'j'],[17,17,'j'])], [19, 25, cb([4,7,'g'])], [21, 22, cb([3,5,'j'])], [25, 34, cb([9,9,'Y'],[14,14,'Y'])], [34, 34, cb([8,10,'n'],[13,15,'n'])]])
 };
@@ -1720,7 +1766,8 @@ const ownerKey = () => { try { return localStorage.getItem('gc_owner') || ''; } 
 const ITEM_NAMES = {obsidiana:'Pack Obsidiana (todo + estilo obsidiana)', headband:'Cinta', cap:'Gorra', glasses:'Gafas', sunglasses:'Gafas de sol', headphones:'Auriculares', visor:'Visera', capback:'Gorra hacia atrás', bandana:'Bandana', beanie:'Gorro', medal:'Medalla', money:'Saco de billetes', violeta:'Ropa violeta', dorado:'Ropa dorada', cape:'Capa', crown:'Corona', ant:'Sombrero cervecero', tank:'Camiseta de tirantes', long:'Camiseta manga larga', jacket:'Cortavientos', finisher:'Camiseta Finisher', half:'Mallas cortas', tights:'Mallas largas', baggy:'Pantalón técnico', trail:'Zapatillas trail', retro:'Zapatillas clásicas', plate:'Zapatillas de placa', sleeves:'Manguitos', poles:'Bastones', bib:'Dorsal', sc6:'Zapatillas color neón', sc7:'Zapatillas color oro', dc7:'Detalles neón', pc6:'Pantalón naranja', pc7:'Pantalón amarillo'};
 function fillGenValues(){
   const t = $('#gtype').value, s = $('#gval');
-  $('#gxpwrap').classList.toggle('hidden', t !== 'xp'); s.parentElement.classList.toggle('hidden', t === 'xp');
+  $('#gxpwrap').classList.toggle('hidden', t !== 'xp'); s.parentElement.classList.toggle('hidden', t === 'xp' || t === 'licencia'); $('#glicwrap').classList.toggle('hidden', t !== 'licencia');
+  if (t === 'licencia') { try { $('#gcontact').value = $('#gcontact').value || localStorage.getItem('gc_gcontact') || ''; } catch(e){} }
   s.innerHTML = t === 'logro' ? SPECIAL.map(x => `<option value="${x.id}">${x.ic} ${x.n}</option>`).join('') : Object.entries(ITEM_NAMES).map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
 }
 function drawGenHist(){
@@ -1748,8 +1795,28 @@ $('#gsave').onclick = () => {
   $('#gpriv').value = ''; openGen();
 };
 $('#gforget').onclick = async () => { if (await ask('¿Quitar la clave de propietario de este dispositivo?')) { try { localStorage.removeItem('gc_owner'); } catch(e){} $('#gdlg').close(); } };
+function genLicense(){
+  let exp = 0, forever = false;
+  if ($('#gdate').value) exp = new Date($('#gdate').value + 'T23:59:59').getTime();
+  else if ($('#gdur').value === '0') forever = true;
+  else exp = Date.now() + (+$('#gdur').value) * 86400000;
+  if (!forever && exp <= Date.now()) { $('#gmsg').textContent = 'La fecha de caducidad ya ha pasado.'; return; }
+  let dev = $('#gdev').value.trim().toUpperCase().replace(/[^0-9A-Z]/g, '');
+  if (dev && dev.length !== 8) { $('#gmsg').textContent = 'El código de dispositivo debe tener 8 caracteres.'; return; }
+  const lab = $('#glab').value.trim().replace(/\|/g, '/'), contact = $('#gcontact').value.trim().replace(/\|/g, '');
+  try { localStorage.setItem('gc_gcontact', contact); } catch(e){}
+  const payload = new TextEncoder().encode((forever ? 0 : Math.floor(exp / 1000)) + '|' + (dev || '*') + '|' + lab + '|' + contact);
+  let key;
+  try { key = 'GC1.' + b64u(payload) + '.' + b64u(nacl.sign.detached(payload, b64d(ownerKey()))); } catch(e){ $('#gmsg').textContent = 'No se pudo firmar la clave.'; return; }
+  $('#gmsg').textContent = ''; $('#gkey').value = key; $('#gout').classList.remove('hidden'); $('#gcp').textContent = '';
+  const what = '🔐 Licencia ' + (forever ? 'de por vida' : 'hasta ' + new Date(exp).toLocaleDateString('es-ES')) + (dev ? ' · ' + dev.slice(0, 4) + '-' + dev.slice(4) : '');
+  let h = []; try { h = JSON.parse(localStorage.getItem('gc_rwhist') || '[]'); } catch(e){}
+  h.push({at:Date.now(), what, lab}); try { localStorage.setItem('gc_rwhist', JSON.stringify(h)); } catch(e){}
+  drawGenHist();
+}
 $('#ggen').onclick = () => {
   const type = $('#gtype').value;
+  if (type === 'licencia') return genLicense();
   const val = type === 'xp' ? String(Math.round(+$('#gxp').value || 0)) : $('#gval').value;
   if (type === 'xp' && (+val <= 0 || +val > 100000)) { $('#gmsg').textContent = 'Indica una cantidad de XP entre 1 y 100000.'; return; }
   let dev = $('#gdev').value.trim().toUpperCase().replace(/[^0-9A-Z]/g, '');
@@ -2116,8 +2183,10 @@ setInterval(() => { tick(); }, 1000);
 setInterval(() => { if (view === 'dash' && !$('#dlg').open) renderDash(); }, 60000 * 30);
 
 /* ---------- Novedades (editables) ---------- */
-const APP_VERSION = '1.9.27';
+const APP_VERSION = '1.9.29';
 const NOTES_DEFAULT = [
+  {v:'1.9.29', d:'2026-11-13', t:'• Generador de claves ampliado (solo modo propietario): además de logros, objetos y XP, ahora puedes crear licencias de uso desde la propia app, con duración (1 día a 1 año o de por vida) o fecha de caducidad, código de dispositivo y contacto de renovación.'},
+  {v:'1.9.28', d:'2026-11-09', t:'• 10 disfraces de comida como logros únicos: Nigiri 🍣, Maki 🍱, Huevo frito 🍳, Hamburguesa 🍔, Pizza 🍕, Helado 🍦, Donut 🍩, Sandía 🍉, Taco 🌮 y Palomitas 🍿.'},
   {v:'1.9.27', d:'2026-11-05', t:'• 10 disfraces de temporada como logros únicos: Papá Noel 🎅, Reno 🦌, Muñeco de nieve ⛄, Rey Mago 🎁, Cupido 💘, Conejo de Pascua 🐰, Duende de la suerte 🍀, Bruja 🧙‍♀️, Esqueleto 💀 y Veraneante 🏖️.'},
   {v:'1.9.26', d:'2026-11-05', t:'• Vitrina de medallas: al completar una carrera te pide tu tiempo y genera una medalla (nombre, fecha y tiempo). La vitrina aparece en el Resumen junto a tu avatar; púlsala para ver todas tus medallas y toca una para cambiar el tiempo. También puedes escribir el tiempo en el formulario de la carrera.'},
   {v:'1.9.25', d:'2026-11-05', t:'• Dos disfraces nuevos como logros únicos: Gato 🐱 y Halloween con cabeza de calabaza 🎃.'},
